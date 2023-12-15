@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/dist/output.css">
+
+  <title>Document</title>
+</head>
+<body>
+
+  <%- include("../partials/adminNavBar.ejs") %>
+  <%- include("../partials/sidebar.ejs") %>  
+     
+<!-- main content -->
+  <div class="p-4 sm:ml-64">
+  <div class="p-4 border-2 border-gray-200  dark:border-gray-700 mt-14">
+
+<!-- search -->
+
+
+<!-- useer content -->
+<div class="shadow-lg rounded-lg overflow-hidden mx-4 md:mx-10 pt-11">
+   <table class=" table-fixed">
+     <thead>
+       <tr class="bg-gray-100">
+         <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">Order Id</th>
+         <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">UserId</th>
+         <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">Total amount</th>
+         <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">Status</th>
+         <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase"></th>
+       </tr>
+     </thead>
+     <tbody class="bg-white">
+       <% orderData.forEach(user => { %>
+       <tr>
+         <td class="py-4 px-6 border-b border-gray-200"><%= user._id %></td>
+         <td class="py-4 px-6 border-b border-gray-200"><%= user.user %></td>
+         <td class="py-4 pl-16 border-b border-gray-200"><%= user.totalAmount %></td>
+         <td class="py-4 px-4 border-b border-gray-200"><%= user.Status %></td>
+         <td class= " border-gray-200 ">
+          <div class="bg-blue-500 px-3 mr-2 rounded ">
+              <a class="text-white " href="orderView/<%= user._id %>">VIEW</a>
+          </div>
+         </td>
+       </tr>
+       <% }); %>
+     </tbody>
+   </table>
+ </div>
+
+ <script>
+   const changeColour =document.getElementById("e");
+   changeColour.style.backgroundColor = "#000000";
+ </script>
+  
+</body>
+</html>

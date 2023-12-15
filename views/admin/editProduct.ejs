@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Product</title>
+  <!-- Add Tailwind CSS CDN link here -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      width: 70%;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100 mt-80">
+  <div class="container mx-auto p-10 ">
+    <h1 class="text-2xl font-semibold mb-4">EDIT PRODUCT</h1>
+    
+    <form class="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4" action="/admin/editProductPost/<%=user._id%>"
+      method="post" enctype="multipart/form-data"  onsubmit="return v()"  >
+
+      <!-- product Name -->
+      <div class="mb-4">
+        <label   class="block text-gray-700 text-sm font-bold mb-2">Product Name</label>
+        <input oninput="nameValidation()" type="text" id="productName" name="productName" value="<%=user.product_name%>" 
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          required>
+      </div>
+      <p id="NameError" class=""></p>
+
+
+         <!-- Description  -->
+         <div class="mb-4">
+          <label for="" class="block text-gray-700 text-sm font-bold mb-2">Description</label>
+          <input type="text" id="" name="description" value="<%=user.product_description%>"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            required>
+        </div>
+
+           <!-- Category  -->
+           <div class="mb-4">
+            <label for="category" class="block text-gray-700 text-sm font-bold mb-2">Category</label>
+            <select id="category" name="category" value=" <%= user.product_category %>"
+              class="shadow appearance-none border  rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              required > 
+              <!-- show  all the category in this product list   using foreach method  -->
+              <% displayCategory.forEach((list, index)=> { %> 
+                <option value="<%= list.product_category %>" <% if (list.product_category === user.product_category) { %> selected <% } %>>
+                  <%= list.product_category %> 
+                </option>
+                <% }) %> 
+            </select>
+          </div>
+
+         <!--  Price -->
+         <div class="mb-4">
+          <label for="" class="block text-gray-700 text-sm font-bold mb-2">Price</label>
+          <input oninput="priceValidation()" type="text" id="price" name="price" value="<%=user.product_price%>"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            required>
+        </div>
+        <p id="PriceError" class=""></p>
+
+
+      <!-- Quantity -->
+      <div class="mb-4">
+        <label for="categoryDescription" class="block text-gray-700 text-sm font-bold mb-2">Quantity</label>
+        <input oninput="qantityValidation()" type="text" id="quantity" name="quantity" value="<%=user.product_qty%>"
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+         ></input>
+      </div>
+      <p id="quantityError" class=""></p>
+
+
+      
+   <!-- brand -->
+   <div class="mb-4">
+    <label for="" class="block text-gray-700 text-sm font-bold mb-2">Brand</label>
+    <input type="text" id="" name="brand" value="<%=user.product_brand%>"
+      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      required>
+  </div>
+
+    
+        
+       <!-- Category Image -->
+       <div class="mb-4">
+        <label for="productImage" class="block text-gray-700 text-sm font-bold mb-2">Images</label>
+        <input multiple type="file" id="categoryImage" name="image" 
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          accept="image/*">
+          <img src="<%=user.product_img_url[0]%>" alt="no image">
+      </div>
+      
+
+
+      <div class="flex items-center justify-between">
+        <button type="submit"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+          save
+        </button>
+      </div>
+    </form>
+  </div>
+  
+
+  <script>
+  function v(){
+   return nameValidation() && qantityValidation() && priceValidation()
+  }
+
+           function nameValidation(){
+             productName = document.getElementById("productName").value.trim();
+             NameError = document.getElementById("NameError");
+             if(productName===""){
+               NameError.innerText = "Full name should contain at least one non-space character";
+              return false
+            }    else {
+              NameError.innerText = ""; // Clear error message
+        return true; // Indicate validation success
+    }
+            }
+
+         function qantityValidation(){
+        const quantity = document.getElementById("quantity").value;
+        const quantityError = document.getElementById("quantityError")
+        if(quantity<0){
+          quantityError.innerText = "quantity should not be less than 0"
+          return false
+        }else if(isNaN(quantity)){
+          quantityError.innerText = "should be number"
+        }
+        else{
+          quantityError.innerText = " "
+          return true; 
+        }
+            }
+
+           function priceValidation(){
+            const price = document.getElementById("price").value;
+            const PriceError = document.getElementById("PriceError");
+            if(price<0){
+              PriceError.innerText = "price should not be less than 0"
+          return false
+        }else if(isNaN(quantity)){
+          PriceError.innerText = "should be number"
+        }else{
+          PriceError.innerText = ""
+          return true; 
+        }        
+         }
+  </script>
+
+</body>
+</html>

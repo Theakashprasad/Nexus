@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/dist/output.css">
+</head>
+<body>
+    <div id="myModal" class="fixed inset-0 z-50  overflow-auto bg-black bg-opacity-50">
+        <div class="flex items-center justify-center h-full">
+          <div class="bg-white p-8 rounded shadow-lg">
+  
+            <div>
+              <h2 class="font-semibold text-xl text-gray-600">ADD ADDRESS</h2>
+  
+              <div class="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6">
+                <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">
+                  <div class="text-gray-600">
+                    <p class="font-medium text-lg">Personal Details</p>
+                    <p>Add your personal details.</p>
+                  </div>
+                  
+                  <form action="/addressPost" id="formData" method="post" onsubmit="return v()">
+                    <div class="lg:col-span-4">
+                      <div class="grid gap-4 gap-y-2 text-sm grid-cols-2 md:grid-cols-2">
+                      
+                        <div class="md:col-span-3">
+                          <label for="">Full Name</label>
+                          <input oninput="nameValidation()" type="text" name="full_name" id="full_name"
+                            class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" required />
+                            <p id="nameError" class="text-xs"></p>
+                        </div>
+                        
+  
+                      <div class="md:col-span-2">
+                        <label for="">Email Address</label>
+                        <input oninput="emailValidation()" type="text" name="email" id="email" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                          value="" placeholder="email@domain.com" />
+                          <p id="emailError" class="text-xs"></p>
+                      </div>
+  
+                      <div class="md:col-span-5">
+                        <label for="">Address / Street</label>
+                        <input oninput="addressValidation()" type="text" name="address" id="address"
+                          class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="" />
+                          <p id="addressError" class="text-xs"></p>
+                        </div>
+  
+                      <div class="md:col-span-3">
+                        <label for="">Phone number</label>
+                        <input oninput="numberValidation()" type="text" name="phone" id="phone"
+                          class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                          placeholder="" value="" />
+                          <p id="phoneError" class="text-xs"></p>
+                      </div>
+  
+                      <div class="md:col-span-3 ">
+                        <label for="city">City</label>
+                        <input type="text" name="city" id="city" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                          value="" placeholder="" />
+                      </div>
+  
+                      <div class="md:col-span-2">
+                        <label for="country">Country / region</label>
+                        <div class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
+                          <input  id="country" placeholder="Country"
+                            class="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent" value="" />
+                            <select name="country" class="border-none bg-transparent flex-1 cursor-pointer appearance-none focus:outline-none">
+                              <option value="AU">Australia</option>
+                              <option value="BE">Belgium</option> 
+                              <option value="BR">Brazil</option>
+                              <option value="CA">Canada</option>
+                              <option value="CN">China</option>
+                              <option value="DK">Denmark</option>
+                              <option value="FI">Finland</option>
+                              <option value="FR">France</option>
+                              <option value="DE">Germany</option>
+                              <option value="HK">Hong Kong</option>
+                              <option value="IE">Ireland</option>
+                              <option value="IT">Italy</option>
+                              <option value="JP">Japan</option>
+                              <option value="LU">Luxembourg</option>
+                              <option value="MX">Mexico</option>
+                              <option value="NL">Netherlands</option>
+                              <option value="PL">Poland</option>
+                              <option value="PT">Portugal</option>
+                              <option value="SG">Singapore</option>
+                              <option value="ES">Spain</option>
+                              <option value="TN">Tunisia</option>
+                              <option value="GB">United Kingdom</option>
+                              <option value="US" selected="selected">United States</option>
+                          </select>
+                        </div>
+                      </div>
+  
+                      <div class="md:col-span-3">
+                        <label for="state">State / province</label>
+                        <div class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
+                          <input  id="state" placeholder="State"
+                            class="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent" value="" />
+                            <select name="state" class="border-none bg-transparent flex-1 cursor-pointer appearance-none focus:outline-none">
+                              <option value="KL">kerala</option>
+                              <option value="TN">tamil nadu</option> 
+                              <option value="GA">goa</option>
+                              <option value="KN">karnataka</option>
+                              <option value="MH">maharashtra</option>
+                              <option value="AN">andra</option>
+                              <option value="kl" selected="selected">kerala</option>
+                          </select>
+                        </div>
+                      </div>
+  
+                      <div class="md:col-span-1">
+                        <label for="">Pin code</label>
+                        <input oninput="pinValidation()" type="text" name="zipcode" id="zipcode"
+                          class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                          placeholder="" value="" required />
+                          <p id="zipcodeError" class="text-xs"></p>
+                      </div>
+  
+                      <div class="md:col-span-5 text-right">
+                        <div class="inline-flex items-end">
+                          <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
+                        </div>
+                      </div>
+                      
+                    </div>
+                  </div>
+  
+                  </form>
+              
+                </div>
+              </div>
+            </div>
+  
+  
+  
+          </div>
+        </div>
+      </div>
+  
+      
+        <!-- Include Tailwind JS for toggling modal visibility -->
+        <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
+  
+        <script>
+          // Alpine.js script to toggle modal visibility
+          document.getElementById('openModal').addEventListener('click', function () {
+            document.getElementById('myModal').classList.remove('hidden');
+            document.getElementById('myModal').classList.add('flex');
+          });
+  
+          document.getElementById('closeModal').addEventListener('click', function () {
+            document.getElementById('myModal').classList.add('hidden');
+            document.getElementById('myModal').classList.remove('flex');
+          });
+        </script>
+  
+  <script>
+    function v(){
+      return nameValidation() && emailValidation()
+    }
+  </script>
+  
+  <script>
+      function nameValidation() {
+      const name = document.getElementById("full_name").value.trim();
+      const nameError = document.getElementById("nameError");
+      
+      // Regular expression to check if the name contains only letters
+      const onlyLettersRegex = /^[a-zA-Z]+$/;
+  
+      if (name === '') {
+          nameError.innerText = "Name cannot be empty";
+          return false; // Indicate validation failure
+      } else if (!onlyLettersRegex.test(name)) {
+          nameError.innerText = "Name can only contain letters";
+          return false; // Indicate validation failure
+      } else if (name.length < 5) {
+          nameError.innerText = "Name should be at least 5 characters long";
+          return false; // Indicate validation failure
+      } else {
+          nameError.innerText = ""; // Clear error message
+          return true; // Indicate validation success
+      }
+  }
+  
+  function emailValidation(){
+              const email = document.getElementById("email").value;
+              const emailError = document.getElementById("emailError");
+              const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+              if (!emailPattern.test(email) ) {
+                  emailError.innerText = "wrong email"
+                  return false
+              }else{
+                  emailError.innerText = "";
+                  return true
+              }
+          }
+  
+      function addressValidation() {
+      const name = document.getElementById("address").value.trim();
+      const nameError = document.getElementById("addressError");
+  
+      if (name === '' ) {
+          nameError.innerText = "Can not add space";
+          return false; // Indicate validation failure
+      } else if(name.length > 15 ){
+          nameError.innerText = "words should not exceed above 15";
+          return false; // Indicate validation failure
+      }
+      else {
+          nameError.innerText = ""; // Clear error message
+          return true; // Indicate validation success
+      }
+  }
+  
+  function numberValidation() {
+      const name = document.getElementById("phone").value.trim();
+      const nameError = document.getElementById("phoneError");
+  
+      if (name === '' ) {
+          nameError.innerText = "Can not add space";
+          return false; // Indicate validation failure
+      } else if(name.length > 10 ){
+          nameError.innerText = "number should not exceed above 10";
+          return false; // Indicate validation failure
+      }else if(isNaN(name)){
+        nameError.innerText = "should be number"
+          }
+      else {
+          nameError.innerText = ""; // Clear error message
+          return true; // Indicate validation success
+      }
+  }
+  
+  
+  function pinValidation() {
+      const name = document.getElementById("zipcode").value.trim();
+      const nameError = document.getElementById("zipcodeError");
+  
+      if (name === '' ) {
+          nameError.innerText = "Can not add space";
+          return false; // Indicate validation failure
+      } else if(name.length > 6 ){
+          nameError.innerText = "number should not exceed above 6";
+          return false; // Indicate validation failure
+      }else if(isNaN(name)){
+        nameError.innerText = "should be number"
+          }
+      else {
+          nameError.innerText = ""; // Clear error message
+          return true; // Indicate validation success
+      }
+  }
+  
+  </script>
+  
+  
+  
+</body>
+</html>

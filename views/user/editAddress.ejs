@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/dist/output.css">
+</head>
+<body>
+    <div id="editModel" class="fixed inset-0 z-50 hidden overflow-auto bg-black bg-opacity-50">
+        <div class="flex items-center justify-center h-full">
+          <div class="bg-white p-8 rounded shadow-lg">
+
+            <div class="flex justify-end">
+              <button id="editCloseModal" class="text-gray-600 hover:text-gray-800">&times;</button>
+            </div>
+
+            <div>
+              <h2 class="font-semibold text-xl text-gray-600">EDIT ADDRESS</h2>
+
+              <div class="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6">
+                <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">
+                  <div class="text-gray-600">
+                    <p class="font-medium text-lg">Personal Details</p>
+                    <p>Add your personal details.</p>
+                  </div>
+                       <form id="formId" action="" method="post">
+                  <div class="lg:col-span1">
+                    <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
+
+                      <div class="md:col-span-3">
+                        <label for="full_name">Full Name</label>
+                        <input type="text" name="full_name1" id="full_name1"
+                          class=" h-10 border mt-1 rounded px-4 w-full bg-gray-50"  />
+                      </div>
+
+                      
+                      <div class="md:col-span-2">
+                        <label for="Phone">Phone number</label>
+                        <input type="text" name="Phone1" id="Phone1"
+                          class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                          placeholder=""  />
+                      </div>
+
+                      <div class="md:col-span-5">
+                        <label for="email">Email Address</label>
+                        <input type="text" name="email1" id="email1"
+                          class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" 
+                          placeholder="email@domain.com" />
+                      </div>
+
+                      <div class="md:col-span-3">
+                        <label for="address">Address / Street</label>
+                        <input type="text" name="address1" id="address1"
+                          class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="" />
+                      </div>
+
+                      <div class="md:col-span-2">
+                        <label for="city">City</label>
+                        <input type="text" name="city1" id="city1" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                          value="" placeholder="" />
+                      </div>
+
+                      <div class="md:col-span-2">
+                        <label for="country">Country / region</label>
+                        <div class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
+                          <input name="country1" id="country1" placeholder="Country"
+                            class="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent" value="" />
+                          <button tabindex="-1"
+                            class="cursor-pointer outline-none focus:outline-none transition-all text-gray-300 hover:text-red-600">
+                            
+                          </button>
+                         
+                        </div>
+                      </div>
+
+                      <div class="md:col-span-2">
+                        <label for="state">State / province</label>
+                        <div class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
+                          <input name="state1" id="state1" placeholder="State"
+                            class="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent" value="" />
+                        
+                         
+                        </div>
+                      </div>
+
+                      <div class="md:col-span-1">
+                        <label for="zipcode">Pin code</label>
+                        <input type="text" name="zipcode1" id="zipcode1"
+                          class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                          placeholder="" value="" />
+                      </div>
+
+                      <div class=md:col-span-5 text-right">
+                        <div class="inline-flex items-end">
+                          <button onclick="updateAction()" type="submit" id="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </form>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <script>
+        let mod= document.getElementById('editModel')
+        let productId
+        // Alpine.js script to toggle modal visibility
+        const editAddress= document.querySelectorAll('.editAddress')
+        editAddress.forEach(element => {
+          element.addEventListener('click', function () {
+            mod.classList.remove('hidden');
+            let name = document.getElementById("full_name1");
+            let email = document.getElementById("email1");
+            let address = document.getElementById("address1");
+            let city = document.getElementById("city1");
+            let country = document.getElementById("country1");
+            let state = document.getElementById("state1");
+            let zipcode = document.getElementById("zipcode1");
+            let Phone1 = document.getElementById("Phone1");
+            
+          productId = element.dataset.productId;
+
+          var myObject = JSON.parse(element.dataset.mydata);  
+           console.log(myObject);
+           name.value =myObject.key1
+           email.value = myObject.key2
+           address.value = myObject.key3
+           Phone1.value = myObject.key4
+           city.value = myObject.key5
+           country.value = myObject.key6
+           state.value = myObject.key7
+           zipcode.value = myObject.key8  
+          });
+        });
+        document.getElementById('editCloseModal').addEventListener('click', function () {
+          console.log("hai");
+          mod.classList.add('hidden');
+        });
+
+     
+       function updateAction(){
+        formId.action = `/editAddress/${productId}`
+       }
+
+      </script>
+</body>
+</html>

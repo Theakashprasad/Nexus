@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/dist/output.css">
+
+  <title>Document</title>
+</head>
+<body>
+
+
+<%- include("../partials/adminNavBar.ejs") %>
+<%- include("../partials/sidebar.ejs") %>  
+
+  <!-- main content -->
+  <div class="p-4 sm:ml-64">
+     <div class="p-4 border-2 border-gray-200  dark:border-gray-700 mt-14">
+<!-- search -->
+         <div class="flex justify-center border-l-neutral-950 pt-6  ">
+            <div >
+               <form action="" method="">
+                  <input class="bg-gray-300 h-9 " type="search" name="search" placeholder="       Search...">
+               </form>
+            </div> 
+
+            <div class="bg-slate-500 w-16 mt-3 rounded-xl pl-2 ml-3">
+                     <a href="/admin/user">CLEAR</a>            
+           </div> 
+         </div>
+<!-- useer content -->
+<div class="shadow-lg rounded-lg overflow-hidden mx-4 md:mx-10 pt-11">
+   <table class="w-full table-fixed">
+     <thead>
+       <tr class="bg-gray-100">
+         <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">Name</th>
+         <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">Email</th>
+         <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">Phone</th>
+         <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">Status</th>
+       </tr>
+     </thead>
+     <tbody class="bg-white">
+       <% data.forEach(user => { %>
+       <tr>
+         <td class="py-4 px-6 border-b border-gray-200"><%= user.name %></td>
+         <td class="py-4 px-6 border-b border-gray-200 truncate"><%= user.email %></td>
+         <td class="py-4 px-6 border-b border-gray-200"><%= user.phone %></td>
+         <td class="py-4 px-6 border-b border-gray-200">
+           <button class="<%= user.blocked ? 'bg-red-500' : 'bg-green-500' %> text-white px-4 py-2 rounded" data-user-id = "<%= user._id %>"
+            data-user-blocked = "<%= user.blocked %>" >
+            <%= user.blocked ? 'Unblock' : 'Block' %>
+           </button>
+         </td>
+       </tr>
+       <% }); %>
+       <!-- Add more rows here -->
+     </tbody>
+   </table>
+ </div>
+ 
+ <script>
+      const buttons = document.querySelectorAll("button");
+      buttons.forEach(button => {
+        button.addEventListener("click",async()=>{
+console.log("hai");
+          const userId = button.getAttribute("data-user-id");
+          const userBlocked = button.getAttribute("data-user-blocked")
+         
+          fetch(`/admin/userUnblock/${userId}`,{
+                method : "PUT",
+                headers:{
+                  'Content-Type': 'application/json',
+                },
+                body : JSON.stringify({
+                  blocked: userBlocked,
+                }),
+          }).then(res=>res.json()).then(data=>{
+            if(data.success){
+               window.location.reload()
+            }
+          }).catch(error=>{
+            console.log(error);
+          })
+        })
+      });
+ </script>
+ <script>
+  const changeColour =document.getElementById("b");
+  changeColour.style.backgroundColor =  "#000000";
+</script>
+ 
+
+</body>
+</html>

@@ -1,0 +1,712 @@
+<!-- component -->
+<!DOCTYPE html>
+<html class="border-l" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="dist/output.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        fieldset label span {
+            min-width: 125px;
+        }
+        fieldset .select::after {
+            content: '';
+            position: absolute;
+            width: 9px;
+            height: 5px;
+            right: 20px;
+            top: 50%;
+            margin-top: -2px;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='9' height='5' viewBox='0 0 9 5'><title>Arrow</title><path d='M.552 0H8.45c.58 0 .723.359.324.795L5.228 4.672a.97.97 0 0 1-1.454 0L.228.795C-.174.355-.031 0 .552 0z' fill='%23CFD7DF' fill-rule='evenodd'/></svg>");
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <%- include("../partials/navbar.ejs") %>
+
+    <div class="h-screen grid grid-cols-3 pt-10">
+    <div class="lg:col-span-2 col-span-3 bg-indigo-50 space-y-8 px-12">
+           
+ <!-- Button to trigger the add -->
+ <button id="openModal" class="bg-blue-500 mt-6 text-white font-bold py-2 px-4 rounded inline-block">ADD ADDRESS +</button><br>
+
+ <!-- ++++++++++++++++++++++++++++++++++++++++++++++++     ADD ADDRESS    ++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+ <div id="myModal" class="fixed inset-0 z-50 hidden overflow-auto bg-black bg-opacity-50">
+   <div class="flex items-center justify-center h-full">
+     <div class="bg-white p-8 rounded shadow-lg">
+
+       <div class="flex justify-end">
+         <button id="closeModal" class="text-gray-600 hover:text-gray-800">&times;</button>
+       </div>
+
+       <div>
+         <h2 class="font-semibold text-xl text-gray-600">ADD ADDRESS</h2>
+
+         <div class="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6">
+           <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">
+             <div class="text-gray-600">
+               <p class="font-medium text-lg">Personal Details</p>
+               <p>Add your personal details.</p>
+             </div>
+             
+             <form action="/addressPost" id="formData" method="post" onsubmit="return v()">
+               <div class="lg:col-span-4">
+                 <div class="grid gap-4 gap-y-2 text-sm grid-cols-2 md:grid-cols-2">
+                 
+                   <div class="md:col-span-3">
+                     <label for="">Full Name</label>
+                     <input oninput="nameValidation()" type="text" name="full_name" id="full_name"
+                       class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" required />
+                       <p id="nameError" class="text-xs"></p>
+                   </div>
+            
+
+                 <div class="md:col-span-5">
+                   <label for="">Address / Street</label>
+                   <input oninput="addressValidation()" type="text" name="address" id="address"
+                     class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="" />
+                     <p id="addressError" class="text-xs"></p>
+                   </div>
+
+                 <div class="md:col-span-3">
+                   <label for="">Phone number</label>
+                   <input oninput="numberValidation()" type="text" name="phone" id="phone"
+                     class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                     placeholder="" value="" />
+                     <p id="phoneError" class="text-xs"></p>
+                 </div>
+
+                 <div class="md:col-span-3 ">
+                   <label for="city">City</label>
+                   <input type="text" name="city" id="city" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                     value="" placeholder="" />
+                 </div>
+
+                 <div class="md:col-span-2">
+                   <label for="country">Country / region</label>
+                   <div class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
+                     <input  id="country" placeholder="Country"
+                       class="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent" value="" />
+                       <select name="country" class="border-none bg-transparent flex-1 cursor-pointer appearance-none focus:outline-none">
+                         <option value="AU">Australia</option>
+                         <option value="BE">Belgium</option> 
+                         <option value="BR">Brazil</option>
+                         <option value="CA">Canada</option>
+                         <option value="CN">China</option>
+                         <option value="DK">Denmark</option>
+                         <option value="FI">Finland</option>
+                         <option value="FR">France</option>
+                         <option value="DE">Germany</option>
+                         <option value="HK">Hong Kong</option>
+                         <option value="IE">Ireland</option>
+                         <option value="IT">Italy</option>
+                         <option value="JP">Japan</option>
+                         <option value="LU">Luxembourg</option>
+                         <option value="MX">Mexico</option>
+                         <option value="NL">Netherlands</option>
+                         <option value="PL">Poland</option>
+                         <option value="PT">Portugal</option>
+                         <option value="SG">Singapore</option>
+                         <option value="ES">Spain</option>
+                         <option value="TN">Tunisia</option>
+                         <option value="GB">United Kingdom</option>
+                         <option value="US" selected="selected">United States</option>
+                     </select>
+                   </div>
+                 </div>
+
+                 <div class="md:col-span-3">
+                   <label for="state">State / province</label>
+                   <div class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
+                     <input  id="state" placeholder="State"
+                       class="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent" value="" />
+                       <select name="state" class="border-none bg-transparent flex-1 cursor-pointer appearance-none focus:outline-none">
+                         <option value="KL">kerala</option>
+                         <option value="TN">tamil nadu</option> 
+                         <option value="GA">goa</option>
+                         <option value="KN">karnataka</option>
+                         <option value="MH">maharashtra</option>
+                         <option value="AN">andra</option>
+                         <option value="kl" selected="selected">kerala</option>
+                     </select>
+                   </div>
+                 </div>
+
+                 <div class="md:col-span-1">
+                   <label for="">Pin code</label>
+                   <input oninput="pinValidation()" type="text" name="zipcode" id="zipcode"
+                     class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                     placeholder="" value="" required />
+                     <p id="zipcodeError" class="text-xs"></p>
+                 </div>
+
+                 <div class="md:col-span-5 text-right">
+                   <div class="inline-flex items-end">
+                     <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
+                   </div>
+                 </div>
+                 
+               </div>
+             </div>
+
+             </form>
+         
+           </div>
+         </div>
+       </div>
+
+
+
+     </div>
+   </div>
+ </div>
+
+
+   <!-- Include Tailwind JS for toggling modal visibility -->
+   <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
+
+   <script>
+     // Alpine.js script to toggle modal visibility
+     document.getElementById('openModal').addEventListener('click', function () {
+       document.getElementById('myModal').classList.remove('hidden');
+       document.getElementById('myModal').classList.add('flex');
+     });
+
+     document.getElementById('closeModal').addEventListener('click', function () {
+       document.getElementById('myModal').classList.add('hidden');
+       document.getElementById('myModal').classList.remove('flex');
+     });
+   </script>
+
+<script>
+function v(){
+ return nameValidation() 
+}
+</script>
+
+<script>
+ function nameValidation() {
+ const name = document.getElementById("full_name").value.trim();
+ const nameError = document.getElementById("nameError");
+ 
+ // Regular expression to check if the name contains only letters
+ const onlyLettersRegex = /^[a-zA-Z]+$/;
+
+ if (name === '') {
+     nameError.innerText = "Name cannot be empty";
+     return false; // Indicate validation failure
+ } else if (!onlyLettersRegex.test(name)) {
+     nameError.innerText = "Name can only contain letters";
+     return false; // Indicate validation failure
+ } else if (name.length < 5) {
+     nameError.innerText = "Name should be at least 5 characters long";
+     return false; // Indicate validation failure
+ } else {
+     nameError.innerText = ""; // Clear error message
+     return true; // Indicate validation success
+ }
+}
+
+
+ function addressValidation() {
+ const name = document.getElementById("address").value.trim();
+ const nameError = document.getElementById("addressError");
+
+ if (name === '' ) {
+     nameError.innerText = "Can not add space";
+     return false; // Indicate validation failure
+ } else if(name.length > 15 ){
+     nameError.innerText = "words should not exceed above 15";
+     return false; // Indicate validation failure
+ }
+ else {
+     nameError.innerText = ""; // Clear error message
+     return true; // Indicate validation success
+ }
+}
+
+function numberValidation() {
+ const name = document.getElementById("phone").value.trim();
+ const nameError = document.getElementById("phoneError");
+
+ if (name === '' ) {
+     nameError.innerText = "Can not add space";
+     return false; // Indicate validation failure
+ } else if(name.length > 10 ){
+     nameError.innerText = "number should not exceed above 10";
+     return false; // Indicate validation failure
+ }else if(isNaN(name)){
+   nameError.innerText = "should be number"
+     }
+ else {
+     nameError.innerText = ""; // Clear error message
+     return true; // Indicate validation success
+ }
+}
+
+
+function pinValidation() {
+ const name = document.getElementById("zipcode").value.trim();
+ const nameError = document.getElementById("zipcodeError");
+
+ if (name === '' ) {
+     nameError.innerText = "Can not add space";
+     return false; // Indicate validation failure
+ } else if(name.length > 6 ){
+     nameError.innerText = "number should not exceed above 6";
+     return false; // Indicate validation failure
+ }else if(isNaN(name)){
+   nameError.innerText = "should be number"
+     }
+ else {
+     nameError.innerText = ""; // Clear error message
+     return true; // Indicate validation success
+ }
+}
+
+</script>
+
+
+ <!-- ++++++++++++++++++++++++++++++++++++++++++++++++     END ADD ADDRESS    ++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+ <!-- ++++++++++++++++++++++++++++++++++++++++++++++++     view ADDRESS    ++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+            <div class="rounded-md">
+                <form id="payment-form" method="POST" action="">
+                    <section>
+                        <h2 class="uppercase tracking-wide text-lg font-semibold text-gray-700 my-2">Shipping & Billing Information</h2>
+                        <fieldset class="mb-3 bg-white shadow-lg rounded text-gray-600">
+                            <label class="flex border-b border-gray-200 h-12 py-3 items-center">
+                                <span class="text-right px-2">Name</span>
+                                <p id="addressName" class="ml-4"><%= addressDetails.full_name %></p>
+                            </label>
+                           
+                            <label class="flex border-b border-gray-200 h-12 py-3 items-center">
+                                <span class="text-right px-2">Address</span>
+                                <p class="ml-4"><%= addressDetails.address %></p>
+                            </label>
+                            <label class="flex border-b border-gray-200 h-12 py-3 items-center">
+                                <span class="text-right px-2">Phone</span>
+                                <p class="ml-4"><%= addressDetails.phone %></p>
+                            </label>
+                            <label class="flex border-b border-gray-200 h-12 py-3 items-center">
+                                <span class="text-right px-2">City</span>
+                                <p class="ml-4"><%= addressDetails.city %></p>
+                            </label>
+                            <label class="inline-flex w-2/4 border-gray-200 py-3">
+                                <span class="text-right px-2">State</span>
+                                <p class="ml-4"> <%= addressDetails.state %></p>
+                            </label>
+                            <label class="xl:w-1/4 xl:inline-flex  items-center flex xl:border-none border-t border-gray-200 py-3">
+                                <span class="text-right px-2 xl:px-0 xl:text-none">ZIP</span>
+                                <p class="ml-4"><%= addressDetails.zipcode %></p>
+                            </label>
+                            <label class="flex border-t border-gray-200 h-12 py-3 items-center select relative">
+                                <span class="text-right px-2">Country</span>
+                                <p class="ml-4"><%= addressDetails.country %></p>
+                            </label>
+                        </fieldset>
+                    </section>
+                </form>
+            </div>
+
+              
+           <div class=" flex gap-3">
+            <button id="openSelect" class="bg-blue-500 mt-6 text-white font-bold py-2 px-4 rounded inline-block">SELECT ADDRESS </button>
+           </div>
+                
+                 <%  if(addressDetails){  %>
+               
+                  <%  }else{ %>
+                  <p class="underline text-xl">Pleace select address</p>
+                   <%  }  %>
+                 
+              <div class="rounded-md">
+                <section>
+                    <h2 class="uppercase tracking-wide text-lg font-semibold text-gray-700 my-2">Payment method </h2>
+                    <fieldset class="mb-3 bg-white shadow-lg rounded text-gray-600">
+                        <label class="flex border-b border-gray-200 h-12 py-3 items-center">
+                            <span class="text-right px-2">COD</span>
+                            <input name="card" class="focus:outline-none px-3 w-full" placeholder="Cash on delivery" required="">
+                        </label>
+                    </fieldset>
+                </section>
+            </div>
+         <%  if(addressDetails){  %>
+            <button onclick="checkoutPost()" class="submit-button px-4 py-3 rounded-full bg-gray-400 text-white focus:ring focus:outline-none w-full text-xl font-semibold transition-colors">
+                <a href="/checkoutComplete">BUY</a>
+            </button>
+          <%  }else{ %>
+          
+           <%  }  %>
+
+ <!-- ++++++++++++++++++++++++++++++++++++++++++++++++     END VIEW ADDRESS    ++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+ 
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++    SELECT ADDRESS    ++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+    <div id="selectAddress" class="fixed inset-0 z-50 hidden overflow-auto bg-black  bg-opacity-50">
+        <div class="flex items-center justify-center h-full">
+          <div class=" p-8 w-full h-full rounded shadow-lg">
+     
+            <div class="flex justify-end">
+              <button id="closeSelect" class="text-red-500 bg-white w-8 hover:text-gray-800">&times;</button>
+            </div>
+            <button onclick="selectAddress()" class=" bg-green-500 text-white py-2 px-4 rounded mt-10 ml-5">SELECT ADDRESS</button>
+
+    
+      <% addressColection.forEach(addressColection=>{ %>
+    
+        <div class="newSlectAd flex justify-center items-center ">
+          <div class="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6 w-full md:w-2/3 lg:w-1/2">
+            <input class="selectad" id="selectAd" data-address-id="<%=addressColection._id%>" type="radio" name="select" >     
+            <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-1">
+    
+            <form action="#" id="">
+              <div class="lg:col-span-2">
+                <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-1">
+    
+    
+                  <div class="md:col-span-2 ">
+                    <label for="full_name">Full Name</label>
+                    <p class="flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"> <%=addressColection.full_name %> </p>
+                  </div>
+    
+                  <div class="md:col-span-3">
+                    <label for="address">Address / Street</label>
+                    <p class="flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"><%=addressColection.address %> </p>
+    
+                  </div>
+    
+                  <div class="md:col-span-1">
+                    <label for="phone">Phone number</label>
+                    <p class="flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"><%=addressColection.phone %> </p>
+    
+                  </div>
+    
+                  <div class="md:col-span-2">
+                    <label for="city">City</label>
+                    <p class="flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"><%=addressColection.city %> </p>
+    
+                  </div>
+    
+                  <div class="md:col-span-2">
+                    <label for="country">Country / region</label>
+                    <div class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
+                      <p class="flex items-center h-10  mt-1  px-4 w-full bg-gray-50"><%=addressColection.country %> </p>
+                    </div>
+                  </div>
+    
+                  <div class="md:col-span-2">
+                    <label for="state">State / province</label>
+                    <div class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
+                      <p class="flex items-center h-10  mt-1  px-4 w-full bg-gray-50"><%=addressColection.state %> </p>
+    
+                    </div>
+                  </div>
+    
+                  <div class="md:col-span-1">
+                    <label for="zipcode">Pin code</label>
+                    <p class=" flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50">
+                      <%=addressColection.zipcode %> 
+                    </p>
+                  </div>
+                  <!-- Other fields ... -->
+    
+                  <div class="md:col-span-5 text-right">
+                    <div class="inline-flex items-end">
+                      <a href="/removeAddress/<%=addressColection._id %>" class="bg-orange-400 text-white font-bold py-2 px-4 rounded inline-block">
+                        REMOVE
+                      </a>
+                     </div>
+                  </div>
+                </div>
+              </div>
+            </form orm>
+            
+            <div class="flex justify-end">
+              <a type="button" href="#" onclick="showModal()"
+                class="editAddress bg-blue-500 text-white font-bold py-2 px-4 rounded inline-block"
+                data-product-id="<%=addressColection._id %>" data-mydata='{"key1": "<%=addressColection.full_name %>", "key2": "<%=addressColection.email %>" ,"key3": "<%=addressColection.address %>", "key4": "<%=addressColection.phone %>" ,"key5": "<%=addressColection.city %>", "key6": "<%=addressColection.country %>" ,"key7": "<%=addressColection.state %>" ,"key8": "<%=addressColection.zipcode %>" }'  >
+                EDIT
+              </a>
+            </div>
+      </div>
+      </div>
+      </div>
+    
+      <% }) %>
+    
+    
+      <script>
+        let a='';
+        let select = document.querySelectorAll(".selectad");
+        select.forEach((value)=>{
+          value.addEventListener("change",()=>{
+        addressId = value.dataset.addressId
+      })
+    })
+    function selectAddress(){
+      window.location.href = `/checkout?id=${addressId}`
+          }
+      </script>
+       <script>
+        // Alpine.js script to toggle modal visibility
+        document.getElementById('openSelect').addEventListener('click', function () {
+          document.getElementById('selectAddress').classList.remove('hidden');
+          document.getElementById('myModal').classList.add('flex');
+        });
+   
+        document.getElementById('closeSelect').addEventListener('click', function () {
+          document.getElementById('selectAddress').classList.add('hidden');
+          document.getElementById('myModal').classList.remove('flex');
+        });
+      </script>
+   
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.5/lottie.min.js"></script>
+
+          </div>
+        </div>
+    </div>
+
+
+
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++  END SELECT ADDRESS    ++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+    <!-- ++++++++++++++++++++++++++++++++++++++++++++++++  EDIT ADDRESS    ++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+
+  <div id="editModel" class="fixed inset-0 z-50 hidden overflow-auto bg-black bg-opacity-50">
+    <div class="flex items-center justify-center h-full">
+      <div class="bg-white p-8 rounded shadow-lg">
+
+        <div class="flex justify-end">
+          <button id="editCloseModal" class="text-gray-600 hover:text-gray-800">&times;</button>
+        </div>
+
+        <div>
+          <h2 class="font-semibold text-xl text-gray-600">EDIT ADDRESS</h2>
+
+          <div class="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6">
+            <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">
+              <div class="text-gray-600">
+                <p class="font-medium text-lg">Personal Details</p>
+                <p>Add your personal details.</p>
+              </div>
+                   <form id="formId" action="" method="post">
+              <div class="lg:col-span1">
+                <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
+
+                  <div class="md:col-span-3">
+                    <label for="full_name">Full Name</label>
+                    <input type="text" name="full_name1" id="full_name1"
+                      class=" h-10 border mt-1 rounded px-4 w-full bg-gray-50"  />
+                  </div>
+
+                  
+                  <div class="md:col-span-2">
+                    <label for="Phone">Phone number</label>
+                    <input type="text" name="Phone1" id="Phone1"
+                      class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                      placeholder=""/>
+                  </div>
+
+                  <div class="md:col-span-3">
+                    <label for="address">Address / Street</label>
+                    <input type="text" name="address1" id="address1"
+                      class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="" />
+                  </div>
+
+                  <div class="md:col-span-2">
+                    <label for="city">City</label>
+                    <input type="text" name="city1" id="city1" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                      value="" placeholder="" />
+                  </div>
+
+                  <div class="md:col-span-2">
+                    <label for="country">Country / region</label>
+                    <div class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
+                      <input name="country1" id="country1" placeholder="Country"
+                        class="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent" value="" />
+                      <button tabindex="-1"
+                        class="cursor-pointer outline-none focus:outline-none transition-all text-gray-300 hover:text-red-600">
+                        
+                      </button>
+                     
+                    </div>
+                  </div>
+
+                  <div class="md:col-span-2">
+                    <label for="state">State / province</label>
+                    <div class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
+                      <input name="state1" id="state1" placeholder="State"
+                        class="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent" value="" />
+                    
+                     
+                    </div>
+                  </div>
+
+                  <div class="md:col-span-1">
+                    <label for="zipcode">Pin code</label>
+                    <input type="text" name="zipcode1" id="zipcode1"
+                      class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                      placeholder="" value="" />
+                  </div>
+
+                  <div class=md:col-span-5 text-right">
+                    <div class="inline-flex items-end">
+                      <button onclick="updateAction()" type="submit" id="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </form>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let mod= document.getElementById('editModel')
+    let productId
+    // Alpine.js script to toggle modal visibility
+    const editAddress= document.querySelectorAll('.editAddress')
+    editAddress.forEach(element => {
+      element.addEventListener('click', function () {
+        mod.classList.remove('hidden');
+        let name = document.getElementById("full_name1");
+        let address = document.getElementById("address1");
+        let city = document.getElementById("city1");
+        let country = document.getElementById("country1");
+        let state = document.getElementById("state1");
+        let zipcode = document.getElementById("zipcode1");
+        let Phone1 = document.getElementById("Phone1");
+        
+      productId = element.dataset.productId;
+
+      var myObject = JSON.parse(element.dataset.mydata);  
+      console.log(myObject);
+       console.log(myObject);
+       name.value =myObject.key1
+       address.value = myObject.key3
+       Phone1.value = myObject.key4
+       city.value = myObject.key5
+       country.value = myObject.key6
+       state.value = myObject.key7
+       zipcode.value = myObject.key8  
+      });
+    });
+    document.getElementById('editCloseModal').addEventListener('click', function () {
+      console.log("hai");
+      mod.classList.add('hidden');
+    });
+
+ 
+   function updateAction(){
+    formId.action = `/editAddress/${productId}`
+   }
+
+  </script>
+
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++  END EDIT ADDRESS    ++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+ 
+ <!-- ++++++++++++++++++++++++++++++++++++++++++++++++      ORDER SUMMARY    ++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+        </div>
+        <div class="col-span-1 bg-white lg:block hidden">
+            <h1 class="py-6 border-b-2 text-xl text-gray-600 px-8">Order Summary</h1>
+           
+
+            <div style="height: 300px; overflow-y: auto;">
+                <ul class="py-6 border-b space-y-6 px-8">
+                    <!-- Your list items go here -->    
+                    <% let subtotal= 0 %>
+                    <% cartData.products.forEach((prod)=> { %>
+                        <% const product=productdetails.find(item=> item._id.equals(prod.product)); %>
+                    <li class="grid grid-cols-6 gap-2 border-b-1">
+                            <div class="col-span-1 self-center">
+                                <img src="<%=product .product_img_url[0]%>" alt="Product" class="rounded w-full">
+                            </div>
+                            <div class="flex flex-col col-span-3 pt-2">
+                                <span class="text-gray-600 text-md font-semi-bold"><%= product.product_name%></span>
+                                <span class="text-gray-400 text-sm inline-block pt-2"><%= product.product_brand%></span>
+                            </div>
+                            <div class="col-span-2 pt-3">
+                                <div class="flex items-center space-x-2 text-sm justify-between">
+                                    <span class="text-gray-400"><%= prod.quantity%>  </span>
+                                    <span class="text-gray-900 font-semibold inline-block"> <%= prod.quantity * product.product_price%></span>
+                                </div>
+                            </div>
+                    </li>
+                    <% subtotal = subtotal + (product.product_price * prod.quantity) %> 
+                    <% }) %>
+
+                </ul>
+            </div>
+            
+            
+            <div class="px-8 border-b">
+                <div class="flex justify-between py-4 text-gray-600">
+                    <span>Subtotal</span>
+                    <span class="font-semibold text-gray-900"><%=subtotal%></span>
+                </div>
+                <div class="flex justify-between py-4 text-gray-600">
+                    <span>Shipping</span>
+                    <span class="font-semibold text-gray-900"> - $10.00</span>
+                </div>
+            </div>
+            <div class="font-bold text-xl px-8 flex justify-between py-8 text-gray-600">
+                <span>Total :-</span>
+                <span id="subtotalValue" data-order-id="<%=cartData._id%>" dsts-price-subtotal="<%=subtotal%>">$ <%=subtotal + 10%></span>
+            </div>
+        </div>
+    </div>
+
+ <!-- ++++++++++++++++++++++++++++++++++++++++++++++++     END ORDER SUMMARY   ++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+    <%- include("../partials/footer.ejs") %>
+
+
+    <script>
+         
+       function checkoutPost(event){
+
+console.log("ha");
+const subtotalValue = document.getElementById('subtotalValue');
+const subtotalAttributeValue = subtotalValue.getAttribute('dsts-price-subtotal');
+const ordId = subtotalValue.getAttribute('data-order-id');
+
+          fetch("/orderPost",{
+            method : "POST",
+            headers:{
+                'Content-Type' : 'application/json' ,
+            },
+            body:JSON.stringify({subtotalAttributeValue,ordId})
+          }).then(res=>res.json())
+          .then((data)=>{
+            console.log("success");
+          }).catch((errror)=>{
+            console.log(errror);
+          })
+       }
+    </script>
+
+</body>
+</html>

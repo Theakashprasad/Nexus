@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="/dist/output.css"> -->
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"> -->
+
+    <style>
+      #summary {
+        background-color: #f6f6f6;
+      }
+    </style>
+  </head>
+  <%- include('../partials/navbar.ejs') %>
+
+  <body class="bg-gray-100">
+    <div class="container mx-auto mt-10">
+      <div class="flex shadow-md my-10">
+        <% if (!checkUser ) { %>
+          <div class=" w-full flex justify-center">
+            <div class="  w-72 inset-5  text-center" id="emptyCart">
+             <p class="font-bold text-4xl">EMPTY CART</p>
+             <a href="/shop" class="ml-16 flex underline font-semibold text-indigo-600 text-sm mt-10">
+               <svg class="fill-current mr-2 text-indigo-600 w-4" viewBox="0 0 448 512"><path d="M134.059 296H436c6.627 0 12-5.373 12-12v-56c0-6.627-5.373-12-12-12H134.059v-46.059c0-21.382-25.851-32.09-40.971-16.971L7.029 239.029c-9.373 9.373-9.373 24.569 0 33.941l86.059 86.059c15.119 15.119 40.971 4.411 40.971-16.971V296z"/></svg>
+               Continue Shopping
+             </a>
+             
+            </div>
+          </div>
+
+       <% } else{ %>
+          
+        <div class="w-3/4 bg-white px-10 py-10">
+
+         
+
+          <div class="flex justify-between border-b pb-8">
+            <h1 class="font-semibold text-2xl">Shopping Cart</h1>
+            <h2 class="font-semibold text-2xl">Iteams</h2>
+          </div>
+          <div class="flex mt-10 mb-5">
+            <h3 class="font-semibold text-gray-600 text-xs uppercase w-2/5">Product Details</h3>
+            <h3 class="font-semibold  text-gray-600 text-xs uppercase w-1/6 text-center">Quantity</h3>
+            <h3 class="font-semibold  text-gray-600 text-xs uppercase w-1/5 pl-20 text-center">Price</h3>
+            <h3 class="font-semibold  text-gray-600 text-xs uppercase w-1/5 text-center">Total</h3>
+          </div>
+          <% let subtotal= 0 %>
+          <% let totalIteams = 0 %>
+          <% if (checkUser && checkUser.products && checkUser.products.length > 0) { %>
+
+          <% checkUser.products.forEach((prod)=> { %> 
+          <% const product=productdetails.find(item=> item._id.equals(prod.product)); %>
+            
+          <div class="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5">
+            <div class="flex w-2/5"> <!-- product -->
+              <div class="w-20">
+                <img class="h-24" src="<%=product .product_img_url[0]%>" alt="">
+              </div>
+              <div class="flex flex-col justify-between ml-4 flex-grow">
+                <span class="font-bold text-sm"><%= product.product_name%></span> 
+                <span class="text-red-500 text-xs"><%= product.product_category%></span>
+                <a href="removeCart/<%= product._id%>" class=" font-semibold hover:text-red-500 text-gray-500 text-xs">Remove</a>
+              </div>
+            </div>
+          
+              <!-- plus mins -->
+            <div class="w-60 h-10 text-sm bg-light py-2 flex items-center justify-center space-x-7 rounded-lg font-bold relatives ">
+              <!-- plus -->
+              <div class="minus plus-minus" data-item-qnt="<%=product.product_qty%>"  data-item-id="<%=product._id%>" data-item-price="<%= product.product_price%>">
+                <svg width="12" height="4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                  <defs>
+                    <path d="M11.357 3.332A.641.641 0 0 0 12 2.69V.643A.641.641 0 0 0 11.357 0H.643A.641.641 0 0 0 0 .643v2.046c0 .357.287.643.643.643h10.714Z" id="a" />
+                  </defs>
+                  <use fill="#FF7E1B" fill-rule="nonzero" xlink:href="#a" />
+                </svg>
+              </div>
+                  <!-- quantity -->
+              <input class="quantity mx-2 border text-center w-8" type="text" value="<%= prod.quantity%>">
+                  <!-- minus -->
+                  <div class="plus plus-minus"  data-item-qnt="<%=product.product_qty%>" data-item-id="<%=product._id%>" data-item-price="<%= product.product_price%>">
+                    <svg width="12" height="12" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="plus">
+                        <defs>
+                            <path d="M12 7.023V4.977a.641.641 0 0 0-.643-.643h-3.69V.643A.641.641 0 0 0 7.022 0H4.977a.641.641 0 0 0-.643.643v3.69H.643A.641.641 0 0 0 0 4.978v2.046c0 .356.287.643.643.643h3.69v3.691c0 .356.288.643.644.643h2.046a.641.641 0 0 0 .643-.643v-3.69h3.691A.641.641 0 0 0 12 7.022Z" id="b" />
+                        </defs>
+                        <use fill="#FF7E1B" fill-rule="nonzero" xlink:href="#b" id="plus" />
+                    </svg>
+                </div>
+              
+            </div>
+            <p class="stock"></p>
+            <!-- end -->
+            <span class="text-center w-1/5 font-semibold text-sm"><%= product.product_price%></span>
+            <span class="productTotalPrice text-center w-1/5 font-semibold text-sm"><%= product.product_price * prod.quantity %></span>
+          </div>
+          <% totalIteams = checkUser.products.length %>
+          <% subtotal = subtotal + (product.product_price * prod.quantity) %> 
+              <% }) %>
+              <% } %>
+
+          <a href="/shop" class="flex font-semibold text-indigo-600 text-sm mt-10">
+            <svg class="fill-current mr-2 text-indigo-600 w-4" viewBox="0 0 448 512"><path d="M134.059 296H436c6.627 0 12-5.373 12-12v-56c0-6.627-5.373-12-12-12H134.059v-46.059c0-21.382-25.851-32.09-40.971-16.971L7.029 239.029c-9.373 9.373-9.373 24.569 0 33.941l86.059 86.059c15.119 15.119 40.971 4.411 40.971-16.971V296z"/></svg>
+            Continue Shopping
+          </a>
+
+        </div>
+  
+        <div id="summary" class="w-1/4 px-8 py-10">
+          <h1 class="font-semibold text-2xl border-b pb-8">Order Summary</h1>
+          <div class="flex justify-between mt-10 mb-5">
+            <span class="font-semibold text-sm uppercase">Items <%= totalIteams %> </span>
+          </div>
+          <div class="flex justify-between py-4">
+            <span>SUB TOTAL  </span>
+            <span>$ <%= subtotal %></span>
+          </div>
+          <div>
+            <label class="font-medium inline-block mb-3 text-sm uppercase">Shipping</label>
+            <select class="block p-2 text-gray-600 w-full text-sm">
+              <option>Standard shipping - $10.00</option>
+            </select>
+          </div>
+          <!-- <div class="py-10">
+            <label for="promo" class="font-semibold inline-block mb-3 text-sm uppercase">Promo Code</label>
+            <input type="text" id="promo" placeholder="Enter your code" class="p-2 text-sm w-full">
+          </div> -->
+            <!-- <button class="bg-red-500 hover:bg-red-600 px-5 py-2 text-sm text-white uppercase">Apply</button> -->
+          
+            <div class="border-t mt-8">
+            <div class="flex font-semibold justify-between py-6 text-sm uppercase">
+              <span>Total cost</span>
+              <span id="total">$ <%= subtotal + 10 %> </span>
+            </div>
+            <a href="/checkout">
+              <button class="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
+            </a>
+          </div>
+        </div>
+        <%   }  %>
+      </div>
+    </div>
+    <%- include("../partials/footer.ejs") %>
+
+    <script>
+      let pluses = document.querySelectorAll(".plus");
+      let minus = document.querySelectorAll(".minus");
+      let quantity = document.querySelectorAll(".quantity");
+      let productTotalPrice = document.querySelectorAll(".productTotalPrice");
+      let total = document.getElementById("total");
+      const stock = document.querySelectorAll(".stock")
+
+  
+      pluses.forEach((value,i) => {
+
+          value.addEventListener("click", function () {
+            //  console.log(quantity[i].value);
+             quantity[i].value =  parseInt(quantity[i].value)+1
+              productTotalPrice[i].innerHTML = this.dataset.itemPrice * parseInt(quantity[i].value)
+              total.innerHTML = "$"+( parseInt(total.innerHTML.substring(1)) + parseInt(this.dataset.itemPrice))
+              
+              const productId = this.dataset.itemId
+              const productQnt = this.dataset.itemQnt
+              console.log(this.dataset);
+              const qnt = quantity[i].value
+              console.log(qnt)
+                  if (qnt == productQnt) {
+                    stock[i].innerText ="OUT OF STOCK"
+                  }else{
+                    stock[i].innerText =""
+                  }
+
+              fetch("/updateCart",{
+                method: 'POST',
+                headers: {
+                  'Content-Type' : 'application/json' ,
+                },
+               body: JSON.stringify({productId:productId,qnt:qnt}),
+              }).then(response => response.json())
+                .then(data=>{
+                  console.log("sucess");
+                }).catch((error)=>{
+                  console.log(error);
+                })
+          });
+
+          minus[i].addEventListener("click", function () {
+            if(parseInt(quantity[i].value) >= 0){
+              quantity[i].value = parseInt(quantity[i].value) === 0 ? 0 : parseInt(quantity[i].value) - 1;
+            productTotalPrice[i].innerHTML =parseInt(productTotalPrice[i].innerHTML - parseInt(this.dataset.itemPrice))
+           
+            total.innerHTML = "$"+( parseInt(total.innerHTML.substring(1)) - parseInt(this.dataset.itemPrice))
+            
+            const productId = this.dataset.itemId
+            const qnt =quantity[i].value ;
+            if (quantity[i].value <=0) {
+              window.location.href = `/removeCart/${productId}`
+            }else{
+
+              fetch("/updateCart",{
+                method : "POST",
+                headers : {
+                  'Content-Type' : 'application/json' ,
+                },
+                body : JSON.stringify({productId:productId,qnt:qnt})
+              }).then(response => response.json())
+                .then(data=>{
+                  console.log("succes");
+                }).catch((error)=>{
+                  console.log(error);
+                })
+            }
+            }
+        
+          });          
+      });
+
+
+  </script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.5/lottie.min.js"></script>
+ <script>
+   bodymovin.loadAnimation({
+     container: document.getElementById('emptyCart'),
+     path:'/json/cart.json',
+   });
+ </script>
+
+      
+    </script>
+  </body>
+</html>

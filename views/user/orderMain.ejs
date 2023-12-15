@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/dist/output.css">
+</head>
+<body>
+  <%- include('../partials/navbar.ejs') %>
+    <div class="shadow-lg rounded-lg  py-11">
+        <table class="w-full table-fixed">
+          <thead>
+            <tr class="bg-gray-200">
+              <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">Order ID</th>
+              <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">Iteams</th>
+              <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">Total Amount</th>
+              <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">Payment Mode</th>
+              <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">Status</th>
+              <th class="w-14 py-4 text-left text-gray-600 font-bold uppercase"></th>
+     
+     
+            </tr>
+          </thead>
+          <tbody class="bg-white">
+            <% orderDetails.forEach((pro)=>{ %>
+             <% const address=addressData.find(item=> item._id.equals(pro.shippingAddress)); %>
+     
+     
+            <tr>
+               <td class="py-4 px-6 border-b border-gray-200"><%= pro._id %></td>
+              <td class="py-4 px-6 border-b border-gray-200">
+                 <% pro.products.forEach(prd=>{ %>
+                  <% let product = productData.find(item=> item._id.equals(prd.product)) %>
+                  <%= product.product_name %> <br>
+                     <%  })  %>
+     
+              </td>
+              <td class="py-4 px-6 border-b border-gray-200"><%= pro.totalAmount %></td>
+              <td class="py-4 px-6 border-b border-gray-200"><%= pro.paymentMethod %></td>
+              <td class="py-4 px-6 border-b border-gray-200"><%= pro.Status %></td>
+              <td><a href="/order/<%= pro._id %>" class="bg-blue-500 rounded text-white px-1 py-1">VIEW</a></td>
+            </tr>
+              <%  })  %>
+     
+          </tbody>
+        </table>
+      </div>
+      <%- include("../partials/footer.ejs") %>
+      
+</body>
+</html>

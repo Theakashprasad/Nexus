@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/dist/output.css">
+    
+    <title>User Page</title>
+</head>
+<style>
+    body{
+      position: relative;
+  }
+  
+  /* user side image previewer */
+  
+  #imagePreview img{
+      height: 50px;
+      max-width: 80px;
+  }
+  
+  #cropper110Modal{
+      position: absolute;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(53, 52, 52, 0.532);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      display: none;
+  }
+  
+  #cropper110Modal img {
+      max-width: 100%;
+  }
+  
+  .cropper110-page {
+      margin: 1em auto;
+      max-width: 768px;
+      height: 100%;
+  }
+  
+  .cropper110-box {
+      padding: 0.5em;
+      width: calc(100%/2 - 1em);
+      max-height: 60vh;
+  }
+  
+  
+  
+  .cropper110-crop , .cropper110-close {
+      padding: .5rem 1rem;
+      background-color: rgb(0,0,0);
+      color: #fff;
+      font-weight: bold;
+  }
+  
+  .cropper110-close{
+      background-color: red;
+  }
+  
+  
+  
+  
+  
+  
+  </style>
+<body class="bg-gray-100 w-screen overflow-x-hidden">
+
+    <%- include("../partials/navbar.ejs") %>
+
+<div id="mainPage">
+<div class=" text-end pr-11 pt-11">
+    <div class="relative inline-block ">
+        <button id="dropdownButton" type="button" class="inline-flex items-center justify-center w-full py-7 text-sm font-medium  border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300 transition duration-150 ease-in-out">
+            <svg xmlns="http://www.w3.org/2000/svg" height="32" width="28" viewBox="0 0 448 512"><path opacity="1" fill="#1E3050" d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg>        </button>
+    
+        <div id="dropdownMenu" class="hidden absolute text-start right-0 mt-2 space-y-2 bg-white border border-gray-300 rounded-md shadow-lg">
+            <button id="editButton" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"> EDIT </button>
+            <a href="/address" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">ADDRESS</a>
+            <a href="/orderMain" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">ORDERS </a>
+            <a href="/login" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">LOGIN </a>
+            <a href="/logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">LOGOUT </a>
+         <% if(userDetails){ %>
+            dshd
+         <%   }else{   %>
+            kdjfskjf
+          <%  }  %>
+        </div>
+    </div>
+</div>
+
+    <div class="container mx-auto p-8 ">
+        <!-- Profile Section -->
+        <div class="flex flex-col items-center mb-8">
+            <img src="upload/<%= userDetails.user_img_url %>" alt="ADD PICTURE" class="rounded-full h-16 w-16 mb-4">
+            <div class=" text-center ">
+                <h1 class="text-2xl font-bold"><%=userDetails.name%></h1>
+            </div>
+            <!-- <a href="#" class="bg-blue-500 text-white px-4 py-2 rounded-full mt-2">Edit Profile</a> -->
+        </div>
+        
+
+        <!-- User Information -->
+        <div class="bg-white p-8 rounded-lg shadow-md mb-8">
+            <h2 class="text-xl pb-7 underline font-semibold">User Information</h2>
+            <div class="grid grid-cols-4">
+                <div>
+                    <label class="text-gray-900">Email:</label>
+                    <p class="text-gray-400"><%=userDetails.email%></p>
+                </div>
+                <div>
+                    <label class="text-gray-900">Phone:</label>
+                    <p class="text-gray-400"><%=userDetails.phone%></p>
+                </div>
+                <div>
+                    <label class="text-gray-900">Gender</label>
+                    <p class="text-gray-400"><%=userDetails.gender %></p>
+                </div> 
+                <div>
+                    <a href="/changePassword" id="changeBtn" class="text-red-400 font-semibold   shadow-lg" >Change password</a>
+                </div> 
+            </div>
+        </div>
+
+
+        <!-- Content Card -->
+        <div class="rounded-md w-1/2">
+            <form id="payment-form" method="POST" action="">
+                <section>
+                    <h2 class="uppercase tracking-wide text-lg font-semibold text-gray-700 my-2">ADDRESS</h2>
+                    <fieldset class="mb-3 bg-white shadow-lg rounded text-gray-600">
+                        <label class="flex border-b border-gray-200 h-12 py-3 items-center">
+                            <span class="text-right px-2">Name</span>
+                            <p class="ml-4"><%= addressDetails.full_name %></p>
+                            <p class="ml-4"></p>
+                        </label>
+                      
+                        <label class="flex border-b border-gray-200 h-12 py-3 items-center">
+                            <span class="text-right px-2">Address</span>
+                            <p class="ml-4"><%= addressDetails.address %></p>
+                            <p class="ml-4"></p>
+                        </label>
+                        <label class="flex border-b border-gray-200 h-12 py-3 items-center">
+                            <span class="text-right px-2">Phone</span>
+                            <p class="ml-4"><%= addressDetails.phone %></p>
+                            <p class="ml-4"></p>
+                        </label>
+                        <label class="flex border-b border-gray-200 h-12 py-3 items-center">
+                            <span class="text-right px-2">City</span>
+                            <p class="ml-4"><%= addressDetails.city %></p>
+                            <p class="ml-4"></p>
+                        </label>
+                        <label class="inline-flex w-2/4 border-gray-200 py-3">
+                            <span class="text-right px-2">State</span>
+                            <p class="ml-4"> <%= addressDetails.state %></p>
+                            <p class="ml-4"></p>
+                        </label>
+                        <label class="xl:w-1/4 xl:inline-flex  items-center flex xl:border-none border-t border-gray-200 py-3">
+                            <span class="text-right px-2 xl:px-0 xl:text-none">ZIP</span>
+                            <p class="ml-4"><%= addressDetails.zipcode %></p>
+                            <p class="ml-4"></p>
+                        </label>
+                        <label class="flex border-t border-gray-200 h-12 py-3 items-center select relative">
+                            <span class="text-right px-2">Country</span>
+                            <p class="ml-4"><%= addressDetails.country %></p>
+                            <p class="ml-4"></p>
+                        </label>
+                    </fieldset>
+                </section>
+            </form>
+    </div>
+
+    </div>
+</div>
+
+
+       <!-- EDIT -->
+       <div id="editMenu" class="flex hidden items-center h-screen w-screen justify-center">
+        <div class="w-3/5"> <!-- Increased height to 'auto' -->
+            <div class="bg-white shadow-xl rounded-lg py-3">
+                <div class="photo-wrapper p-2"> 
+                    <img class="w-32 h-32 rounded-full mx-auto" src="upload/<%= userDetails.user_img_url %>" alt="John Doe">
+                </div>
+                <form action="/editUser" method="post" onsubmit="return v()" enctype="multipart/form-data">
+                    <input class="pl-6" type="file" name="image">
+                    <div class="p-4 ">             
+                    <table class="text-xl my-3 ">
+                        <tbody>
+                            <tr>
+                                <td class="px-2 py-2 text-gray-500 font-semibold">Name</td>
+                                <td class="px-2 py-2"><input id="name" oninput="nameValidation()" name="name" type="text" value="<%= userDetails.name %>"></td>
+                            </tr>  
+                            <tr>
+                                <td><p id="nameError" class="text-red-950 text-xs"></p></td> 
+                            </tr>  
+                            <tr>
+                                <td class="px-2 py-2 text-gray-500 font-semibold">Phone</td>
+                                <td class="px-2 py-2"><input id="number" oninput="numberValidation()" name="phone" type="number"value="<%= userDetails.phone %>"></td>
+                            </tr>
+                            <tr>
+                                <td><p id="numberError" class="text-red-950 text-xs"></p></td> 
+                            </tr>   
+                             <tr>
+                                <td class="px-2 py-2 text-gray-500 font-semibold">Gender</td>
+                                <td class="px-2 py-2"><input name="gender" id="gender" oninput="genderValidation()"  type="text" value="<%= userDetails.gender %>" placeholder="male/female"></td>
+                            </tr>
+                            <tr>
+                                <td><p id="genderError" class="text-red-950 text-xs"></p></td> 
+                            </tr>
+                           
+                        </tbody>
+                    </table>
+                </div>
+                <button type="submit">
+                    <p class="bg-blue-400 ml-6 text-white font-bold py-2 px-4 rounded inline-block">
+                        SAVE
+                    </p>
+                </button>
+            </form>
+            <div id="cropper110Modal">
+                <div id="imageCropBox">
+                    <div style="text-align: end;">
+                        <button class="cropper110-close">close</button>
+                    </div>
+                    <section class="cropper110-page">
+                        <div class="cropper110-box">
+                            <div class="cropper110-cropping-box"></div>
+                        </div>
+          
+                        <div>
+                            <button class="cropper110-crop mx-3">Crop</button>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/cropperjs/0.8.1/cropper.min.js'></script>
+ 
+    <%- include("../partials/footer.ejs") %>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var button = document.getElementById('dropdownButton');
+            var menu = document.getElementById('dropdownMenu');
+    
+            button.addEventListener('click', function () {
+                menu.classList.toggle('hidden');
+            });
+    
+            // Close the dropdown when clicking outside of it
+            document.addEventListener('click', function (event) {
+                if (!menu.contains(event.target) && !button.contains(event.target)) {
+                    menu.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+
+<script>
+    const b = document.getElementById("editButton")
+    b.addEventListener("click",()=>{
+        console.log("s");
+        const editMenu = document.getElementById("editMenu")
+        const mainPage = document.getElementById("mainPage")
+        editMenu.classList.remove('hidden');
+        mainPage.classList.add('hidden');
+    })
+</script>
+
+<script>
+
+function v(){
+    return nameValidation(),numberValidation(),genderValidation()
+}
+
+ function nameValidation() {
+    console.log("hai");
+    const name = document.getElementById("name").value.trim();
+    const nameError = document.getElementById("nameError");
+
+    if (name === '' ) {
+        nameError.innerText = "Can not add space";
+        return false; // Indicate validation failure
+    } else if(name.length < 5 ){
+        nameError.innerText = "name should atleast above 5";
+        return false; // Indicate validation failure
+    }
+    else {
+        nameError.innerText = ""; // Clear error message
+        return true; // Indicate validation success
+    }
+}
+
+
+function numberValidation(){
+    const number = document.getElementById("number").value;
+    const numberError = document.getElementById("numberError");
+    if (number.length>10) {
+        numberError.innerText = "number should not exceed 10";
+    }else{
+        numberError.innerText = "";
+    }
+}
+
+function genderValidation() {
+    console.log("hai");
+    const name = document.getElementById("gender").value.trim();
+    const nameError = document.getElementById("genderError");
+
+    if (name === '' ) {
+        genderError.innerText = "Can not add space";
+        return false; // Indicate validation failure
+}else{
+        genderError.innerText = "";
+    }
+}
+</script>
+
+<script>
+    let fileInputs = document.querySelectorAll('[data-image-preview]')
+  
+  
+  let croppingBox = document.querySelector('.cropper110-cropping-box'),
+      crop = document.querySelector('.cropper110-crop'),
+      cropper = '',
+      currentInput = null,
+      imgNames = null,
+      imgSrc = null;
+  
+  fileInputs.forEach(fileInput => {
+      fileInput.addEventListener('change', () => {
+          let previewDiv = document.querySelector(fileInput.dataset.imagePreview)
+          previewDiv.innerHTML = ""
+          for (let each of fileInput.files) {
+              let imgSrc = URL.createObjectURL(each)
+              let img = document.createElement('img')
+              img.src = imgSrc
+              img.dataset.fileName = each.name
+              console.log(fileInput.id, 'file inut id')
+              img.dataset.input = fileInput.id
+              img.addEventListener('click', cropImage)
+  
+              previewDiv.append(img)
+  
+          }
+      })
+  })
+  
+  
+  function cropImage(e) {
+      
+      document.getElementById('cropper110Modal').style.display = 'flex'
+  
+      let img = document.createElement('img');
+      img.id = 'image';
+      img.src = e.target.src;
+      croppingBox.innerHTML = '';
+      croppingBox.appendChild(img);
+      cropper = new Cropper(img);
+  
+      imgNames = e.target.dataset.fileName
+      currentInput = e.target.dataset.input
+  
+  }
+  
+  
+  
+  //crop and save on click
+  crop.addEventListener('click', e => {
+      e.preventDefault();
+      // get result to data uri
+  
+      let imgSrc = cropper.getCroppedCanvas({
+          width: 300 // input value
+      }).toDataURL();
+  
+      if (imgSrc && imgNames !== null) {
+          let fileUploader = document.getElementById(currentInput)
+          fetch(imgSrc)
+              .then(res => res.blob())
+              .then(blob => {
+                  console.log(imgNames)
+                  let file = new File([blob], ${imgNames}-${Date.now()}.png, { type: "image/jpeg" })
+  
+                  const dt = new DataTransfer()
+                  for (let each of fileUploader.files) {
+                      if (each.name !== imgNames) {
+                          dt.items.add(each)
+                      } else {
+                          dt.items.add(file)
+                      }
+                  }
+  
+  
+                  fileUploader.files = dt.files
+  
+                  console.log(fileUploader.files)
+  
+                  let previewDiv = document.querySelector(fileUploader.dataset.imagePreview)
+                  previewDiv.innerHTML = ""
+                  let res = ""
+  
+                  for (let each of fileUploader.files) {
+                      let src = URL.createObjectURL(each)
+                      res += <img src="${src}" data-file-name="${each.name}" data-input="${fileUploader.id}" onclick="cropImage(event)" class="previewImages">
+                  }
+  
+                  previewDiv.innerHTML = res
+  
+  
+              })
+      }
+  
+      document.querySelector('.cropper110-close').click()
+  });
+  
+  document.querySelector('.cropper110-close')
+      .addEventListener('click', () => {
+          document.getElementById('cropper110Modal').style.display = 'none'
+      })
+  
+  </script>
+
+</body>
+</html>

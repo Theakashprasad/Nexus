@@ -1,0 +1,24 @@
+<div class="container mx-auto mt-10">
+    <div class="flex shadow-md my-10">
+      <% if (checkUser && checkUser.products && checkUser.products.length > 0) { %>
+        <% let totalItems = 0 %>
+        <% checkUser.products.forEach((prod) => { %>
+          <% const product = productdetails.find(item => item._id.equals(prod.product)); %>
+          <!-- Rest of your code for each product -->
+          <div class="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5">
+            <!-- Render details for each product -->
+          </div>
+          <% totalItems += 1; %>
+        <% }); %>
+        <!-- Render the total items or any other content based on the loop -->
+        <p>Total Items: <%= totalItems %></p>
+      <% } else { %>
+        <div class="w-full flex justify-center">
+          <div class="w-72 inset-5 text-center" id="emptyCart">
+            <p class="font-bold text-4xl">EMPTY CART</p>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  </div>
+  
