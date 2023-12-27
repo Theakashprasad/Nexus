@@ -21,9 +21,28 @@ const checkout = async (req, res) => {
     const addressId = userDetails.addressId; // userDb ->  addressID
     const addressData = await addressDB.findById(addressId);
     addressDetails = addressData ?? "";
-    const cartData = await cartDB.findOne({ user: userId });
+    const a = await cartDB.aggregate([
+      {
+         $match : {user : userId}
+      },
+      {
+        $unwind : '$products'
+      },{
+        $lookup : 
+        {
+          from : 'products',
+          localField : 'products.product',
+          foreignField : '_id',
+          as:'cartProduct'
+        }
+      }
+    ])
+    cartData = a ?? ''
+        console.log(JSON.stringify(cartData,null,2));
+
+    // console.log(JSON.stringify(cartData,null,3));
     const productdetails = await productDB.find();
-    res.render("user/checkout.ejs", {
+    res.render("user/checkout.ejs", { 
       addressDetails,
       cartData,
       productdetails,
@@ -37,7 +56,7 @@ const checkout = async (req, res) => {
 
 const checkoutPost = (req, res) => {};
 
-const checkoutComplete = (req,res)=>{
+const checkoutComplete = (req,res)=>{     
   
   res.render("user/checkoutComplete")
 }

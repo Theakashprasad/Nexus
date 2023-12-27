@@ -22,21 +22,13 @@
   </style>
 </head>
 
-<body class="bg-gray-100 mt-64">
+<body class="bg-gray-100 mt-10  ">
   <div class="container mx-auto p-6">
     <h1 class="text-2xl font-semibold mb-4">EDIT CATAGORY</h1>
     
     <form class="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4" action="/admin/editCatagoryPost/<%= user._id %>"
       method="post" enctype="multipart/form-data">
 
-            <!-- Category Image -->
-       <div class="mb-4">
-        <label for="productImage" class="block text-gray-700 text-sm font-bold mb-2">Category Image</label>
-        <input type="file" id="categoryImage" name="image" placeholder="" 
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          accept="image/*">
-          <img src="/upload/<%= user.category_img_url.substring(8) %>" alt="">
-      </div>
 
       <!-- Category Name -->
       <div class="mb-4">
@@ -66,6 +58,14 @@
           Add Category
         </button>
       </div>
+                 <!-- Category Image -->
+                  <div class="mb-4">
+                    <label for="productImage" class="block text-gray-700 text-sm font-bold mb-2">Category Image</label>
+                    <input type="file" id="categoryImage" name="image" placeholder="" 
+                      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      accept="image/*">
+                  </div>
+            
     </form>
   </div>
 </body>

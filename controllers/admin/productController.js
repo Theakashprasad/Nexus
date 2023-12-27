@@ -5,8 +5,9 @@ const productDB = require("../../models/admin/productModel");
 const product = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
-    const limit = 5;
+    const limit = 4;
     const startIndex = (page - 1) * limit;
+
     const totalProducts = await productDB.countDocuments();
 
     const maxPage = Math.ceil(totalProducts / limit);
@@ -14,13 +15,10 @@ const product = async (req, res) => {
       return res.redirect(`/product?page=${maxPage}`);
     }
 
-
-
-    const data = await productDB.find({ blocked: false }) .limit(limit)
+    const data = await productDB.find() .limit(limit)
     .skip(startIndex)
     .exec();//fetching data form DB which are only blocked === false
-    res.render("admin/product", { data,  page,
-      maxPage, });
+    res.render("admin/product", { data,  page,maxPage, });
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
@@ -43,14 +41,14 @@ const addProductPost = async (req, res) => {
     const imagePaths = req.files.map((file) => {
       return file.path.substring(6);
     });
-    const { productName, description, category, price, quantity, brand } =
+    const { productName, description, category, price, quantity1,quantity2,quantity3,quantity4, brand } =
       req.body;
-    const data = new productDB({
+    const data = new productDB({ 
       product_name: productName,
       product_description: description,
       product_category: category,
       product_price: price,
-      product_qty: quantity,
+      size: [quantity1,quantity2,quantity3,quantity4],
       product_brand: brand,
       product_img_url: imagePaths,
     });
@@ -87,7 +85,7 @@ const editProductPost = async (req, res) => {
       image = req.file.path.substring(6);
     }
     // console.log(image);
-    const { productName, description, category, price, quantity, brand } =
+    const { productName, description, category, price,quantity1,quantity2,quantity3,quantity4, brand } =
       req.body;
     const user = await productDB.findByIdAndUpdate(
       userId,
@@ -97,7 +95,7 @@ const editProductPost = async (req, res) => {
           description == "" ? data.product_description : description,
         product_category: category == "" ? data.product_category : category,
         product_price: price == "" ? data.product_price : price,
-        product_qty: quantity == "" ? data.product_qty : quantity,
+        size : [quantity1==''?  data.size[0] : quantity1 , quantity2==''?  data.size[1] : quantity2 , quantity3==''?  data.size[2] : quantity3 , quantity4==''?  data.size[3] : quantity4 ],
         product_brand: brand == "" ? data.product_brand : brand,
         product_img_url: image == "" ? data.product_img_url : image,
       },
@@ -113,11 +111,14 @@ const editProductPost = async (req, res) => {
 const deleteProduct = async (req, res) => {
   try {
     const userId = req.params.userId;
+    let { blocked } = req.body;
+    blocked = JSON.parse(blocked);
+    console.log(blocked);
     const deletete = await productDB.updateOne(
       { _id: userId },
-      { blocked: true }
+      { blocked: !blocked }
     ); //updates blocked false to true
-    res.redirect("/admin/product");
+    res.json({ success: true });
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");

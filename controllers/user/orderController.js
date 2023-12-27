@@ -3,19 +3,38 @@ const cartDB = require("../../models/user/cartModel");
 const productDB = require("../../models/admin/productModel");
 const addressDb = require("../../models/user/addressModel");
 const userDB = require("../../models/user/usermodel");
+const {ObjectId} = require('mongodb')
 
 const orderMain = async(req,res)=>{
 
-  const userId = req.session.user._id;
-  const orderDetails = await orderDB.find({user:userId});
-  const addressData = await addressDb.find();
-  const productData = await productDB.find();
+  // const page = parseInt(req.query.page) || 1;
+  // const limit = 4;
+  // const startIndex = (page - 1) * limit;
+  // const totalProducts = await orderDB.countDocuments();
+  // const maxPage = Math.ceil(totalProducts / limit);
+  // if (page > maxPage) {
+  //   return res.redirect(`/product?page=${maxPage}`);
+  // }
 
-    res.render("user/orderMain.ejs", {orderDetails,addressData,productData})
+  try {
+    const userId = req.session.user._id;
+  
+      const a = await orderDB.find({user:userId})
+  let orderDetails = a.reverse(); 
+    // console.log(JSON.stringify(orderDetails,null,2));
+    const addressData = await addressDb.find() 
+    const productData = await productDB.find()
 
+    res.render("user/orderMain.ejs", {orderDetails,addressData,productData })
+
+  }  catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+  
 }
 
-const order = async (req, res) => {
+const order = async (req, res) => {   
   try {
     
     const userId = req.session.user._id;
@@ -54,9 +73,22 @@ const orderPost = async (req, res) => {
       products: cartData.products,
       totalAmount: totalAmount,
       shippingAddress: addressId.addressId,
-      paymentMethod: "COD",
+      paymentMethod: "COD", 
     });
     await orderCreate.save();
+    const products = await productDB.find();
+    orderCreate.products.forEach((pro,i)=>{
+        let product = products.find(item=>item._id.equals(pro.product))
+        const a =product.size
+        const b = pro.size
+        let c = []
+        for (let i = 0; i < a.length; i++) {
+          c.push(a[i]-b[i])
+        }
+        console.log( c); 
+          product.size = c
+          product.save();
+    })
    await cartDB.findByIdAndDelete(ordId)
 
 
@@ -71,13 +103,10 @@ const orderCancel = async (req, res) => {
     
     const proId = req.body.proId;
     const ordId = req.body.ordId
-    const ordData = await orderDB.findById(ordId);
-
-    const a = ordData.products.filter((value) => {
-      return value.product == proId;
+    const ordData = await orderDB.findByIdAndUpdate(ordId,{
+      Status:'CANCEL'
     });
-    a[0].Status= 'CANCEL'
-    ordData.save();
+
     res.json({ success: true });
    
 

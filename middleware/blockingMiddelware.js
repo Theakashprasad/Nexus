@@ -6,11 +6,12 @@ const blockingmiddleware = async (req, res, next) => {
     const id = user._id
 const data = await userDB.findById(id)
 if(data.blocked){
-  req.session.destroy() ; 
+  // req.session.destroy() ; 
+  req.session.user=null;
   res.redirect("/login"); 
 }else{
   next();
-}
+} 
 } 
 else {
     next()

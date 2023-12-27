@@ -8,7 +8,7 @@ const path = require("path");
 //display catagory
 const catagory = async (req, res) => {
   try {
-    const data = await catagoryDB.find({ blocked: false }); //fetching data form DB which are only blocked === false
+    const data = await catagoryDB.find(); //fetching data form DB which are only blocked === false
     res.render("admin/catagory", { data }); //pasing data
   } catch (error) {
     console.error(error);
@@ -96,23 +96,29 @@ const editCatagoryPost = async (req, res) => {
 const deleteCatagory = async (req, res) => {
   try {
     const userId = req.params.userId;
+    let { blocked } = req.body;
+    blocked = JSON.parse(blocked);
+    console.log(blocked);
     const deletete = await catagoryDB.updateOne(
       { _id: userId },
-      { blocked: true }
+      { blocked: !blocked }
     ); //updates blocked false to true
-    const reomveImg = await catagoryDB.find(
-      { _id: new ObjectId(userId) },
-      { _id: 0, category_img_url: 1 }
-    ); //findes img data stored in DB
-    const reomveImgId = reomveImg[0].category_img_url.substring(8); //img is in array formate its extracted
-    const filePath = path.resolve("public", "upload");
-    fs.unlinkSync(path.join(filePath, reomveImgId), (err) => {
-      //used to remove img in folder
-      if (err) {
-        console.log(err);
-      }
-    });
-    res.redirect("/admin/catagory");
+
+//  const reomveImg = await catagoryDB.find(
+//       { _id: new ObjectId(userId) },
+//       { _id: 0, category_img_url: 1 }
+//     ); //findes img data stored in DB
+//     const reomveImgId = reomveImg[0].category_img_url.substring(8); //img is in array formate its extracted
+//     const filePath = path.resolve("public", "upload");
+//     fs.unlinkSync(path.join(filePath, reomveImgId), (err) => {
+//       //used to remove img in folder
+//       if (err) {
+//         console.log(err);
+//       }
+//     });
+res.json({ success: true });
+
+    // res.redirect("/admin/catagory");
     if (!deletete) {
       return res.send("category not deletd");
     }

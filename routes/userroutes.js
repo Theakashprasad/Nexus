@@ -41,8 +41,8 @@ router.get("/product/:userId",blockingmiddleware, usercontroller.product);
 //CART
 router.get("/cart",sessionMiddleware,cartController.cart);
 router.post("/cartPost",sessionMiddleware,cartController.cartPost);
-router.post("/updateCart",cartController.updateCart);
-router.get("/removeCart/:proId",cartController.removeCart);
+router.post("/updateCart",cartController.updateCart);            
+router.post("/removeCart",cartController.removeCart); 
 
 
 //CHECKOUT

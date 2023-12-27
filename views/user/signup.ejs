@@ -24,13 +24,13 @@
 
                   <div>
                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">User name</label>
-                    <input oninput="nameValidation()" type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter the full name" required="">
+                    <input oninput="nameValidation()" type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter the full name" >
                     <p id="nameError" class="text-white text-xs"></p>
                   </div>
 
                   <div>
                     <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
-                    <input oninput="emailValidation()" type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required="">
+                    <input oninput="emailValidation()" type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" >
                     <p id="emailError" class="text-white text-xs"></p>
                   </div>
 
@@ -40,19 +40,19 @@
 
                   <div>
                     <label for="Phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone Number</label>
-                    <input oninput="numberValidation()" type="tel" name="number" id="number" placeholder="Enter phone N0: " class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="">
+                    <input oninput="numberValidation()" type="tel" name="number" id="number" placeholder="Enter phone N0: " class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
                     <p id="numberError" class="text-white text-xs"></p>
                   </div>
 
                   <div>
                     <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                    <input oninput="passwordOneValidation()" type="password" name="password" id="passwordOne" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="">
+                    <input oninput="passwordOneValidation()" type="password" name="password" id="passwordOne" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
                     <p id="passwordOneError" class="text-white text-xs"></p>
                   </div>
 
                   <div>
                     <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm Password</label>
-                    <input oninput="passwordTwoValidation()" type="password" name="confirmPassword" id="passwordTwo" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="">
+                    <input oninput="passwordTwoValidation()" type="password" name="confirmPassword" id="passwordTwo" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
                     <p id="passwordTwoError" class="text-white text-xs"></p>
                   </div>
 
@@ -63,13 +63,10 @@
 
                 </div>
       
-                <div class="flex items-center justify-between">
-                  <a href="#" class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot password?</a>
-                </div>
-      
                 <!-- error message -->
                 <p class="font-semibold text-white"><%= message%></p>
-      
+                <p id="alert" class="text-white text-xs"></p>
+
                 <button id="signUpForm" type="submit" class="w-full text-black  bg-gray-50 bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign in</button>
                 <p class="text-sm font-light text-gray-500 dark:text-gray-400">
                   already have an account ? <a href="/login" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Login</a>
@@ -85,6 +82,15 @@
       <script>
         
 function v() {
+  const email = document.getElementById("email").value;
+  const name = document.getElementById("name").value;
+  const alert = document.getElementById("alert");
+
+  if (email.trim() === "" || name.trim() === "" ) {
+            alert.innerHTML="please fill all the field"
+            return false; 
+          }
+    
     return emailValidation() && nameValidation() && passwordOneValidation() && numberValidation()
 }
         function emailValidation(){
@@ -104,11 +110,15 @@ function v() {
     function nameValidation() {
     const name = document.getElementById("name").value.trim();
     const nameError = document.getElementById("nameError");
+    const onlyLettersRegex = /^[a-zA-Z]+$/;
 
     if (name === '' ) {
         nameError.innerText = "Can not add space";
         return false; // Indicate validation failure
-    }  else if(name.length < 5 ){
+    } else if (!onlyLettersRegex.test(name)) {
+     nameError.innerText = "Name can only contain letters";
+     return false; // Indicate validation failure
+ }  else if(name.length < 5 ){
         nameError.innerText = "name should atleast above 5";
         return false; // Indicate validation failure
     }
@@ -142,20 +152,19 @@ function passwordTwoValidation() {
         passwordTwoError.innerText = "Passwords do not match!";
     }
 }
-// You might want to attach this function to some event, like an 'input' event or a 'blur' event.
-// Example with 'input' event:
 passwordTwoInput.addEventListener('input', passwordTwoValidation);
 
 function numberValidation(){
     const number = document.getElementById("number").value;
     const numberError = document.getElementById("numberError");
-    if (number.length>10) {
-        numberError.innerText = "number should not exceed 10";
-    }else{
+    const mobilePattern = /^[6-9]\d{9}$/;
+
+    if (!mobilePattern.test(number)) {
+      numberError.innerText = "Invalid mobile number. Please enter a 10-digit number.";
+      } else{
         numberError.innerText = "";
     }
 }
-
       </script>
 
 <script>

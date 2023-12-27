@@ -5,8 +5,20 @@ const userDB = require("../../models/user/usermodel");
 
 const order = async (req, res) => {
   try {
-    const orderData = await orderDB.find();
-    res.render("admin/order", { orderData });
+    const page = parseInt(req.query.page) || 1;
+    const limit = 4;
+    const startIndex = (page - 1) * limit;
+    const totalProducts = await orderDB.countDocuments();
+    const maxPage = Math.ceil(totalProducts / limit);
+    if (page > maxPage) {
+      return res.redirect(`/product?page=${maxPage}`);
+    }
+    const orderData = await orderDB.find().limit(limit)
+    .skip(startIndex)
+    .exec();
+
+    res.render("admin/order", { orderData, page, maxPage });
+    
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
@@ -21,7 +33,6 @@ const orderView = async (req, res) => {
     const addressDetails = await addressDb.findOne(a); //ad
     const userDetails = await userDB.findOne(orderDetails.user); // used to find address from the user DB
     const productIdData = orderDetails.products;
-    console.log(a );
     const productData = await productDB.find();
     res.render("admin/orderViewPage.ejs", {
       userDetails,
@@ -41,14 +52,18 @@ const orderPost = async (req, res) => {
     const statusValue = req.body.selectedValue;
     const orderId = req.body.orderId;
     const proId = req.body.proId;
-    const ordData = await orderDB.findById(orderId)
-    console.log(ordData.products);
+    const ordData = await orderDB.findByIdAndUpdate(orderId,{
+      Status:statusValue
+    },
+    {new: true})
+    console.log(ordData);
 
-    const a = ordData.products.filter((value) => {
-      return value.product == proId;
-    });
-    a[0].Status= statusValue
-    ordData.save();
+    // const a = ordData.products.filter((value) => {
+    //   return value.product == proId;
+    // });
+    // a[0].Status= statusValue
+    // ordData.save();
+
     res.json({ success: true });
   } catch (error) {
     console.error(error);

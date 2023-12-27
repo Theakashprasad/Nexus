@@ -12,7 +12,7 @@
     <!-- component -->
 <div class="py-14 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto">
     <!--- more free and premium Tailwind CSS components at https://tailwinduikit.com/ --->
-  
+
     <div class="flex justify-start item-start space-y-2 flex-col">
       <h1 class="text-3xl  lg:text-4xl font-semibold leading-7 lg:leading-9 text-gray-800">Order #1</h1>
       <p class="text-base  font-medium leading-6 text-gray-600"> <%= orderDetails.orderDate %> </p>
@@ -21,9 +21,17 @@
       <div class="flex flex-col justify-start items-start w-full space-y-4 md:space-y-6 xl:space-y-8">
         <div class="flex flex-col justify-start items-start dark:bg-gray-2  00 bg-gray-50 px-4 py-4 md:py-6 md:p-6 xl:p-8 w-full">
           <p class="text-lg md:text-xl  font-semibold leading-6 xl:leading-5 text-gray-800">Customer’s Cart</p>
-      
+          <% let sizeLib = {
+            0 : 'S',
+            1 : 'M',
+            2 : 'L',
+            3 : 'XL'
+          } %>
           <% productIdData.forEach((proId)=>{ %>
+                <%proId.size.forEach((size,i)=>{%>
+                 <% if(size!==0){%>
 
+                     
            <% const fullProducts=productData.find(item=> item._id.equals(proId.product)) %>
   
           <di v class="mt-4 md:mt-6 flex flex-col md:flex-row justify-start items-start md:items-center md:space-x-6 xl:space-x-8 w-full">
@@ -35,41 +43,44 @@
               <div class="w-full flex flex-col justify-start items-start space-y-8">
                 <h3 class="text-xl  xl:text-2xl font-semibold leading-6 text-gray-800"><%= fullProducts.product_name %></h3>
                 <div class="flex items-start flex-col space-y-2">
-                  <p class="text-sm  leading-none text-gray-800"><span class="dark:text-gray-400 text-gray-300">Style: </span> Italic Minimal Design</p>
+                  <p class="text-sm  leading-none text-gray-800 font-medium"><span class="dark:text-gray-400 text-gray-300">Size : </span>  <%= sizeLib[i]%></p>
                 </div>
-                <p class="text-base font-semibold leading-4 text-center md:text-left text-gray-800">
-                  Order Status :
-                  <% if (proId.Status == 'DEVLIVERED') { %>
-                    <span class="text-green-500"> <%= proId.Status %> </span>
-                  <% } else { %>
-                    <span class="text-red-300"> <%= proId.Status %> </span>
-                  <% } %>
-                </p>
-                   <% if( proId.Status ==  "CANCEL"){ %>
-                  <% }else{ %>
-                <div class="flex justify-end w-full ml-80">
-                  <button id="" data-pro-id="<%=fullProducts._id %>" data-ord-id="<%=orderDetails._id%>" class="bg-red-500 text-white font-bold py-2 px-4 rounded inline-block">
-                    CANCEL ORDER
-                  </button>
-                </div>
-                <% } %>
+           
 
               </div>
              
               <div class="flex justify-between space-x-8 items-start w-full">
-                <p class="text-base  xl:text-lg leading-6">$<%= fullProducts.product_price %> <span class="text-red-300 line-through"> $<%= fullProducts.product_price +1000 %></span></p>
-                <p class="text-base  xl:text-lg leading-6 text-gray-800">0<%= proId.quantity %></p>
+                <p class="text-base  pl-11 xl:text-lg leading-6">$<%= fullProducts.product_price %> <span class="text-red-300 line-through"> $<%= fullProducts.product_price +1000 %></span></p>
+                <p class="text-base   xl:text-lg leading-6 text-gray-800">0<%= size %></p>
                 <p class="text-base  xl:text-lg font-semibold leading-6 text-gray-800">$<%= fullProducts.product_price * proId.quantity %></p>
               </div>
               
             </div>
           </di>
-
+          <%}%>
+          <%})%>
           <% }) %>
 
-
+            <div id="popup-modal" tabindex="-1" class="hidden flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                <div class="relative p-4 w-full max-w-md max-h-full">
+                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                        
+                        <div class="p-4 md:p-5 text-center">
+                            <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                            </svg>
+                            <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to cancel this product?</h3>
+                            <button id="cancelBtn" data-modal-hide="popup-modal" type="button" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center me-2">
+                                Yes, I'm sure
+                            </button>
+                                 <input class="h-9 rounded-md text-center" type="text" placeholder=" Reason">
+                          </div>
+                    </div>
+                </div>
+            </div>
+    
         </div>
-        <div class="flex justify-center flex-col md:flex-row flex-col items-stretch w-full space-y-4 md:space-y-0 md:space-x-6 xl:space-x-8">
+        <div class="flex justify-center flex-col md:flex-row  items-stretch w-full space-y-4 md:space-y-0 md:space-x-6 xl:space-x-8">
           <div class="flex flex-col px-4 py-6 md:p-6 xl:p-8 w-full bg-gray-50 dark:bg-gray-200 space-y-6">
             <h3 class="text-xl  font-semibold leading-5 text-gray-800">Summary</h3>
             <div class="flex justify-center items-center w-full space-y-4 flex-col border-gray-200 border-b pb-4">
@@ -83,13 +94,13 @@
                 <p class="text-base leading-4 text-gray-600">$ <%= orderDetails.totalAmount %></p>
               </div>
               <div class="flex justify-between items-center w-full">
-                <p class="text-base  leading-4 text-gray-800">Shipping</p>
+                <p class="text-base  leading-4 text-gray-800">Shipping charge</p>
                 <p class="text-base  leading-4 text-gray-600">$10.00</p>
               </div>
             </div>
             <div class="flex justify-between items-center w-full">
               <p class="text-base  font-semibold leading-4 text-gray-800">Total</p>
-              <p class="text-base  font-semibold leading-4 text-gray-600">$<%= orderDetails.totalAmount + 10%></p>
+              <p class="text-base  font-extrabold underline leading-4 text-gray-600">$<%= orderDetails.totalAmount + 10%></p>
             </div>
           </div>
           
@@ -101,7 +112,7 @@
         <div class="flex flex-col md:flex-row xl:flex-col justify-start items-stretch h-full w-full md:space-x-6 lg:space-x-8 xl:space-x-0">
           <div class="flex flex-col justify-start items-start flex-shrink-0">
             <div class="flex justify-center w-full md:justify-start items-center space-x-4 py-8 border-b border-gray-200">
-              <img src="https://i.ibb.co/5TSg7f6/Rectangle-18.png" alt="avatar" />
+              <img src="/upload/<%= userDetails.user_img_url %>" alt="ADD PICTURE" class="rounded-full h-16 w-16 mb-4">
               <div class="flex justify-start items-start flex-col space-y-2">
                 <p class="text-base  font-semibold leading-4 text-left text-gray-800"><%=userDetails.name%></p>
                 <p class="text-sm  leading-5 text-gray-600">10 Previous Orders</p>
@@ -122,9 +133,45 @@
                 <p class="text-base  font-semibold leading-4 text-center md:text-left text-gray-800">Shipping Address</p>
                 <p class="w-48 lg:w-full xl:w-48 text-center md:text-left text-sm leading-5 text-gray-600"><%=addressDetails.address%></p>
               </div>
+
+              <div class="flex justify-center md:justify-start items-center md:items-start flex-col space-y-4 xl:mt-8">
+                <p class="text-base  font-semibold leading-4 text-center md:text-left text-gray-800">Phone Number</p>
+                <p class="w-48 lg:w-full xl:w-48 text-center md:text-left text-sm leading-5 text-gray-600"><%=addressDetails.phone%></p>
+              </div>
+
+              <div class="flex justify-center md:justify-start items-center md:items-start flex-col space-y-4 xl:mt-8">
+                <p class="text-base  font-semibold leading-4 text-center md:text-left text-gray-800">State</p>
+                <p class="w-48 lg:w-full xl:w-48 text-center md:text-left text-sm leading-5 text-gray-600"><%=addressDetails.state%></p>
+              </div>
+
+              <div class="flex  justify-center md:justify-start items-center md:items-start flex-col space-y-4 xl:mt-8">
+                <p class="text-base  font-semibold leading-4 text-center md:text-left text-gray-800">City</p>
+                <p class="w-48 lg:w-full xl:w-48 text-center md:text-left text-sm leading-5 text-gray-600"><%=addressDetails.city%></p>
+              </div>
+             
             </div>
           </div>
 
+          <div>
+            
+            <p class="text-base font-semibold text-center py-14 md:text-left text-gray-800">
+              Order Status :
+              <% if (orderDetails.Status == 'DEVLIVERED') { %>
+                <span class="text-green-500"> <%= orderDetails.Status %> </span>
+              <% } else { %>
+                <span class="text-red-300"> <%= orderDetails.Status %> </span>
+              <% } %>
+            </p>
+               <% if( orderDetails.Status ==  "CANCEL" || orderDetails.Status ==  "DEVLIVERED"){ %>
+              <% }else{ %>
+            <div class="">
+              <button id="" data-pro-id="" data-ord-id="<%= orderDetails._id%>" class="bg-red-500 text-white font-bold py-2 px-4 rounded inline-block">
+                CANCEL ORDER
+              </button>
+            </div>
+            <% } %>
+
+          </div>
           
         </div>
       </div>
@@ -139,10 +186,17 @@
   <script>
 
         const buttons = document.querySelectorAll("button");
+        const popupModal = document.getElementById('popup-modal');
+        const cancelBtn = document.getElementById('cancelBtn');
+
         buttons.forEach(button => {
 
         button.addEventListener("click",()=>{
-        const proId = button.dataset.proId
+          console.log("hau");
+        popupModal.classList.remove('hidden');
+        cancelBtn.addEventListener("click",()=>{
+          popupModal.classList.add('hidden');
+          const proId = button.dataset.proId
         const ordId = button.dataset.ordId
         console.log("hia");
         fetch('/orderCancel', {
@@ -160,7 +214,12 @@
             }})
        .catch(err => console.log(err))
         })
+       
+        })
       })
+
+
+
      </script>
 </body>
 </html>

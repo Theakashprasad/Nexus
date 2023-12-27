@@ -15,20 +15,25 @@ const login =  (req, res) => {
 } 
 
 const postLogin = async (req, res) => {
-  const { email, password } = req.body;
-  const em = "admin@gmail.com";
-  const ps = "123";
-  if (email != em) {
-    req.session.errMsg = 'WRONG NAME'
-    req,session.invalid  = true
-    res.redirect("/admin/")
-  } else if (password != ps) {
-    req,session.invalid  = true
-    req.session.errMsg = 'WRONG PASSWORD'
-    res.redirect("/admin/")
-  } else {
-    req.session.adminData = em ;
-    res.redirect("/admin/user");
+  try {
+    const { email, password } = req.body;
+    const em = "admin@gmail.com";
+    const ps = "123";
+    if (email != em) {
+      req.session.errMsg = 'WRONG NAME'
+      req,session.invalid  = true
+      res.redirect("/admin/")
+    } else if (password != ps) {
+      req,session.invalid  = true
+      req.session.errMsg = 'WRONG PASSWORD'
+      res.redirect("/admin/")
+    } else {
+      req.session.adminData = em ;
+      res.redirect("/admin/user");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
   }
 };
 
@@ -48,9 +53,7 @@ const logout = (req,res)=>{
 
 const userManagement = async (req, res) => {
   try {
-
     const searchQuery = req.query.search || ""; // Get the search query from the URL or set it to an empty string if not provided
-
     // Use a regular expression to perform a case-insensitive search
     const data = await user.find({
       name: { $regex: searchQuery, $options: "i" },

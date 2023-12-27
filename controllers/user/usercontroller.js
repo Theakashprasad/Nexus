@@ -202,9 +202,19 @@ const shop = async (req, res) => {
 
 const product = async (req, res) => {
   try {
-    const userId = req.params.userId;
-    const user = await productDB.findById(userId);
-    res.render("user/product.ejs", { user });
+    if( req.session.size ){
+      let message 
+      message = 'PLEASE ENTER SIZE'
+      req.session.size = false
+      const userId = req.params.userId;
+      const user = await productDB.findById(userId);
+      res.render("user/product.ejs", { user ,message});
+    }else{
+      const userId = req.params.userId;
+      const user = await productDB.findById(userId);
+      res.render("user/product.ejs", { user,message:'' });
+    }
+   
   } catch (error) {
     console.error("Error creating user:", error);
     return res.status(500).send("fetch error:check once more");
@@ -238,7 +248,8 @@ const user = async (req, res) => {
 };
 
 const editUser = async (req,res)=>{
-  const userId = req.session.user._id; 
+  try {
+    const userId = req.session.user._id; 
   let img;
   if (req.file === undefined) {
     //if the image does not added
@@ -255,6 +266,11 @@ gender:req.body.gender,
 user_img_url: img == "" ? data.user_img_url : img ,
 },{new:true})
  res.redirect("/user")
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+  
 }
 
 const changePassword = (req,res)=>{
@@ -268,25 +284,31 @@ const changePassword = (req,res)=>{
 
 
 const changePasswordPost = async(req,res)=>{
-  const userId = req.session.user._id; 
-  const data = await userDB.findById(userId)
-  const isPasswordMatch = await bcrypt.compare(
-    req.body.currentPassword,
-    data.password
-    );
-    
-    if(isPasswordMatch){
-      const saltRound = 10; //bcrypting the code for securety
-      const hashpassword = await bcrypt.hash(req.body.newPassword, saltRound);
-      await userDB.findByIdAndUpdate(userId,{
-        password:hashpassword
-      })      
-      res.redirect("/user")
-    }else{
-     req.session.invalid = true
-     req.session.errMsg = " Password is incorect"
-     res.redirect("/changePassword")
-    }
+  try {
+    const userId = req.session.user._id; 
+    const data = await userDB.findById(userId)
+    const isPasswordMatch = await bcrypt.compare(
+      req.body.currentPassword,
+      data.password
+      );
+      
+      if(isPasswordMatch){
+        const saltRound = 10; //bcrypting the code for securety
+        const hashpassword = await bcrypt.hash(req.body.newPassword, saltRound);
+        await userDB.findByIdAndUpdate(userId,{
+          password:hashpassword
+        })      
+        res.redirect("/user")
+      }else{
+       req.session.invalid = true
+       req.session.errMsg = " Password is incorect"
+       res.redirect("/changePassword")
+      }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+ 
  
 }
 

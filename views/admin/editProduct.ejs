@@ -36,7 +36,7 @@
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           required>
       </div>
-      <p id="NameError" class=""></p>
+      <p id="NameError" class="text-red-500"></p>
 
 
          <!-- Description  -->
@@ -69,17 +69,30 @@
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             required>
         </div>
-        <p id="PriceError" class=""></p>
+        <p id="PriceError" class="text-red-500"></p>
 
 
       <!-- Quantity -->
       <div class="mb-4">
         <label for="categoryDescription" class="block text-gray-700 text-sm font-bold mb-2">Quantity</label>
-        <input oninput="qantityValidation()" type="text" id="quantity" name="quantity" value="<%=user.product_qty%>"
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        <input oninput="qantityValidation()" type="text" id="quantity" name="quantity1" value="<%=user.size[0]%>"
+          class="shadow appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
          ></input>
+         
+         <input oninput="qantityValidation()" type="text" id="quantity" name="quantity2" value="<%=user.size[1]%>"
+         class="shadow appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        ></input>
+
+        <input oninput="qantityValidation()" type="text" id="quantity" name="quantity3" value="<%=user.size[2]%>"
+        class="shadow appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+       ></input>
+
+       <input oninput="qantityValidation()" type="text" id="quantity" name="quantity4" value="<%=user.size[3]%>"
+       class="shadow appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      ></input>
+
       </div>
-      <p id="quantityError" class=""></p>
+      <p id="quantityError" class="text-red-500"></p>
 
 
       

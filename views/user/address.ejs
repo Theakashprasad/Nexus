@@ -42,15 +42,15 @@
                       <div class="md:col-span-3">
                         <label for="">Full Name</label>
                         <input oninput="nameValidation()" type="text" name="full_name" id="full_name"
-                          class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" required />
-                          <p id="nameError" class="text-xs"></p>
+                          class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value=""  />
+                          <p id="nameError" class="text-xs text-red-500"></p>
                       </div>
 
                     <div class="md:col-span-5">
                       <label for="">Address / Street</label>
                       <input oninput="addressValidation()" type="text" name="address" id="address"
                         class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="" />
-                        <p id="addressError" class="text-xs"></p>
+                        <p id="addressError" class="text-xs text-red-500"></p>
                       </div>
 
                     <div class="md:col-span-3">
@@ -58,7 +58,7 @@
                       <input oninput="numberValidation()" type="text" name="phone" id="phone"
                         class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                         placeholder="" value="" />
-                        <p id="phoneError" class="text-xs"></p>
+                        <p id="phoneError" class="text-xs text-red-500"></p>
                     </div>
 
                     <div class="md:col-span-3 ">
@@ -121,8 +121,8 @@
                       <label for="">Pin code</label>
                       <input oninput="pinValidation()" type="text" name="zipcode" id="zipcode"
                         class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                        placeholder="" value="" required />
-                        <p id="zipcodeError" class="text-xs"></p>
+                        placeholder="" value=""  />
+                        <p id="zipcodeError" class="text-xs text-red-500"></p>
                     </div>
 
                     <div class="md:col-span-5 text-right">
@@ -133,6 +133,8 @@
                     
                   </div>
                 </div>
+                
+                <p  id="alert" class="text-red-600 text-x"></p>
 
                 </form>
             
@@ -162,7 +164,15 @@
       </script>
 
 <script>
-  function v(){
+  function v(){       
+    const name = document.getElementById("full_name").value;
+    const address = document.getElementById("address").value;
+    const alert = document.getElementById("alert");
+
+    if (address.trim() === "" || name.trim() === "" ) {
+            alert.innerHTML="please fill all the field"
+            return false; 
+          }
     return nameValidation() && emailValidation()
   }
 </script>
@@ -386,31 +396,35 @@ function pinValidation() {
                     <p class="font-medium text-lg">Personal Details</p>
                     <p>Add your personal details.</p>
                   </div>
-                       <form id="formId" action="" method="post">
+                  <form id="formId" action="" method="post" onsubmit="return va()">
                   <div class="lg:col-span1">
                     <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
 
                       <div class="md:col-span-3">
-                        <label for="full_name">Full Name</label>
-                        <input type="text" name="full_name1" id="full_name1"
+                        <label for="">Full Name</label>
+                        <input type="text" name="full_name1" id="full_name1" oninput="nameValidation1()"
                           class=" h-10 border mt-1 rounded px-4 w-full bg-gray-50"  />
+                          <p id="nameError1" class="text-xs text-red-500"></p>
+
                       </div>
 
                       
                       <div class="md:col-span-2">
                         <label for="Phone">Phone number</label>
-                        <input type="text" name="Phone1" id="Phone1"
+                        <input type="text" name="Phone1" id="Phone1" oninput="numberValidation1()"
                           class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                           placeholder=""  />
+                          <p id="phoneError1" class="text-xs text-red-500"></p>
                       </div>
 
                
 
                       <div class="md:col-span-3">
                         <label for="address">Address / Street</label>
-                        <input type="text" name="address1" id="address1"
+                        <input type="text" name="address1" id="address1" oninput="addressValidation1()"
                           class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="" />
-                      </div>
+                          <p id="addressError1" class="text-xs text-red-500"></p>
+                        </div>
 
                       <div class="md:col-span-2">
                         <label for="city">City</label>
@@ -443,10 +457,12 @@ function pinValidation() {
 
                       <div class="md:col-span-1">
                         <label for="zipcode">Pin code</label>
-                        <input type="text" name="zipcode1" id="zipcode1"
+                        <input type="text" name="zipcode1" id="zipcode1" oninput="pinValidation1()"
                           class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                           placeholder="" value="" />
-                      </div>
+                          <p id="zipcodeError1" class="text-xs text-red-500"></p>
+
+                        </div>
 
                       <div class=md:col-span-5 text-right">
                         <div class="inline-flex items-end">
@@ -456,6 +472,8 @@ function pinValidation() {
 
                     </div>
                   </div>
+                  <p  id="alert1" class="text-red-600 text-xs"></p>
+
                 </form>
 
                 </div>
@@ -503,11 +521,113 @@ function pinValidation() {
      
        function updateAction(){
         formId.action = `/editAddress/${productId}`
+    //     const name = document.getElementById("full_name1").value;
+    // const address = document.getElementById("address1").value;
+    // const alert = document.getElementById("alert1");
+
+    // if (address.trim() === "" || name.trim() === "" ) {
+    //         alert.innerHTML="please fill all the field"
+    //         return false; 
+    //       }
+    // return nameValidation() && emailValidation()
+  
        }
 
       </script>
 
 
+<script>
+  // function va(){
+  //   const name = document.getElementById("full_name1").value;
+  //   const address = document.getElementById("address1").value;
+  //   const alert = document.getElementById("alert1");
+
+  //   if (address.trim() === "" || name.trim() === "" ) {
+  //           alert.innerHTML="please fill all the field"
+  //           return false; 
+  //         }
+  //   return nameValidation() && pinValidation()
+  // }
+
+    function nameValidation1() {
+    const name = document.getElementById("full_name1").value.trim();
+    const nameError = document.getElementById("nameError1");
+    
+    // Regular expression to check if the name contains only letters
+    const onlyLettersRegex = /^[a-zA-Z]+$/;
+
+    if (name === '') {
+        nameError.innerText = "Name cannot be empty";
+        return false; // Indicate validation failure
+    } else if (!onlyLettersRegex.test(name)) {
+        nameError.innerText = "Name can only contain letters";
+        return false; // Indicate validation failure
+    } else if (name.length < 5) {
+        nameError.innerText = "Name should be at least 5 characters long";
+        return false; // Indicate validation failure
+    } else {
+        nameError.innerText = ""; // Clear error message
+        return true; // Indicate validation success
+    }
+}
+
+    function addressValidation1() {
+    const name = document.getElementById("address1").value.trim();
+    const nameError = document.getElementById("addressError1");
+
+    if (name === '' ) {
+        nameError.innerText = "Can not add space";
+        return false; // Indicate validation failure
+    } else if(name.length > 15 ){
+        nameError.innerText = "words should not exceed above 15";
+        return false; // Indicate validation failure
+    }
+    else {
+        nameError.innerText = ""; // Clear error message
+        return true; // Indicate validation success
+    }
+}
+
+function numberValidation1() {
+    const name = document.getElementById("Phone1").value.trim();
+    const nameError = document.getElementById("phoneError1");
+
+    if (name === '' ) {
+        nameError.innerText = "Can not add space";
+        return false; // Indicate validation failure
+    } else if(name.length > 10 ){
+        nameError.innerText = "number should not exceed above 10";
+        return false; // Indicate validation failure
+    }else if(isNaN(name)){
+      nameError.innerText = "should be number"
+        }
+    else {
+        nameError.innerText = ""; // Clear error message
+        return true; // Indicate validation success
+    }
+}
+
+
+function pinValidation1() {
+    const name = document.getElementById("zipcode1").value.trim();
+    const nameError = document.getElementById("zipcodeError1");
+
+    if (name === '' ) {
+        nameError.innerText = "Can not add space";
+        return false; // Indicate validation failure
+    } else if(name.length > 6 ){
+        nameError.innerText = "number should not exceed above 6";
+        return false; // Indicate validation failure
+    }else if(isNaN(name)){
+      nameError.innerText = "should be number"
+        }
+    else {
+        nameError.innerText = ""; // Clear error message
+        return true; // Indicate validation success
+    }
+}
+
+</script>
 
 </body>
 </html>

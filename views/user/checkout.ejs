@@ -26,12 +26,12 @@
         }
     </style>
 </head>
-<body>
+<body class="w-screen overflow-x-hidden">
 
     <%- include("../partials/navbar.ejs") %>
 
-    <div class="h-screen grid grid-cols-3 pt-10">
-    <div class="lg:col-span-2 col-span-3 bg-indigo-50 space-y-8 px-12">
+    <div class=" grid grid-cols-3  pt-10">
+    <div class="lg:col-span-2 col-span-3  px-12">
            
  <!-- Button to trigger the add -->
  <button id="openModal" class="bg-blue-500 mt-6 text-white font-bold py-2 px-4 rounded inline-block">ADD ADDRESS +</button><br>
@@ -62,8 +62,8 @@
                    <div class="md:col-span-3">
                      <label for="">Full Name</label>
                      <input oninput="nameValidation()" type="text" name="full_name" id="full_name"
-                       class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" required />
-                       <p id="nameError" class="text-xs"></p>
+                       class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value=""  />
+                       <p id="nameError" class="text-xs text-red-500"></p>
                    </div>
             
 
@@ -71,7 +71,7 @@
                    <label for="">Address / Street</label>
                    <input oninput="addressValidation()" type="text" name="address" id="address"
                      class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="" />
-                     <p id="addressError" class="text-xs"></p>
+                     <p id="addressError" class="text-xs text-red-500"></p>
                    </div>
 
                  <div class="md:col-span-3">
@@ -79,7 +79,7 @@
                    <input oninput="numberValidation()" type="text" name="phone" id="phone"
                      class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                      placeholder="" value="" />
-                     <p id="phoneError" class="text-xs"></p>
+                     <p id="phoneError" class="text-xs text-red-500"></p>
                  </div>
 
                  <div class="md:col-span-3 ">
@@ -142,8 +142,8 @@
                    <label for="">Pin code</label>
                    <input oninput="pinValidation()" type="text" name="zipcode" id="zipcode"
                      class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                     placeholder="" value="" required />
-                     <p id="zipcodeError" class="text-xs"></p>
+                     placeholder="" value=""  />
+                     <p id="zipcodeError" class="text-xs text-red-500"></p>
                  </div>
 
                  <div class="md:col-span-5 text-right">
@@ -154,6 +154,7 @@
                  
                </div>
              </div>
+                <p  id="alert" class="text-red-600 text-xs "></p>
 
              </form>
          
@@ -186,6 +187,14 @@
 
 <script>
 function v(){
+  const name = document.getElementById("full_name").value;
+    const address = document.getElementById("address").value;
+    const alert = document.getElementById("alert");
+
+    if (address.trim() === "" || name.trim() === "" ) {
+            alert.innerHTML="please fill all the field"
+            return false; 
+          }
  return nameValidation() 
 }
 </script>
@@ -203,7 +212,7 @@ function v(){
      return false; // Indicate validation failure
  } else if (!onlyLettersRegex.test(name)) {
      nameError.innerText = "Name can only contain letters";
-     return false; // Indicate validation failure
+     return false; // Indicate validation failure 
  } else if (name.length < 5) {
      nameError.innerText = "Name should be at least 5 characters long";
      return false; // Indicate validation failure
@@ -221,8 +230,8 @@ function v(){
  if (name === '' ) {
      nameError.innerText = "Can not add space";
      return false; // Indicate validation failure
- } else if(name.length > 15 ){
-     nameError.innerText = "words should not exceed above 15";
+ } else if(name.length > 30 ){
+     nameError.innerText = "words should not exceed above 30";
      return false; // Indicate validation failure
  }
  else {
@@ -278,7 +287,7 @@ function pinValidation() {
 
  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++     view ADDRESS    ++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
-            <div class="rounded-md">
+            <div class="rounded-md ">
                 <form id="payment-form" method="POST" action="">
                     <section>
                         <h2 class="uppercase tracking-wide text-lg font-semibold text-gray-700 my-2">Shipping & Billing Information</h2>
@@ -318,9 +327,8 @@ function pinValidation() {
             </div>
 
               
-           <div class=" flex gap-3">
-            <button id="openSelect" class="bg-blue-500 mt-6 text-white font-bold py-2 px-4 rounded inline-block">SELECT ADDRESS </button>
-           </div>
+            <button onclick="selectAddress()" class=" bg-green-500 text-white py-2 px-4 rounded  ml-5">SELECT ADDRESS</button>
+
                 
                  <%  if(addressDetails){  %>
                
@@ -328,158 +336,69 @@ function pinValidation() {
                   <p class="underline text-xl">Pleace select address</p>
                    <%  }  %>
                  
-              <div class="rounded-md">
-                <section>
-                    <h2 class="uppercase tracking-wide text-lg font-semibold text-gray-700 my-2">Payment method </h2>
-                    <fieldset class="mb-3 bg-white shadow-lg rounded text-gray-600">
-                        <label class="flex border-b border-gray-200 h-12 py-3 items-center">
-                            <span class="text-right px-2">COD</span>
-                            <input name="card" class="focus:outline-none px-3 w-full" placeholder="Cash on delivery" required="">
-                        </label>
-                    </fieldset>
-                </section>
-            </div>
-         <%  if(addressDetails){  %>
-            <button onclick="checkoutPost()" class="submit-button px-4 py-3 rounded-full bg-gray-400 text-white focus:ring focus:outline-none w-full text-xl font-semibold transition-colors">
-                <a href="/checkoutComplete">BUY</a>
-            </button>
-          <%  }else{ %>
-          
-           <%  }  %>
+             
 
  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++     END VIEW ADDRESS    ++++++++++++++++++++++++++++++++++++++++++++++++++ -->
  
   <!-- ++++++++++++++++++++++++++++++++++++++++++++++++    SELECT ADDRESS    ++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+<!-- address part -->
 
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-14 p-2 ">
+  <% addressColection.forEach(addressColection=>{ %>
+    <div class="bg-white overflow-hidden shadow rounded-lg border">
 
-    <div id="selectAddress" class="fixed inset-0 z-50 hidden overflow-auto bg-black  bg-opacity-50">
-        <div class="flex items-center justify-center h-full">
-          <div class=" p-8 w-full h-full rounded shadow-lg">
-     
-            <div class="flex justify-end">
-              <button id="closeSelect" class="text-red-500 bg-white w-8 hover:text-gray-800">&times;</button>
-            </div>
-            <button onclick="selectAddress()" class=" bg-green-500 text-white py-2 px-4 rounded mt-10 ml-5">SELECT ADDRESS</button>
-
-    
-      <% addressColection.forEach(addressColection=>{ %>
-    
-        <div class="newSlectAd flex justify-center items-center ">
-          <div class="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6 w-full md:w-2/3 lg:w-1/2">
-            <input class="selectad" id="selectAd" data-address-id="<%=addressColection._id%>" type="radio" name="select" >     
-            <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-1">
-    
-            <form action="#" id="">
-              <div class="lg:col-span-2">
-                <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-1">
-    
-    
-                  <div class="md:col-span-2 ">
-                    <label for="full_name">Full Name</label>
-                    <p class="flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"> <%=addressColection.full_name %> </p>
-                  </div>
-    
-                  <div class="md:col-span-3">
-                    <label for="address">Address / Street</label>
-                    <p class="flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"><%=addressColection.address %> </p>
-    
-                  </div>
-    
-                  <div class="md:col-span-1">
-                    <label for="phone">Phone number</label>
-                    <p class="flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"><%=addressColection.phone %> </p>
-    
-                  </div>
-    
-                  <div class="md:col-span-2">
-                    <label for="city">City</label>
-                    <p class="flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"><%=addressColection.city %> </p>
-    
-                  </div>
-    
-                  <div class="md:col-span-2">
-                    <label for="country">Country / region</label>
-                    <div class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
-                      <p class="flex items-center h-10  mt-1  px-4 w-full bg-gray-50"><%=addressColection.country %> </p>
-                    </div>
-                  </div>
-    
-                  <div class="md:col-span-2">
-                    <label for="state">State / province</label>
-                    <div class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
-                      <p class="flex items-center h-10  mt-1  px-4 w-full bg-gray-50"><%=addressColection.state %> </p>
-    
-                    </div>
-                  </div>
-    
-                  <div class="md:col-span-1">
-                    <label for="zipcode">Pin code</label>
-                    <p class=" flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50">
-                      <%=addressColection.zipcode %> 
-                    </p>
-                  </div>
-                  <!-- Other fields ... -->
-    
-                  <div class="md:col-span-5 text-right">
-                    <div class="inline-flex items-end">
-                      <a href="/removeAddress/<%=addressColection._id %>" class="bg-orange-400 text-white font-bold py-2 px-4 rounded inline-block">
-                        REMOVE
-                      </a>
-                     </div>
-                  </div>
-                </div>
-              </div>
-            </form orm>
-            
-            <div class="flex justify-end">
-              <a type="button" href="#" onclick="showModal()"
-                class="editAddress bg-blue-500 text-white font-bold py-2 px-4 rounded inline-block"
-                data-product-id="<%=addressColection._id %>" data-mydata='{"key1": "<%=addressColection.full_name %>", "key2": "<%=addressColection.email %>" ,"key3": "<%=addressColection.address %>", "key4": "<%=addressColection.phone %>" ,"key5": "<%=addressColection.city %>", "key6": "<%=addressColection.country %>" ,"key7": "<%=addressColection.state %>" ,"key8": "<%=addressColection.zipcode %>" }'  >
-                EDIT
-              </a>
-            </div>
-      </div>
-      </div>
-      </div>
-    
-      <% }) %>
-    
-    
-      <script>
-        let a='';
-        let select = document.querySelectorAll(".selectad");
-        select.forEach((value)=>{
-          value.addEventListener("change",()=>{
-        addressId = value.dataset.addressId
-      })
-    })
-    function selectAddress(){
-      window.location.href = `/checkout?id=${addressId}`
-          }
-      </script>
-       <script>
-        // Alpine.js script to toggle modal visibility
-        document.getElementById('openSelect').addEventListener('click', function () {
-          document.getElementById('selectAddress').classList.remove('hidden');
-          document.getElementById('myModal').classList.add('flex');
-        });
-   
-        document.getElementById('closeSelect').addEventListener('click', function () {
-          document.getElementById('selectAddress').classList.add('hidden');
-          document.getElementById('myModal').classList.remove('flex');
-        });
-      </script>
-   
-
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.5/lottie.min.js"></script>
-
+          <div class=" py-5 sm:px-6 font-bold">
+          <input class="selectad" id="selectAd" data-address-id="<%=addressColection._id%>" type="radio" name="select" >     
+              Address
           </div>
-        </div>
-    </div>
+      <div class=" border-t border-gray-200  py-5 sm:p-0">
+              <dl class="sm:divide-y sm:divide-gray-200">
+                  <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:px-6">
+                      <dt class="text-sm font-medium text-gray-500">
+                          Address
+                      </dt>
+                      <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        <%=addressColection.address %> <br>
+                        <%=addressColection.city %> ,<%=addressColection.state %><br>
+                        <%=addressColection.zipcode %> <br>
+                                      <%=addressColection.country %> 
+                      </dd>
+                  </div>
+              </dl>
+          </div>
+          <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3  sm:px-6">
+              <dt class="text-sm font-medium text-gray-500">
+                  Actions
+              </dt>
+              <dd class="mt-1 text-sm font-bold text-black sm:mt-0  sm:col-span-2">
+                  <button class="btn btn-primary sm:gap-16">  <a type="button" href="#" onclick="showModal()"
+                    class="editAddress bg-blue-500 text-white font-bold    rounded inline-block"
+                    data-product-id="<%=addressColection._id %>" data-mydata='{"key1": "<%=addressColection.full_name %>", "key2": "<%=addressColection.email %>" ,"key3": "<%=addressColection.address %>", "key4": "<%=addressColection.phone %>" ,"key5": "<%=addressColection.city %>", "key6": "<%=addressColection.country %>" ,"key7": "<%=addressColection.state %>" ,"key8": "<%=addressColection.zipcode %>" }'  >
+                    EDIT
+                  </a>
+                </button>
 
+                  <button class="btn btn-danger"> <a href="/removeAddress/<%=addressColection._id %>" class="bg-orange-400 text-white font-bold rounded inline-block">
+                    REMOVE
+                  </a></button>
+              </dd>
+          </div>
+      </div>
+      <% }) %>
+</div>
 
-
+<script>
+  let a='';
+  let select = document.querySelectorAll(".selectad");
+  select.forEach((value)=>{
+    value.addEventListener("change",()=>{
+  addressId = value.dataset.addressId
+})
+})
+function selectAddress(){
+window.location.href = `/checkout?id=${addressId}`
+    }
+</script>
   <!-- ++++++++++++++++++++++++++++++++++++++++++++++++  END SELECT ADDRESS    ++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
     <!-- ++++++++++++++++++++++++++++++++++++++++++++++++  EDIT ADDRESS    ++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -508,24 +427,30 @@ function pinValidation() {
                 <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
 
                   <div class="md:col-span-3">
-                    <label for="full_name">Full Name</label>
-                    <input type="text" name="full_name1" id="full_name1"
+                    <label for="">Full Name</label>
+                    <input type="text" name="full_name1" id="full_name1" oninput="nameValidation1()"
                       class=" h-10 border mt-1 rounded px-4 w-full bg-gray-50"  />
-                  </div>
+                      <p id="nameError1" class="text-xs text-red-500"></p>
+
+                    </div>
 
                   
                   <div class="md:col-span-2">
                     <label for="Phone">Phone number</label>
-                    <input type="text" name="Phone1" id="Phone1"
+                    <input type="text" name="Phone1" id="Phone1" oninput="numberValidation1()"
                       class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                       placeholder=""/>
-                  </div>
+                      <p id="phoneError1" class="text-xs text-red-500"></p>
+
+                    </div>
 
                   <div class="md:col-span-3">
                     <label for="address">Address / Street</label>
-                    <input type="text" name="address1" id="address1"
+                    <input type="text" name="address1" id="address1"  oninput="addressValidation1()"
                       class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="" />
-                  </div>
+                      <p id="addressError1" class="text-xs text-red-500"></p>
+
+                    </div>
 
                   <div class="md:col-span-2">
                     <label for="city">City</label>
@@ -558,9 +483,11 @@ function pinValidation() {
 
                   <div class="md:col-span-1">
                     <label for="zipcode">Pin code</label>
-                    <input type="text" name="zipcode1" id="zipcode1"
+                    <input type="text" name="zipcode1" id="zipcode1" oninput="pinValidation1()"
                       class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                       placeholder="" value="" />
+                      <p id="zipcodeError1" class="text-xs text-red-500"></p>
+
                   </div>
 
                   <div class=md:col-span-5 text-right">
@@ -621,8 +548,91 @@ function pinValidation() {
     formId.action = `/editAddress/${productId}`
    }
 
+   
   </script>
 
+<script>
+ 
+
+    function nameValidation1() {
+    const name = document.getElementById("full_name1").value.trim();
+    const nameError = document.getElementById("nameError1");
+    
+    // Regular expression to check if the name contains only letters
+    const onlyLettersRegex = /^[a-zA-Z]+$/;
+
+    if (name === '') {
+        nameError.innerText = "Name cannot be empty";
+        return false; // Indicate validation failure
+    } else if (!onlyLettersRegex.test(name)) {
+        nameError.innerText = "Name can only contain letters";
+        return false; // Indicate validation failure
+    } else if (name.length < 5) {
+        nameError.innerText = "Name should be at least 5 characters long";
+        return false; // Indicate validation failure
+    } else {
+        nameError.innerText = ""; // Clear error message
+        return true; // Indicate validation success
+    }
+}
+
+    function addressValidation1() {
+    const name = document.getElementById("address1").value.trim();
+    const nameError = document.getElementById("addressError1");
+
+    if (name === '' ) {
+        nameError.innerText = "Can not add space";
+        return false; // Indicate validation failure
+    } else if(name.length > 15 ){
+        nameError.innerText = "words should not exceed above 15";
+        return false; // Indicate validation failure
+    }
+    else {
+        nameError.innerText = ""; // Clear error message
+        return true; // Indicate validation success
+    }
+}
+
+function numberValidation1() {
+    const name = document.getElementById("Phone1").value.trim();
+    const nameError = document.getElementById("phoneError1");
+
+    if (name === '' ) {
+        nameError.innerText = "Can not add space";
+        return false; // Indicate validation failure
+    } else if(name.length > 10 ){
+        nameError.innerText = "number should not exceed above 10";
+        return false; // Indicate validation failure
+    }else if(isNaN(name)){
+      nameError.innerText = "should be number"
+        }
+    else {
+        nameError.innerText = ""; // Clear error message
+        return true; // Indicate validation success
+    }
+}
+
+
+function pinValidation1() {
+    const name = document.getElementById("zipcode1").value.trim();
+    const nameError = document.getElementById("zipcodeError1");
+
+    if (name === '' ) {
+        nameError.innerText = "Can not add space";
+        return false; // Indicate validation failure
+    } else if(name.length > 6 ){
+        nameError.innerText = "number should not exceed above 6";
+        return false; // Indicate validation failure
+    }else if(isNaN(name)){
+      nameError.innerText = "should be number"
+        }
+    else {
+        nameError.innerText = ""; // Clear error message
+        return true; // Indicate validation success
+    }
+}
+
+</script>
   <!-- ++++++++++++++++++++++++++++++++++++++++++++++++  END EDIT ADDRESS    ++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 
@@ -638,26 +648,36 @@ function pinValidation() {
                 <ul class="py-6 border-b space-y-6 px-8">
                     <!-- Your list items go here -->    
                     <% let subtotal= 0 %>
-                    <% cartData.products.forEach((prod)=> { %>
-                        <% const product=productdetails.find(item=> item._id.equals(prod.product)); %>
+                    <% let sizeLib = {
+                      0 : 's',
+                      1 : 'm',
+                      2 : 'l',
+                      3 : 'xl'
+                    } %>
+                    <% checkUser.forEach((prod)=> { %> 
+                    <% prod.products.size.forEach((val , idx)=>{  %>
+                    <% if (val !== 0) {%>
                     <li class="grid grid-cols-6 gap-2 border-b-1">
                             <div class="col-span-1 self-center">
-                                <img src="<%=product .product_img_url[0]%>" alt="Product" class="rounded w-full">
+                                <img src="<%=prod.cartProduct[0].product_img_url[0]%>" alt="Product" class="rounded w-full">
                             </div>
                             <div class="flex flex-col col-span-3 pt-2">
-                                <span class="text-gray-600 text-md font-semi-bold"><%= product.product_name%></span>
-                                <span class="text-gray-400 text-sm inline-block pt-2"><%= product.product_brand%></span>
-                            </div>
+                                <span class="text-gray-600 text-md font-semi-bold"><%= prod.cartProduct[0].product_name%></span>
+                                <span class="text-gray-400 text-sm inline-block pt-2"><%= prod.cartProduct[0].product_brand%></span>
+                                <span class="text-gray-400 text-xs inline-block pt-2"><%= sizeLib[idx]%></span>
+
+                              </div>
                             <div class="col-span-2 pt-3">
                                 <div class="flex items-center space-x-2 text-sm justify-between">
-                                    <span class="text-gray-400"><%= prod.quantity%>  </span>
-                                    <span class="text-gray-900 font-semibold inline-block"> <%= prod.quantity * product.product_price%></span>
+                                    <span class="text-gray-400"><%= val %> </span>
+                                    <span class="text-gray-900 font-semibold inline-block"> <%= prod.cartProduct[0].product_price * val %></span>
                                 </div>
                             </div>
                     </li>
-                    <% subtotal = subtotal + (product.product_price * prod.quantity) %> 
+                    <% subtotal = subtotal + ( prod.cartProduct[0].product_price * val ) %> 
+                    <% } %>
                     <% }) %>
-
+                    <% }) %>
                 </ul>
             </div>
             
@@ -669,16 +689,38 @@ function pinValidation() {
                 </div>
                 <div class="flex justify-between py-4 text-gray-600">
                     <span>Shipping</span>
-                    <span class="font-semibold text-gray-900"> - $10.00</span>
+                    <span class="font-semibold text-gray-900"> + $10.00</span>
                 </div>
             </div>
             <div class="font-bold text-xl px-8 flex justify-between py-8 text-gray-600">
                 <span>Total :-</span>
-                <span id="subtotalValue" data-order-id="<%=cartData._id%>" dsts-price-subtotal="<%=subtotal%>">$ <%=subtotal + 10%></span>
+                <span id="subtotalValue" data-order-id="<%=checkUser[0]._id%>" dsts-price-subtotal="<%=subtotal%>">$ <%=subtotal + 10%></span>
             </div>
+            <div class="rounded-md ">
+              <section class=" text-center">
+                  <h2 class="uppercase tracking-wide text-lg font-semibold text-gray-700 ">Payment method </h2>
+                  <fieldset class="mb-3 bg-white shadow-lg rounded text-gray-600">
+                      <label class=" border-b border-gray-200  text-center">
+                          <span class=" px-2">COD</span>
+                          <p name="card" class="focus:outline-none " placeholder="Cash on delivery" required="">
+                      </label>
+                  </fieldset>
+              </section>
+          </div>
+        <%  if(addressDetails){  %>
+          <button onclick="checkoutPost()" class="submit-button px-4 py-3 rounded-full bg-gray-400 text-white focus:ring focus:outline-none w-full text-xl font-semibold transition-colors">
+              <a class="bg-gray-500 " href="/checkoutComplete">BUY</a>
+          </button>
+        <%  }else{ %>
+        
+         <%  }  %>
         </div>
+        
     </div>
 
+  
+
+    
  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++     END ORDER SUMMARY   ++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
     <%- include("../partials/footer.ejs") %>

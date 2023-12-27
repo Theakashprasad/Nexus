@@ -25,19 +25,30 @@
      <thead>
        <tr class="bg-gray-100">
          <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">Order Id</th>
-         <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">UserId</th>
-         <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">Total amount</th>
-         <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">Status</th>
+         <th class="w-1/4 py-4 px-6 text-center text-gray-600 font-bold uppercase">UserId</th>
+         <th class="w-1/4 py-4 px-6 text-center pl-16 text-gray-600 font-bold uppercase">Total amount</th>
+         <th class="w-1/4 py-4 px-6 text-center text-gray-600 font-bold uppercase">Quantity</th>
          <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase"></th>
        </tr>
      </thead>
      <tbody class="bg-white">
        <% orderData.forEach(user => { %>
        <tr>
-         <td class="py-4 px-6 border-b border-gray-200"><%= user._id %></td>
+         <td class="py-4 px-6 border-b border-gray-200">ODR <%= String(user._id).slice(19) %></td>
          <td class="py-4 px-6 border-b border-gray-200"><%= user.user %></td>
-         <td class="py-4 pl-16 border-b border-gray-200"><%= user.totalAmount %></td>
-         <td class="py-4 px-4 border-b border-gray-200"><%= user.Status %></td>
+         <td class="py-4 pl-16 border-b text-center border-gray-200"><%= user.totalAmount %></td>
+         <%let c = 0 %>
+         <td class="py-4 px-4 border-b text-center border-gray-200"><% user.products.forEach((prd)=>{%>
+
+          <% prd.size.forEach((size,i)=>{ %>
+            <% if(size!==0){ %>
+              <%c++%>
+              <% }%>
+              <% }) %>
+                 <% }) %>
+                 
+                 <%=c++%> <!-- quantity -->  
+        </td>
          <td class= " border-gray-200 ">
           <div class="bg-blue-500 px-3 mr-2 rounded ">
               <a class="text-white " href="orderView/<%= user._id %>">VIEW</a>
@@ -48,6 +59,22 @@
      </tbody>
    </table>
  </div>
+
+ <section class="my-6">
+  <div class="pagination flex justify-center gap-4">
+    <% if (paginate.hasPreviousPages) { %>
+      <a href="?page=<%= paginate.page - 1 %>"
+        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Previous</a>
+      <% } %>
+
+        <% if (paginate.hasNextPages && page < maxPage) { %>
+          <a href="?page=<%= paginate.page + 1 %>"
+            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 focus:bg-blue-700 focus:outline-none transition duration-300 ease-in-out">
+            Next
+          </a>
+          <% } %>
+  </div>
+</section>
 
  <script>
    const changeColour =document.getElementById("e");

@@ -58,9 +58,11 @@
             <div class="">
               <a href="/admin/editCatagory/<%= user._id %>">EDIT</a>
             </div>
-            <div>
-               <a href="/admin/deleteCatagory/<%= user._id %>">DELETE</a>
-            </div>
+          
+            <button class="<%= user.blocked ? 'bg-red-500' : 'bg-green-500' %> text-white px-4 py-2 rounded" data-user-id = "<%= user._id %>"
+              data-user-blocked = "<%= user.blocked %>" >
+              <%= user.blocked ? 'UNLIST' : 'LIST' %>
+             </button>
          </td>
        </tr>
        <% }); %>
@@ -72,6 +74,34 @@
    const changeColour =document.getElementById("c");
    changeColour.style.backgroundColor = "#000000";
  </script>
+
+<script>
+  const buttons = document.querySelectorAll("button");
+  buttons.forEach(button => {
+    button.addEventListener("click",async()=>{
+      const userId = button.getAttribute("data-user-id");
+      const userBlocked = button.getAttribute("data-user-blocked")
+      console.log("userId");
+     
+      fetch(`/admin/deleteCatagory/${userId}`,{ 
+            method : "PUT",
+            headers:{
+              'Content-Type': 'application/json',
+            },
+            body : JSON.stringify({
+              blocked: userBlocked,
+            }),
+      }).then(res=>res.json()).then(data=>{
+        if(data.success){
+           window.location.reload()
+        }
+      }).catch(error=>{
+        console.log(error);
+      })
+    })
+  });
+</script>
+
   <script src="/js/search.js"></script>
   
 </body>

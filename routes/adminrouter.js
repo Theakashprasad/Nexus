@@ -36,7 +36,7 @@ router.post(
   multer.upload.single("image"),
   catagorycontroller.editCatagoryPost
 );
-router.get("/deleteCatagory/:userId", catagorycontroller.deleteCatagory);
+router.put("/deleteCatagory/:userId", catagorycontroller.deleteCatagory);
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++         PRODUCT               ++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -53,7 +53,7 @@ router.post(
   multer.upload.array("image", 4),
   productController.editProductPost
 );
-router.get("/deleteProduct/:userId", productController.deleteProduct);
+router.put("/deleteProduct/:userId", productController.deleteProduct);
 
 router.get("/order", adminSessionMiddleware, orderController.order);
 router.get("/orderView/:ordId", orderController.orderView);

@@ -21,12 +21,14 @@
         
         <div class="flex  flex-col justify-start items-start dark:bg-gray-2  00 bg-gray-50  xl:px-8 w-full">
       
-          <% productIdData.forEach((proId,i)=>{ %>
+          <% productIdData.forEach((proId)=>{ %>
+                   <%proId.size.forEach((size)=>{%>
+                             <%if(size!==0){%>
 
+             
            <% const fullProducts=productData.find(item=> item._id.equals(proId.product)) %>
               
-           <p class="text-xl font-semibold"><%=i +1%></p>
-          <div class="mt-4 md:mt-6 flex flex-col md:flex-row justify-start items-start md:items-center md:space-x-6 xl:space-x-8 w-full">
+           <div class="mt-4 md:mt-6 flex flex-col md:flex-row justify-start items-start md:items-center md:space-x-6 xl:space-x-8 w-full">
             <div class="pb-4 md:pb-8 w-full md:w-40">
               <img class="w-full hidden md:block" src="<%= fullProducts.product_img_url[0] %>" alt="dress" />
               <img class="w-full md:hidden" src="<%= fullProducts.product_img_url[0] %>" alt="dress" />
@@ -46,47 +48,11 @@
             </div>
           </div>
 
-          <div class="flex">
-
-            <div class="flex justify-between w-full">
-              <p class="text-base  font-semibold leading-4 text-center md:text-left text-gray-800">Order Status : <span class="text-red-300 "> <%= proId.Status %>  </span> </p>
-              <p class="text-base  font-semibold leading-4 text-center md:text-left text-gray-800">Payment Mode : <%= orderDetails.paymentMethod %> </p>
-            </div>
-
-
-         <div class=" w-96 ml-44 ">
-          <label for="" class="block text-gray-700 text-sm font-bold mb-2">Update Status</label>
-          
-       <%   if(proId.Status == "CANCEL"){  %>
-
-         <%  }else{  %>
-
-          <select data-order-id="<%= orderDetails._id %>"  data-pro-id="<%=fullProducts._id %>"  id="" name="category"
-            class="category shadow appearance-none border  rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            required >
-            <option >
-              
-             </option>
-              <option >
-               CANCEL
-              </option>
-              <option >
-                PENDING
-              </option>
-              <option >
-                CONFIRMED
-               </option>
-               <option >
-                 DEVLIVERED
-               </option>
-          </select>
-          <%  }  %>
-        </div>
-
-
-      </div>
-      <p>------------------------------------------------------------------------------------------------------------------------------------------------------</p>
-          <% }) %>
+         
+      <p>-------------------------------------------------------------------------------------------------------------------------------------</p>
+      <% } %>
+      <%})%>    
+      <% }) %>
 
         </div>
         <div class="flex justify-center  md:flex-row flex-col items-stretch w-full space-y-4 md:space-y-0 md:space-x-6 xl:space-x-8">
@@ -133,15 +99,66 @@
             </div>
           </div>
           <div class="flex justify-between xl:h-full items-stretch w-full flex-col mt-6 md:mt-0">
+           
             <div class="flex justify-center md:justify-start xl:flex-col flex-col md:space-x-6 lg:space-x-8 xl:space-x-0 space-y-4 xl:space-y-12 md:space-y-0 md:flex-row items-center md:items-start">
+             
               <div class="flex justify-center md:justify-start items-center md:items-start flex-col space-y-4 xl:mt-8">
                 <p class="text-base  font-semibold leading-4 text-center md:text-left text-gray-800">Shipping Address</p>
                 <p class="w-48 lg:w-full xl:w-48 text-center md:text-left text-sm leading-5 text-gray-600"><%=addressDetails.address%></p>
               </div>
+
+              <div class="flex justify-center md:justify-start items-center md:items-start flex-col space-y-4 xl:mt-8">
+                <p class="text-base  font-semibold leading-4 text-center md:text-left text-gray-800">contry</p>
+                <p class="w-48 lg:w-full xl:w-48 text-center md:text-left text-sm leading-5 text-gray-600"><%=addressDetails.country%></p>
+              </div>
+            
+              <div class="flex justify-center md:justify-start items-center md:items-start flex-col space-y-4 xl:mt-8">
+                <p class="text-base  font-semibold leading-4 text-center md:text-left text-gray-800">phone number</p>
+                <p class="w-48 lg:w-full xl:w-48 text-center md:text-left text-sm leading-5 text-gray-600"><%=addressDetails.phone%></p>
+              </div>
+
             </div>
           </div>
 
-      
+          <div class="">
+
+            <div class="flex justify-between w-full">
+              <p class="text-base  font-semibold leading-4 text-center md:text-left text-gray-800">Order Status : <span class="text-red-300 "> <%= orderDetails.Status %>  </span> </p>
+              <p class="text-base  font-semibold leading-4 text-center md:text-left text-gray-800">Payment Mode : <%= orderDetails.paymentMethod %> </p>
+            </div>
+
+
+         <div class="  ">
+          <label for="" class="block text-gray-700 text-sm font-bold mb-2">Update Status</label>
+          
+       <%   if(orderDetails.Status == "CANCEL",orderDetails.Status == "DEVLIVERED"){  %>
+
+         <%  }else{  %>
+
+          <select data-order-id="<%= orderDetails._id %>"  data-pro-id="<%=orderDetails._id %>"  id="" name="category"
+            class="category shadow appearance-none border  rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            required >
+            <option >
+              
+             </option>
+              <option >
+               CANCEL
+              </option>
+              <option >
+                PENDING
+              </option>
+              <option >
+                CONFIRMED
+               </option>
+               <option >
+                 DEVLIVERED
+               </option>
+          </select>
+          <%  }  %>
+        </div>
+
+
+      </div>
 
           
 

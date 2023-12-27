@@ -13,6 +13,7 @@
   }
 </style>
 
+
 </head> 
 
 <body class="w-screen overflow-x-hidden">
@@ -39,7 +40,7 @@
                         <img data-fade-in="css-147n82m" class="css-viwop1 u-full-width u-full-height css-147n82m"  src="<%=user.product_img_url[1].replace(/\\/g, '/')%>"  alt="Nike Vomero 5 Men's Shoes" style="object-fit: contain;">                    </a>
                     </a>
                 </div>
-                <div class="w-1/2 p-2 sm:w-1/4">
+                <div class="w-1/2 p-2 sm:w-1/4">  
                     <a class="block border border-gray-200 hover:border-blue-400 dark:border-gray-700 dark:hover:border-blue-300" href="#">
                         <img data-fade-in="css-147n82m" class=" css-viwop1  css-m5dkrx" src="<%=user.product_img_url[2].replace(/\\/g, '/')%>"  alt="Nike Vomero 5 Men's Shoes" style="object-fit: contain;">
                     </a>
@@ -71,7 +72,7 @@
     <span>$ <%=user.product_price %></span>
     <span class="ml-3 text-base font-normal text-gray-500 line-through dark:text-gray-400">$<%=user.product_price*1.2 %></span></p>
    </div>
-
+  
     <div class="mb-6">
     <h2 class="mb-2 text-lg font-bold text-gray-700 dark:text-gray-400">System Specs :</h2>
     <div class="bg-gray-400 dark:bg-gray-4  00 rounded-xl">
@@ -82,33 +83,32 @@
         <div class="mt-5">
             <div class="flex items-center justify-between">
               <h4 class="text-sm font-medium text-gray-900">Size</h4>
-              <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">Size guide</a>
             </div>
 
             <fieldset class="mt-4">
               <legend class="sr-only">Choose a size</legend>
               <div class="grid grid-cols-4 gap-4">
                 
-                <label class="group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 cursor-pointer bg-white text-gray-900 shadow-sm">
-                  <input type="radio" name="size-choice" value="XXS" class="sr-only" aria-labelledby="size-choice-0-label">
+                  <label class="group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 cursor-pointer <%= user.size[0] === 0 ? ' border-red-500 bg-gray-200 text-gray-400' : 'bg-gray-400 text-gray-900 ' %> shadow-sm">
+                  <input  type="radio" name="size-choice" value="0" class="sr-only" aria-labelledby="size-choice-0-label"   <%=user.size[0]===0 ? 'disabled="disabled"':'' %> >
                   <span id="size-choice-0-label">S</span>
                   <span class="pointer-events-none absolute -inset-px rounded-md" aria-hidden="true"></span>
                 </label>
 
-                <label class="group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 cursor-pointer bg-white text-gray-900 shadow-sm">
-                  <input type="radio" name="size-choice" value="XS" class="sr-only" aria-labelledby="size-choice-1-label">
+                <label class="group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 cursor-pointer <%= user.size[1] === 0 ? ' border-red-500 bg-gray-200 text-gray-400' : 'bg-gray-400 text-gray-900 ' %> shadow-sm">
+                  <input type="radio" name="size-choice" value="1" class="sr-only" aria-labelledby="size-choice-1-label"<%=user.size[1]===0 ? 'disabled="disabled"':'' %> >
                   <span id="size-choice-1-label">M</span>
                   <span class="pointer-events-none absolute -inset-px rounded-md" aria-hidden="true"></span>
                 </label>
 
-                <label class="group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 cursor-pointer bg-white text-gray-900 shadow-sm">
-                  <input type="radio" name="size-choice" value="S" class="sr-only" aria-labelledby="size-choice-2-label">
+                <label class="group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 cursor-pointer <%= user.size[2] === 0 ? ' border-red-500 bg-gray-200 text-gray-400' : 'bg-gray-400 text-gray-900 ' %> shadow-sm">
+                  <input type="radio" name="size-choice" value="2" class="sr-only" aria-labelledby="size-choice-2-label" <%=user.size[2]===0 ? 'disabled="disabled"':'' %> >
                   <span id="size-choice-2-label">L</span>
                   <span class="pointer-events-none absolute -inset-px rounded-md" aria-hidden="true"></span>
                 </label>
 
-                <label class="group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 cursor-pointer bg-white text-gray-900 shadow-sm">
-                  <input type="radio" name="size-choice" value="M" class="sr-only" aria-labelledby="size-choice-3-label">
+                <label class="group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 cursor-pointer <%= user.size[3] === 0 ? ' border-red-500 bg-gray-200 text-gray-400' : 'bg-gray-400 text-gray-900 ' %> shadow-sm">
+                  <input type="radio" name="size-choice" value="3" class="sr-only" aria-labelledby="size-choice-3-label" <%=user.size[3]===0 ? 'disabled="disabled"':'' %> >
                   <span id="size-choice-3-label">XL</span>
                   <span class="pointer-events-none absolute -inset-px rounded-md" aria-hidden="true"></span>
                 </label>
@@ -117,13 +117,14 @@
             </fieldset>
           </div>
     </div>
+    <p class="text-center text-red-500 font-bold" id="sizeError"><%=message%></p>
 
     </div>
     </div>
     </div>
     </div>
     <div class="py-6 mb-6 border-t border-b border-gray-200 dark:border-gray-700">
-    <span class="text-base text-gray-600 dark:text-gray-400">In Stock</span>
+    <span class="text-base text-gray-600 dark:text-gray-400">In Stock : <%=user.product_category%></span>
     <p class="mt-2 text-sm text-blue-500 dark:text-blue-200">Ships from china.
     <span class="text-gray-600 dark:text-gray-400">
     Most customers receive within 3-31 days.
@@ -210,18 +211,32 @@
       firstLink.style.display = 'none';
       secondLink.style.display = 'inline';
     } 
-  }
+  } 
 </script>
 
 <!-- Add to cart -->
 <script>
+    const sizeRadioButtons = document.querySelectorAll('input[name="size-choice"]');
+    const sizeError = document.getElementById('sizeError');
+    let selectedSize
+// Add click event listener to each radio button
+sizeRadioButtons.forEach(button => {
+  button.addEventListener('click', function() {
+    // Get the selected size
+     selectedSize = this.value;
+     sizeRadioButtons.forEach(btn => {
+        btn.parentElement.classList.remove('bg-indigo-600', 'text-white');
+      });
+
+      button.parentElement.classList.add('bg-indigo-600', 'text-white');
+  });
+});
+
   const addToCart = document.querySelectorAll('.addToCart')
   addToCart.forEach((btn) => {
     btn.addEventListener('click', (e) => {
       e.preventDefault()
       const productId = btn.dataset.productId
-      console.log(productId);
-      
       fetch('/cartPost', {
           method: 'POST',
           redirect: 'follow',
@@ -229,25 +244,28 @@
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            productId
+            productId,selectedSize
           })
         })
         .then(res => {
           if (res.redirected) {
-            const redirectURL = res.url;
             return window.location.href = redirectURL;
           } else {
             return res.json()
           }
         })
         .then(data => {
-          return showToast(data.message)
+           if(data.succes){
+            // sizeError.innerText = 'PLEASE SELECT SIZE'
+            window.location.reload()
+           }
         })
         .catch(err => console.log(err))
 
     })
   })
 </script>
+
 
 </body>
 </html>
