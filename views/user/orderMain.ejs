@@ -8,7 +8,7 @@
 </head>
 <body>
   <%- include('../partials/navbar.ejs') %>
-  <div class="shadow-lg rounded-lg py-16" style="max-height: 400px; overflow-y: auto;">
+  <div class="shadow-lg rounded-lg py-16" >
     <table class="w-full table-fixed">
           <thead>
             <tr class="bg-gray-200">
@@ -54,6 +54,25 @@
         </table>
       </div>
  
+ 
+      <section class="my-6">
+        <div class="pagination flex justify-center gap-4">
+          <% if (paginate.hasPreviousPages) { %>
+            <a href="?page=<%= paginate.page - 1 %>"
+              class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Previous</a>
+            <% } %>
+      
+              <% if (paginate.hasNextPages && page < maxPage) { %>
+                <a href="?page=<%= paginate.page + 1 %>"
+                  class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 focus:bg-blue-700 focus:outline-none transition duration-300 ease-in-out">
+                  Next
+                </a>
+                <% } %>
+                <p class="text-gray-900 font-bold items-center  ml-5"><%= paginate.page %> out of <%= maxPage %></p>
+      
+        </div>
+      </section>
+
       <%- include("../partials/footer.ejs") %>
       
 </body>

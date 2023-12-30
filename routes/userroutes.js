@@ -33,7 +33,7 @@ router.post("/login", usercontroller.userLogin);
 router.get("/logout", usercontroller.logout);
 
 //SHOP
-router.get("/shop",blockingmiddleware, usercontroller.shop);   
+router.all("/shop",blockingmiddleware, usercontroller.shop);   
 
 //PRODUCT
 router.get("/product/:userId",blockingmiddleware, usercontroller.product);
@@ -49,6 +49,8 @@ router.post("/removeCart",cartController.removeCart);
 router.get("/checkout",sessionMiddleware,checkoutController.checkout);
 router.post("/checkoutPost",checkoutController.checkoutPost)
 router.get("/checkoutComplete",sessionMiddleware,checkoutController.checkoutComplete);
+router.post("/razorpay",checkoutController.razorpayPost)
+router.post("/confirmation",checkoutController.confirmation)
 
 
 //ADDRESS

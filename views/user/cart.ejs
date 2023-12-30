@@ -142,11 +142,16 @@
               <span>Total cost</span>
               <span id="total">$ <%= subtotal + 10 %> </span>
             </div>
-            <div id="checkoutButton" class="checkoutHide">
-              <a href="/checkout">
-                <button class="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
-              </a>
-            </div>
+           <% if( subtotal === 0 ) { %>
+
+              <% }else{ %>
+                <div id="checkoutButton" class="checkoutHide">
+                  <a href="/checkout">
+                    <button class="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
+                  </a>
+                </div>        
+             <% } %>
+          
           </div>
         </div>
         <%   }  %>

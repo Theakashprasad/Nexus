@@ -3,29 +3,35 @@ const cartDB = require("../../models/user/cartModel");
 const productDB = require("../../models/admin/productModel");
 const addressDb = require("../../models/user/addressModel");
 const userDB = require("../../models/user/usermodel");
-const {ObjectId} = require('mongodb')
+const {ObjectId} = require('mongodb')  
 
 const orderMain = async(req,res)=>{
 
-  // const page = parseInt(req.query.page) || 1;
-  // const limit = 4;
-  // const startIndex = (page - 1) * limit;
-  // const totalProducts = await orderDB.countDocuments();
-  // const maxPage = Math.ceil(totalProducts / limit);
-  // if (page > maxPage) {
-  //   return res.redirect(`/product?page=${maxPage}`);
-  // }
+  const page = parseInt(req.query.page) || 1;
+  const limit = 4;
+  const startIndex = (page - 1) * limit;
+  const totalProducts = await orderDB.countDocuments();
+  const maxPage = Math.ceil(totalProducts / limit);
+  if (page > maxPage) {
+    return res.redirect(`/product?page=${maxPage}`);
+  }
 
   try {
     const userId = req.session.user._id;
   
-      const a = await orderDB.find({user:userId})
+      const a = await orderDB.find({user:userId}).find() .limit(limit)
+      .skip(startIndex)
+      .exec();
   let orderDetails = a.reverse(); 
     // console.log(JSON.stringify(orderDetails,null,2));
-    const addressData = await addressDb.find() 
-    const productData = await productDB.find()
+    const addressData = await addressDb.find().find() .limit(limit)
+    .skip(startIndex)
+    .exec();
+    const productData = await productDB.find().find() .limit(limit)
+    .skip(startIndex)
+    .exec();
 
-    res.render("user/orderMain.ejs", {orderDetails,addressData,productData })
+    res.render("user/orderMain.ejs", {orderDetails,addressData,productData,page,maxPage })
 
   }  catch (error) {
     console.error(error);

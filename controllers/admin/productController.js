@@ -16,9 +16,9 @@ const product = async (req, res) => {
     }
 
     const data = await productDB.find() .limit(limit)
-    .skip(startIndex)
+    .skip(startIndex)  
     .exec();//fetching data form DB which are only blocked === false
-    res.render("admin/product", { data,  page,maxPage, });
+    res.render("admin/product", { data, page , maxPage, });
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");

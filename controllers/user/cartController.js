@@ -50,8 +50,6 @@ const cartPost = async (req, res) => {
         return productId == value.product
       })
       if(cartSize.length == 0){
-        // console.log( checkUser.products[0].size[2] );
-        // console.log(selectedSize);
           let arr = [0, 0, 0, 0]; 
           arr[selectedSize] = 1
           checkUser.products.push({
@@ -59,7 +57,6 @@ const cartPost = async (req, res) => {
             size : arr 
           });
             checkUser.save();
-
       }else{
        cartSize[0].product = productId
        cartSize[0].size[selectedSize] += 1    

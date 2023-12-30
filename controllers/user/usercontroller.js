@@ -4,6 +4,7 @@ const sendOtp = require("../../helper/otp");
 const productDB = require("../../models/admin/productModel");
 const orderDB = require("../../models/user/orderModel");
 const addressDb = require("../../models/user/addressModel");
+const cartDb = require("../../models/admin/catagoryModel")
 
 //test for checking purpose
 const a = async (req, res) => {
@@ -189,10 +190,50 @@ const userOtp = async (req, res) => {
 // ++++++++++++++++++++++++++++++++++++++++++++++++    SHOP   ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 const shop = async (req, res) => {
-  try {
-    const data = await productDB.find();
-    res.render("user/shop.ejs", { data });
-  } catch (error) {
+  try {  
+          const option1 = req.body.option1 ?? ''
+          const option2 = req.body.option2 ?? ''
+          console.log(option1);
+          let data 
+    const page = parseInt(req.query.page) || 1;
+    const limit = 6;
+    const startIndex = (page - 1) * limit;
+
+    const totalProducts = await productDB.countDocuments();
+
+    const maxPage = Math.ceil(totalProducts / limit);
+    if (page > maxPage) {
+      return res.redirect(`/product?page=${maxPage}`);
+      console.log('k');
+    }
+   
+    if(option1 == 1 ){
+      console.log('jai');
+       data = await productDB.find().limit(limit)
+      .skip(startIndex)
+      .sort({product_price:1})
+      .exec();
+      }
+      else if(option2 == -1 ){
+        console.log('hi');
+        data = await productDB.find().limit(limit)
+       .skip(startIndex)
+       .sort({product_price:-1}) 
+       .exec();
+       }
+      else{
+         data = await productDB.find().limit(limit)
+        .skip(startIndex) 
+        .exec();
+      }
+
+
+
+
+
+    const cartData = await cartDb.find();
+    res.render("user/shop.ejs", { data ,cartData, page,maxPage,});
+  } catch (error) {   
     console.error("Error creating user:", error);
     return res.status(500).send("fetch error:check once more");
   }

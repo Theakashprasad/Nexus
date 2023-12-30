@@ -6,14 +6,53 @@
   <title>Document</title>
   <link rel="stylesheet" href="dist/output.css">
 </head>
-<body>
+<body class="w-screen overflow-x-hidden">
   <!-- source: https://github.com/mfg888/Responsive-Tailwind-CSS-Grid/blob/main/index.html -->
   
   <!-- for the nav -->
   <%- include("../partials/navbar.ejs") %>
+  <div class=" flex">
+ <!-- selectOption on the left -->
+ <div class=" h-40 mt-28 ml-24">
+<form action="/shop" method="post">
+  <label for="selectOption" class="text-black mr-2 uppercase">Filter by Category:</label> <br>
+  <select id="selectOption" name="selectOption" class="bg-white text-black px-2 py-1 rounded">
+    <% cartData.forEach((list)=> { %>
+      <option value="<%= list.product_category %>">
+        <%= list.product_category %>
+      </option>
+      <% }) %>
+
+  </select>
+
+<!-- Your content goes here -->
+<br>
+<div class=" mt-12">
+<label for="selectOption" class="text-black mr-2 uppercase">Sort by Price  :</label> <br>
+<div class="my-4">
+  <label class="inline-flex items-center">
+    <input type="radio" class="form-radio text-blue-500" name="option1" value="1">
+    <span class="ml-2">  Lower To Higher Price </span>
+  </label>
+</div>
+
+<div class="my-4">
+  <label class="inline-flex items-center">
+    <input type="radio" class="form-radio text-green-500" name="option2" value="-1">
+    <span class="ml-2"> Higher To Lower Price </span>
+  </label>
+</div>
+</div>
+  <button type="submit" id="applyBtn" class="bg-blue-500 text-white font-bold py-2 px-4 rounded">
+    APPLY
+  </button>
+</form>
+</div>
+
+
 
   <!-- content -->
-<section id="Projects" class="w-fit pt-24 pb-24 mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5">
+<section id="Projects" class="w-fit  pt-24 pb-24 mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5">
   <% data.forEach(user=>{ %>
     <div class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
         <a href="/product/<%= user._id %>">
@@ -38,7 +77,27 @@
     </div>
   <% }) %>
 </section>
+</div>
 
+
+<section class="my-6">
+  <div class="pagination flex justify-center gap-4">
+    <% if (paginate.hasPreviousPages) { %>
+      <a href="?page=<%= paginate.page - 1 %>"
+        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Previous</a>
+      <% } %>
+
+        <% if (paginate.hasNextPages && page < maxPage) { %>
+          <a href="?page=<%= paginate.page + 1 %>"
+            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 focus:bg-blue-700 focus:outline-none transition duration-300 ease-in-out">
+            Next
+          </a>
+          <% } %>
+
+  </div>
+  <p class="text-gray-900 font-bold items-center text-center "><%= paginate.page %> out of <%= maxPage %></p>
+
+</section>
 <!-- footer -->
 <%- include("../partials/footer.ejs") %>
  
@@ -58,23 +117,64 @@
     value.addEventListener("click",(e)=>{
       console.log("hai");
       const productId = value.dataset.itemId
-      fetch("/cartPost",{
-        method : 'POST',
+        // fetch("/cartPost",{
+        //   method : 'POST',
+        //   headers:{
+        //     'Content-Type': 'application/json'
+        //   },
+        //   body : JSON.stringify({
+        //       productId
+        //   })
+        // }).then(res=>res.json())
+        // .then(data=>{
+        //   console.log("sucess");
+        // }).catch((Error)=>{
+        //   console.log(Error);
+        // })
+      })
+    
+  });
+</script>
+
+<script>
+  let selectedSortOption
+  document.addEventListener('DOMContentLoaded', function () {
+    // Add event listener to each radio input
+    const radioInputs = document.querySelectorAll('input[type="radio"]');
+    
+    radioInputs.forEach(input => {
+      input.addEventListener('change', function () {
+        // Log the selected value to the console (you can replace this with your custom logic)
+        console.log('Selected option:', this.value);
+        selectedSortOption = this.value
+      });
+    });
+  });
+
+
+    function applyFunction() {
+      console.log('ji');
+      // Get the selected value of the filter dropdown
+      const selectOption = document.getElementById('selectOption');
+      const selectedCategory = selectOption.value;
+
+
+      console.log('Selected Category:', selectedSortOption);
+      fetch('/shop',{
+        method: 'POST',
         headers:{
           'Content-Type': 'application/json'
         },
-        body : JSON.stringify({
-             productId
-        })
+        body:JSON.stringify({selectedCategory,selectedSortOption})
       }).then(res=>res.json())
-      .then(data=>{
-        console.log("sucess");
-      }).catch((Error)=>{
-        console.log(Error);
+      .then((data)=>{
+        if(data.sucess){
+          window.location.reload()
+        }
       })
-    })
-    
-  });
+      .catch(err=>console.log(err))
+    }
+
 </script>
 </body>
 </html>

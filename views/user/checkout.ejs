@@ -711,6 +711,9 @@ function pinValidation1() {
           <button onclick="checkoutPost()" class="submit-button px-4 py-3 rounded-full bg-gray-400 text-white focus:ring focus:outline-none w-full text-xl font-semibold transition-colors">
               <a class="bg-gray-500 " href="/checkoutComplete">BUY</a>
           </button>
+          <button onclick="pay()" class="submit-button px-4 py-3 rounded-full bg-gray-400 text-white focus:ring focus:outline-none w-full text-xl font-semibold transition-colors">
+            buy
+        </button>
         <%  }else{ %>
         
          <%  }  %>
@@ -725,6 +728,8 @@ function pinValidation1() {
 
     <%- include("../partials/footer.ejs") %>
 
+<!-- Add this script tag in the head or body of your HTML -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
     <script>
          
@@ -733,7 +738,7 @@ function pinValidation1() {
 console.log("ha");
 const subtotalValue = document.getElementById('subtotalValue');
 const subtotalAttributeValue = subtotalValue.getAttribute('dsts-price-subtotal');
-const ordId = subtotalValue.getAttribute('data-order-id');
+let ordId = subtotalValue.getAttribute('data-order-id');
 
           fetch("/orderPost",{
             method : "POST",
@@ -749,6 +754,65 @@ const ordId = subtotalValue.getAttribute('data-order-id');
           })
        }
     </script>
+
+<script>
+function pay(){
+          // const totalprice = document.getElementById('totalprice').innerText
+          const totalprice = subtotalValue.getAttribute('dsts-price-subtotal');
+          let ordId = subtotalValue.getAttribute('data-order-id');
+
+          console.log(totalprice);
+
+            fetch('/razorpay', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                'amount': totalprice,
+              }),
+            })
+              .then(response => response.json())
+
+              .then(data => {
+                const orderId = data.orderId;
+                const addressid = data.addressid
+                console.log("OrderId received:", addressid);
+
+
+                // let paymentMode = document.getElementById('payment').selector.value
+                // const addressdetails = document.getElementById('address')
+                // const addressdata = addressdetails.getAttribute('data-address')
+                var options = {
+                  "key": "rzp_test_llt7AmvYnR8R68", // Enter the Key ID generated from the Dashboard
+                  "amount":Number(totalprice)*100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                  "currency": "INR",
+                  "name": "Petstation", //your business name
+                  "description": "Test Transaction",
+                  "image": "",
+                  "order_id": orderId, //This is a sample Order ID. Pass the id obtained in the response of Step 1
+                  "callback_url": "/confirmation",
+                  // "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
+                  //   "name": "Gaurav Kumar", //your customer's name
+                  //   "email": "gaurav.kumar@example.com",
+                  //   "contact": "7902371571" //Provide the customer's phone number for better conversion rates 
+                  // },
+                  "notes": {
+                    "amount": totalprice,
+                    "orderId": ordId
+                  },
+                  "theme": {
+                    "color": "#3399cc"
+                  }
+                };
+                var rzp1 = new Razorpay(options);
+                rzp1.open();
+                e.preventDefault();
+
+              })
+              .catch(error => console.error('Error:', error));
+}
+</script>
 
 </body>
 </html>
