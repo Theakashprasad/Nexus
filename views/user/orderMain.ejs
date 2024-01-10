@@ -44,7 +44,8 @@
               <td class="py-4 px-6 border-b border-gray-200 text-center"><%= pro.totalAmount %></td>
               <td class="py-4 px-6 border-b border-gray-200 text-center"><%= pro.paymentMethod %></td>
               <td class="py-4 px-6 border-b border-gray-200">
-                <% const address=addressData.find(item=> item._id.equals(pro.shippingAddress)); %>
+                <% const address=
+                .find(item=> item._id.equals(pro.shippingAddress)); %>
                 <%= address.address %></td>
               <td><a href="/order/<%= pro._id %>" class="bg-blue-500 rounded text-white px-1 py-1">VIEW</a></td>
             </tr>
