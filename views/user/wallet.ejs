@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/dist/output.css">
+</head>
+<body>
+    <%- include("../partials/navbar.ejs") %>
+
+    <%if(walletData){%>
+    <div class="flex justify-center">
+        <div class="flex justify-between mt-12 ml-20 shadow-lg w-80 bg-gray-100 rounded-xl p-4 ">
+            <p class="font-semibold text-2xl">WALLET AMOUNT - </p>
+            <h1 class="font-medium pt-2 underline text-lg"> $<%=walletData.balance%> </h1>
+        </div>
+    </div>
+
+
+<div class="shadow-lg rounded-lg overflow-hidden mx-4 md:mx-10 py-24">
+    <table class="w-full table-fixed">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">DATE</th>
+          <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">AMOUNT</th>
+          <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">ORDER </th>
+          <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">STATUS</th>
+ 
+        </tr>
+      </thead>
+      <tbody class="bg-white">
+      
+        
+        <%walletData.history.forEach((iteam)=>{%>
+
+        <tr>
+          <td class="py-4 px-6 border-b border-gray-200"><%= new Date(iteam.date ).toISOString().slice(0, 10)%></td>
+          <td class="py-4 px-6 border-b border-gray-200"><%=iteam.amount%> </td>
+          <td class="py-4 px-6 border-b border-gray-200">ORD <%= String(iteam.orderId).slice(19)%></td>
+          <% if(iteam.status == 'CREDIT'  ){%>
+            <td class="py-4 px-6 border-b border-gray-200 text-green-500">+<%=iteam.status%> </td>
+          <%}else{%>
+            <td class="py-4 px-6 border-b border-gray-200"><%=iteam.status%> </td>
+             <%}%>
+          
+        </tr>
+
+       <% })%>
+      
+<%}else{%>
+  <div class="flex justify-center">
+    <div class="flex justify-between my-12 ml-20 shadow-lg w-80 bg-gray-100 rounded-xl p-4 ">
+        <p class="font-semibold text-2xl">WALLET AMOUNT - </p>
+        <h1 class="font-medium pt-2 underline text-lg"> $ 0</h1>
+    </div>
+</div>
+   <%}%>
+
+      </tbody>
+    </table>
+  </div>
+  
+  <%- include("../partials/footer.ejs") %>
+
+</body>
+</html>

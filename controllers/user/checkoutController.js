@@ -3,6 +3,7 @@ const user = require("../../models/user/usermodel");
 const cartDB = require("../../models/user/cartModel");
 const productDB = require("../../models/admin/productModel");
 const orderDB = require("../../models/user/orderModel");
+const couponDB = require('../../models/admin/couponModel');
 const Razorpay = require('razorpay');
 
 const checkout = async (req, res) => {
@@ -40,14 +41,16 @@ const checkout = async (req, res) => {
     ])
     cartData = a ?? ''
         // console.log(JSON.stringify(cartData,null,2));
-
     // console.log(JSON.stringify(cartData,null,3));
     const productdetails = await productDB.find();
+    const coupounData = await couponDB.find()   
+    
     res.render("user/checkout.ejs", { 
       addressDetails,
       cartData,
       productdetails,
-      addressColection
+      addressColection,
+      coupounData
     });
   } catch (error) {
     console.error(error);
@@ -63,12 +66,12 @@ const checkoutComplete = (req,res)=>{
 
 const razorpayPost = (req,res)=>{
     try {
-      console.log('j');
+      console.log(req.body.ordId);
         let amount= req.body.amount
         let addressId= req.session.user.addressId
-        console.log(addressId);
-        const a = 'rzp_test_llt7AmvYnR8R68'
-        const b = 'PhgoT6EHfKbw5rxJtQN6DJqY'
+   
+        const a = process.env.RAZOR_ID
+        const b = process.env.RAZOR_SECRET
         let instance = new Razorpay({ key_id:a, key_secret:  b })
         let options = {
             amount: Number(amount)*100,
@@ -97,29 +100,7 @@ const razorpayPost = (req,res)=>{
 
 const confirmation = async (req,res)=>{
     try {
-        if (!req.body.razorpay_payment_id) {
-            const userId = req.session.userId;
-            const productDetails = req.body.orderDetails;
-            // console.log("cd product ", productDetails);
-            const paymentMode = req.body.paymentMode
-            const orderNumber = generateOrderNumber();
-            const total = calculateTotal(productDetails);
-            const address = await addressCollection.findById(req.body.addressid)
-            const currentstatus = "pending"
-            const newOrder = new orderCollection({
-                userId,
-                productdetails: productDetails,
-                Ordernumber: orderNumber,
-                total,
-                address,
-                payment: paymentMode,
-                status: currentstatus
-
-            });
-            await newOrder.save();
-            await cartCollection.deleteMany({});
-            res.status(200).json({ success: true, message: 'Order placed successfully!' });
-        } else {
+ 
           const a = 'rzp_test_llt7AmvYnR8R68'
           const b = 'PhgoT6EHfKbw5rxJtQN6DJqY'  
             var instance = new Razorpay({ key_id: a, key_secret: b })
@@ -129,12 +110,14 @@ const confirmation = async (req,res)=>{
             cartData = aa ??''
             const totalAmount = data.notes.amount
             const ordId = data.notes.orderId 
+            const copId = data.notes.copId 
             const addressId = await user.findById(userId)
-            console.log(addressId);
+            
             const orderCreate = new orderDB({
               user: userId,
               products: cartData.products,
               totalAmount: totalAmount,
+              discount : copId,
               shippingAddress: addressId.addressId,
               paymentMethod: "ONLINE", 
             });
@@ -155,7 +138,7 @@ const confirmation = async (req,res)=>{
         
             return res.redirect('/checkoutComplete')
         }
-    } catch (error) {
+    catch (error) {
         console.error('Error placing order:', error);
         res.status(500).json({ success: false, message: 'Internal Server Error ' });
     }

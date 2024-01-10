@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href='/dist/output.css'>  
+
+</head>
+<body>
+  
+  
+<!-- edit section coupon -->
+<div 
+class="openCoupon-edit fixed top-0 left-0 right-0 z-50   w-full overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] ">
+<p class="absolute bg-gray-100 h-full w-full opacity-80"></p>
+<div class="fixed inset-0 flex items-center justify-center">
+  <!-- Modal content -->
+  <div class="relative  bg-white rounded-lg shadow dark:bg-gray-700 w-[500px]">
+    <a href="/admin/coupon"class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white close-coupon-Box-edit">
+      <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+      </svg>
+    </a>
+    <div class="px-6 py-6 lg:px-8">
+      <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Edit Coupon</h3>
+
+      <form class="space-y-6"  action="/admin/editCouponPost/<%=couponData._id%>" method="post" onsubmit="return validateForm()">
+      
+        <div>
+         <label for="coupon-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Coupon Name</label>
+         <input type="text" value="<%=couponData.couponName%>" id="" name="couponName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
+       </div>
+     
+       <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" id="couponTypeTitle">Coupon Value</label>
+       <input type="text" oninput="CouponValue()" value="<%=couponData.couponValue%>" id="couponValue" name="couponValue" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
+       <span class="errorMsg text-red-800"></span>
+       <span id="valueError" class="errorMsg text-red-500"></span>
+       <span id="disError" class="errorMsg text-red-500"></span>
+
+
+
+       <p class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Discount Type:</p>
+       <input type="radio" id="percentage" name="discountType" value="percentage" onchange="discountCoupon()"  <%= couponData.discountType === 'percentage' ? 'checked="checked"' : '' %> >
+       <label for="percentage">Percentage</label>
+       <input type="radio" id="fixed" name="discountType" value="fixed" onchange="discountCoupon()" <%= couponData.discountType === 'fixed' ? 'checked="checked"' : '' %> >
+       <label for="fixed">Fixed</label>
+
+       <label for="couponMinimumPurchase" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Minimum Purchase</label>
+       <input type="text" value="<%=couponData.minimumPurchase%>" id="couponMinimumPurchase-edit" name="couponMinimumPurchase" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
+     
+       <label for="validFrom" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Valid from</label>
+       <input type="date" id="validFrom-edit" name="validFrom" value="<%= new Date(couponData.validFrom).toISOString().slice(0, 10) %>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
+     
+       <label for="validTo" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Valid to</label>
+       <input type="date" id="validTo-edit" name="validTo" value="<%= new Date(couponData.validTo).toISOString().slice(0, 10) %>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
+       <span class="alreadyExist text-red-600"></span>
+     
+       <div class="flex justify-end">
+         <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none">
+           Create Coupon
+         </button>
+       </div>
+     </form>
+     <p class="font-semibold text-red-500"><%=message%></p>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+function validateForm() {
+  return CouponValue()&&discountCoupon()
+}
+function CouponValue() {
+      const name = document.getElementById("couponValue").value.trim();
+      const nameError = document.getElementById("valueError");
+  
+      if (name === '' ) {
+          nameError.innerText = "Can not add space";
+          return false; // Indicate validation failure
+      }else if(isNaN(name)){
+        nameError.innerText = "should be number"
+          }
+      else {
+          nameError.innerText = ""; // Clear error message
+          return true; // Indicate validation success
+      }
+  }
+  
+function discountCoupon(){
+ console.log("hbsdhj");
+ const discountType=document.querySelector('input[name=discountType]:checked').value 
+const couponValue=document.querySelector('input[name=couponValue]').value
+const disError = document.getElementById("disError");
+
+ if(discountType==='percentage'){
+   console.log("hello");
+   if(couponValue>100){
+    disError.innerText="coupon value should below 100"
+return false
+   }
+ }else{
+   return true
+ }
+
+}
+</script>
+
+
+</body>
+</html>

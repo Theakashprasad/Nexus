@@ -24,8 +24,8 @@
    <table class=" table-fixed">
      <thead>
        <tr class="bg-gray-100">
-         <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">Order Id</th>
-         <th class="w-1/4 py-4 px-6 text-center text-gray-600 font-bold uppercase">UserId</th>
+         <th class="w-1/4 py-4 px-6 text-gray-600 font-bold text-center uppercase">Order Id</th>
+         <th class="w-1/4 py-4 px-6 text-center text-gray-600 font-bold uppercase">User Name</th>
          <th class="w-1/4 py-4 px-6 text-center pl-16 text-gray-600 font-bold uppercase">Total amount</th>
          <th class="w-1/4 py-4 px-6 text-center text-gray-600 font-bold uppercase">Quantity</th>
          <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase"></th>
@@ -34,8 +34,11 @@
      <tbody class="bg-white">
        <% orderData.forEach(user => { %>
        <tr>
-         <td class="py-4 px-6 border-b border-gray-200">ODR <%= String(user._id).slice(19) %></td>
-         <td class="py-4 px-6 border-b border-gray-200"><%= user.user %></td>
+         <td class="py-4 px-6 border-b border-gray-200 text-center ">ODR <%= String(user._id).slice(19) %></td>
+         <td class="py-4 px-6 border-b border-gray-200  text-center">
+          <%const userName = userdata.find(item=>item._id.equals( user.user ))%>
+          <%=userName.name%>
+        </td>
          <td class="py-4 pl-16 border-b text-center border-gray-200"><%= user.totalAmount %></td>
          <%let c = 0 %>
          <td class="py-4 px-4 border-b text-center border-gray-200"><% user.products.forEach((prd)=>{%>
@@ -74,6 +77,8 @@
           </a>
           <% } %>
   </div>
+  <p class="text-gray-900 font-bold flex justify-center"><%= paginate.page %> out of <%= maxPage %></p>
+
 </section>
 
  <script>

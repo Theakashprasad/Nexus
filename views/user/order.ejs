@@ -14,17 +14,18 @@
     <!--- more free and premium Tailwind CSS components at https://tailwinduikit.com/ --->
 
     <div class="flex justify-start item-start space-y-2 flex-col">
-      <h1 class="text-3xl  lg:text-4xl font-semibold leading-7 lg:leading-9 text-gray-800">Order #1</h1>
-      <p class="text-base  font-medium leading-6 text-gray-600"> <%= orderDetails.orderDate %> </p>
+      <h1 class="text-3xl  lg:text-xl font-semibold leading-7 lg:leading-9 text-gray-800">ORD  <%= String(orderDetails._id).slice(19) %>
+      <p class="text-base  font-medium leading-6 text-gray-600"> DATE :- <%= new Date(orderDetails.orderDate ).toISOString().slice(0, 10) %></p>
     </div>
     <div class="mt-10 flex flex-col xl:flex-row jusitfy-center items-stretch w-full xl:space-x-8 space-y-4 md:space-y-6 xl:space-y-0">
       <div class="flex flex-col justify-start items-start w-full space-y-4 md:space-y-6 xl:space-y-8">
         <div class="flex flex-col justify-start items-start dark:bg-gray-2  00 bg-gray-50 px-4 py-4 md:py-6 md:p-6 xl:p-8 w-full">
           <p class="text-lg md:text-xl  font-semibold leading-6 xl:leading-5 text-gray-800">Customer’s Cart</p>
+          <% let subTotalPrice=0 %>
           <% let sizeLib = {
             0 : 'S',
             1 : 'M',
-            2 : 'L',
+            2 : 'L',  
             3 : 'XL'
           } %>
           <% productIdData.forEach((proId)=>{ %>
@@ -52,11 +53,13 @@
               <div class="flex justify-between space-x-8 items-start w-full">
                 <p class="text-base  pl-11 xl:text-lg leading-6">$<%= fullProducts.product_price %> <span class="text-red-300 line-through"> $<%= fullProducts.product_price +1000 %></span></p>
                 <p class="text-base   xl:text-lg leading-6 text-gray-800">0<%= size %></p>
-                <p class="text-base  xl:text-lg font-semibold leading-6 text-gray-800">$<%= fullProducts.product_price * proId.quantity %></p>
+              
               </div>
               
             </div>
           </di>
+            <%subTotalPrice += fullProducts.product_price * size  %> 
+            
           <%}%>
           <%})%>
           <% }) %>
@@ -91,16 +94,30 @@
 
               <div class="flex justify-between w-full">
                 <p class="text-base  leading-4 text-gray-800">Subtotal</p>
-                <p class="text-base leading-4 text-gray-600">$ <%= orderDetails.totalAmount %></p>
+                <p class="text-base leading-4 text-gray-600">$ <%= subTotalPrice %></p>
               </div>
               <div class="flex justify-between items-center w-full">
                 <p class="text-base  leading-4 text-gray-800">Shipping charge</p>
                 <p class="text-base  leading-4 text-gray-600">$10.00</p>
               </div>
+              <div class="flex justify-between items-center w-full">
+                <p class="text-base  leading-4 text-gray-800">Discount</p>
+               
+                <%let copVal=0 %>
+                  <% if(couponData){ %>
+                    <%if(couponData.discountType == 'percentage'){%>
+                      <% copVal = couponData.couponValue + '%' %>
+                      <% }else{ %>
+                        <%copVal =couponData.couponValue%>
+                        <% } %>
+                    <%}%> 
+                 
+                <p class="text-base  leading-4 text-gray-600"><%=copVal%></p>
+              </div>
             </div>
             <div class="flex justify-between items-center w-full">
               <p class="text-base  font-semibold leading-4 text-gray-800">Total</p>
-              <p class="text-base  font-extrabold underline leading-4 text-gray-600">$<%= orderDetails.totalAmount + 10%></p>
+              <p id="totalAmount"  class="text-base font-extrabold underline leading-4  text-gray-600">$<%= orderDetails.totalAmount %></p>
             </div>
           </div>
           
@@ -154,22 +171,30 @@
 
           <div>
             
-            <p class="text-base font-semibold text-center py-14 md:text-left text-gray-800">
+            <p class="text-base font-semibold text-center py-8 md:text-left text-gray-800">
               Order Status :
               <% if (orderDetails.Status == 'DEVLIVERED') { %>
                 <span class="text-green-500"> <%= orderDetails.Status %> </span>
               <% } else { %>
                 <span class="text-red-300"> <%= orderDetails.Status %> </span>
               <% } %>
-            </p>
-               <% if( orderDetails.Status ==  "CANCEL" || orderDetails.Status ==  "DEVLIVERED"){ %>
-              <% }else{ %>
-            <div class="">
-              <button id="" data-pro-id="" data-ord-id="<%= orderDetails._id%>" class="bg-red-500 text-white font-bold py-2 px-4 rounded inline-block">
-                CANCEL ORDER
-              </button>
-            </div>
-            <% } %>
+            </p>  
+            <% if(orderDetails.Status == "CANCEL" ){ %>
+
+                <% }else if( orderDetails.Status ==  "DEVLIVERED"){ %>
+                  <button id="" value="RETURN" data-pro-id="" data-ord-id="<%= orderDetails._id%>" class="bg-red-500 text-white font-bold py-2 px-4 rounded inline-block">
+                    RETURN ORDER
+                    </button>
+              <% }else if( orderDetails.Status ==  "RETURN"){ %>
+          
+            <% }else{%>
+              
+              <div class="">
+                <button id="" value="CANCEL" data-pro-id="" data-ord-id="<%= orderDetails._id%>" class="bg-red-500 text-white font-bold py-2 px-4 rounded inline-block">
+                  CANCEL ORDER
+                </button>
+              </div>
+             <% } %>
 
           </div>
           
@@ -188,24 +213,27 @@
         const buttons = document.querySelectorAll("button");
         const popupModal = document.getElementById('popup-modal');
         const cancelBtn = document.getElementById('cancelBtn');
-
+        const totalAmount = document.getElementById('totalAmount')
+        let amount = totalAmount.textContent
         buttons.forEach(button => {
-
         button.addEventListener("click",()=>{
-          console.log("hau");
+          let proId = button.dataset.proId
+        let ordId = button.dataset.ordId
         popupModal.classList.remove('hidden');
         cancelBtn.addEventListener("click",()=>{
-          popupModal.classList.add('hidden');
-          const proId = button.dataset.proId
-        const ordId = button.dataset.ordId
-        console.log("hia");
+          console.log(button.value);
+          const statusValue = button.value
+
+
+        
+            popupModal.classList.add('hidden');
         fetch('/orderCancel', {
          method: 'POST',
          redirect: 'follow',
          headers: {
            'Content-Type': 'application/json'
          },
-         body: JSON.stringify({proId ,ordId})
+         body: JSON.stringify({proId ,ordId ,amount ,statusValue})
        })
        .then(res=>res.json())
        .then(data => {
@@ -213,6 +241,27 @@
                window.location.reload()
             }})
        .catch(err => console.log(err))
+       
+         
+      //       const a = totalAmount.value
+        
+      //       fetch('/walletReturn', {
+      //    method: 'POST',
+      //    redirect: 'follow',
+      //    headers: {
+      //      'Content-Type': 'application/json'
+      //    },
+      //    body: JSON.stringify({proId ,ordId ,amount})
+      //  })
+      //  .then(res=>res.json())
+      //  .then(data => {
+      //   if(data.success){
+      //          window.location.reload()
+      //       }})
+      //  .catch(err => console.log(err))
+
+          
+         
         })
        
         })

@@ -4,13 +4,15 @@ const sendOtp = require("../../helper/otp");
 const productDB = require("../../models/admin/productModel");
 const orderDB = require("../../models/user/orderModel");
 const addressDb = require("../../models/user/addressModel");
-const cartDb = require("../../models/admin/catagoryModel")
+const cartDb = require("../../models/admin/catagoryModel");
+const { some } = require("lodash");
 
 //test for checking purpose
 const a = async (req, res) => {
-  const id = "656045f2cc6f67b592c2fcc9";
-  const user = await productDB.findById(id);
-  res.render("user/a", { user });
+  const expirationTime = new Date();
+  expirationTime.setMinutes(expirationTime.getMinutes() + 10);
+  console.log(expirationTime);
+  res.render("user/a",);
 };
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++   HOME   ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -87,7 +89,8 @@ const usersignup = async (req, res) => {
       await added.save(); //saving
       route = "otp"
       req.session.otp = false
-      res.redirect("/otp");
+      req.session.otpName = data.email
+      res.redirect("/otp");  
     }
   } catch (error) {
     console.log(error);
@@ -172,7 +175,7 @@ const userOtp = async (req, res) => {
     if (check) {
       if (req.session.otp) {
         console.log(req.session.otp);
-        res.redirect("/forgetCheck");
+        res.redirect("/forgetCheck");  
       }else{
         res.redirect("/");
       }
@@ -187,14 +190,28 @@ const userOtp = async (req, res) => {
   }
 };
 
+const resendOtp = async(req,res)=>{
+  const generateOTP = () => {
+    // generating a 6 digit otp number
+    return Math.floor(1000 + Math.random() * 900000); // Generate a 6-digit OTP
+  };
+  let otp = generateOTP();
+  console.log(otp);
+  const name = req.session.otpName 
+  console.log(name);
+   await userDB.updateOne({email:name},{otp:otp})
+ res.redirect("/otp");
+
+}
+
 // ++++++++++++++++++++++++++++++++++++++++++++++++    SHOP   ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 const shop = async (req, res) => {
   try {  
-          const option1 = req.body.option1 ?? ''
-          const option2 = req.body.option2 ?? ''
-          console.log(option1);
+          const sort = req.body.option ?? ''
+          // const sort2 = req.body.option2 ?? ''
           let data 
+          const filter = req.body.selectOption ??''
     const page = parseInt(req.query.page) || 1;
     const limit = 6;
     const startIndex = (page - 1) * limit;
@@ -204,35 +221,37 @@ const shop = async (req, res) => {
     const maxPage = Math.ceil(totalProducts / limit);
     if (page > maxPage) {
       return res.redirect(`/product?page=${maxPage}`);
-      console.log('k');
     }
    
-    if(option1 == 1 ){
-      console.log('jai');
-       data = await productDB.find().limit(limit)
+    let sortObj = {}
+    sortObj.product_price = parseInt(sort)
+
+    if(sort && filter){
+      data = await productDB.find({product_category : filter},{ blocked: false}).limit(limit)
       .skip(startIndex)
-      .sort({product_price:1})
+      .sort(sortObj)
+      .exec();
+    }
+     else if(sort ){
+       data = await productDB.find({ blocked: false}).limit(limit)
+      .skip(startIndex)
+      .sort(sortObj)
       .exec();
       }
-      else if(option2 == -1 ){
-        console.log('hi');
-        data = await productDB.find().limit(limit)
-       .skip(startIndex)
-       .sort({product_price:-1}) 
-       .exec();
+       else if(filter){
+        data = await productDB.find({product_category : filter},{ blocked: false}).limit(limit)
+        .skip(startIndex) 
+        .exec();
        }
       else{
-         data = await productDB.find().limit(limit)
+         data = await productDB.find({ blocked: false}).limit(limit)
         .skip(startIndex) 
         .exec();
       }
 
 
-
-
-
     const cartData = await cartDb.find();
-    res.render("user/shop.ejs", { data ,cartData, page,maxPage,});
+    res.render("user/shop.ejs", { data ,cartData, page,maxPage,filter});
   } catch (error) {   
     console.error("Error creating user:", error);
     return res.status(500).send("fetch error:check once more");
@@ -315,12 +334,18 @@ user_img_url: img == "" ? data.user_img_url : img ,
 }
 
 const changePassword = (req,res)=>{
-  if(req.session.invalid){
-    req.session.invalid = false;
-    res.render("user/changePassword",{message : req.session.errMsg})
-  }else{
-    res.render("user/changePassword",{message : ""})
+  try {
+    if(req.session.invalid){
+      req.session.invalid = false;
+      res.render("user/changePassword",{message : req.session.errMsg})
+    }else{
+      res.render("user/changePassword",{message : ""})
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
   }
+  
 }
 
 
@@ -368,6 +393,7 @@ module.exports = {
   home,
   otp,
   userOtp,
+  resendOtp,
   shop,
   product,
   user,

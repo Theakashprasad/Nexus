@@ -1,10 +1,13 @@
 const catagoryDB = require("../../models/admin/catagoryModel");
 const productDB = require("../../models/admin/productModel");
 
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++PRODUCT MANAGEMENT++++++++++++++++++++++++++++++++++++++++++++++++++
+
 //render product page
 const product = async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1;
+    const page = parseInt(req.query.page) || 1;  //pagenation caode
     const limit = 4;
     const startIndex = (page - 1) * limit;
 
@@ -12,10 +15,10 @@ const product = async (req, res) => {
 
     const maxPage = Math.ceil(totalProducts / limit);
     if (page > maxPage) {
-      return res.redirect(`/product?page=${maxPage}`);
+      return res.redirect(`/product?page=${maxPage}`);  //checkig the page size
     }
 
-    const data = await productDB.find() .limit(limit)
+    const data = await productDB.find().limit(limit)  //limit
     .skip(startIndex)  
     .exec();//fetching data form DB which are only blocked === false
     res.render("admin/product", { data, page , maxPage, });
@@ -28,8 +31,8 @@ const product = async (req, res) => {
 //render add product page
 const addProduct = async (req, res) => {
   try {
-    const displayCategory = await catagoryDB.find();
-    res.render("admin/addProduct", { displayCategory });
+    const displayCategory = await catagoryDB.find();   //geting data 
+    res.render("admin/addProduct", { displayCategory });  //rendering the data
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
@@ -38,12 +41,12 @@ const addProduct = async (req, res) => {
 
 const addProductPost = async (req, res) => {
   try {
-    const imagePaths = req.files.map((file) => {
+    const imagePaths = req.files.map((file) => {  //extracting the full img name
       return file.path.substring(6);
     });
     const { productName, description, category, price, quantity1,quantity2,quantity3,quantity4, brand } =
-      req.body;
-    const data = new productDB({ 
+      req.body; //requesting the data from the form data
+    const data = new productDB({    //adding in to the product db
       product_name: productName,
       product_description: description,
       product_category: category,
@@ -62,9 +65,9 @@ const addProductPost = async (req, res) => {
 
 const editProduct = async (req, res) => {
   try {
-    const userId = req.params.userId;
-    const displayCategory = await catagoryDB.find();
-    const user = await productDB.findById(userId);
+    const userId = req.params.userId;   //geting the id
+    const displayCategory = await catagoryDB.find();   //data of the prouct
+    const user = await productDB.findById(userId);    //data of the product by userid
     res.render("admin/editProduct", { displayCategory, user });
   } catch (error) {
     console.error(error);
@@ -74,20 +77,20 @@ const editProduct = async (req, res) => {
 
 const editProductPost = async (req, res) => {
   try {
-    const userId = req.params.userId;
-    const data = await productDB.findById(userId);
-    let image;
+    const userId = req.params.userId;  //requesting userid through params
+    const data = await productDB.findById(userId);   //geting the data through userid
+    let image;  //cheking the img undefined or not
     if (req.file === undefined) {
       //if the image does not added
       image = "";
     } else {
       //image added
-      image = req.file.path.substring(6);
+      image = req.file.path.substring(6);  //cuting the image name
     }
     // console.log(image);
     const { productName, description, category, price,quantity1,quantity2,quantity3,quantity4, brand } =
-      req.body;
-    const user = await productDB.findByIdAndUpdate(
+      req.body;   //requesting the data from the form data
+    const user = await productDB.findByIdAndUpdate(   //updateing the data 
       userId,
       {
         product_name: productName == "" ? data.product_name : productName,
@@ -110,11 +113,11 @@ const editProductPost = async (req, res) => {
 
 const deleteProduct = async (req, res) => {
   try {
-    const userId = req.params.userId;
+    const userId = req.params.userId;   //delting product 
     let { blocked } = req.body;
     blocked = JSON.parse(blocked);
     console.log(blocked);
-    const deletete = await productDB.updateOne(
+    const deletete = await productDB.updateOne(  //make it to true or false
       { _id: userId },
       { blocked: !blocked }
     ); //updates blocked false to true

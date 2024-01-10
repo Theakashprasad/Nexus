@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin coupon</title>
+  <link rel="stylesheet" href="dist/output.css">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.x.x/dist/alpine.min.js" defer></script>
+</head>
+
+<body class="bg-gray-100 font-sans">
+
+    <style>
+        .hide{
+          display: none;
+        }
+    </style>
+       <%- include("../partials/adminNavBar.ejs") %>
+       <%- include("../partials/sidebar.ejs") %>  
+       <div class="p-4 sm:ml-64">
+        <div class="p-4 border-2 border-gray-200  dark:border-gray-700 mt-14">
+      
+    <main>
+
+      <h2 class="text-2xl font-semibold ml-20 mb-10">Coupon Management</h2>
+
+<!-- main model for add coupon -->
+<div class="create-section">
+  <button  class="bg-blue-400 p-2 rounded m-4 text-white font-bold  " id="create-coupon-btn">create coupon</button>
+ <div class="openCoupon hidden  fixed top-0 left-0 right-0 z-50 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] ">
+ <p class="absolute bg-gray-900 h-full w-full opacity-80"></p>
+   <div class="fixed inset-0 flex items-center justify-center">
+     <!-- Modal content -->
+     <div class="relative  bg-white rounded-lg shadow dark:bg-gray-700 w-[500px]">
+       <button type="button" 
+         class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white close-coupon-Box"
+         data-modal-hide="authentication-modal">
+         <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+             d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+         </svg>
+        
+       </button>
+       <div class="px-6 py-6 lg:px-8">
+         <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Create Coupon</h3>
+
+         <form class="space-y-6" action="" method="" onsubmit="return validateForm()">
+          <div>
+            <label for="coupon-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Coupon Name</label>
+            <input type="text" id="couponName" oninput="nameValidation()" name="couponName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
+            <p id="nameError" class="text-red-500 text-xs"></p>
+          </div>
+        
+          <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" id="couponTypeTitle">Coupon Value</label>
+          <input type="text" id="couponValue" oninput="CouponValue()" name="couponValue" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
+          <span id="valueError" class="errorMsg text-red-500"></span>
+
+          <p class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Discount Type:</p>
+          <input type="radio" id="percentage" name="discountType" value="percentage" onchange="validateForm()">
+          <label for="percentage">Percentage</label>
+          <input type="radio" id="fixed" name="discountType" value="fixed" onchange="validateForm()">
+          <label for="fixed">Fixed</label>
+        
+          <label for="couponMinimumPurchase" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Minimum Purchase</label>
+          <input type="text" id="couponMinimumPurchase" name="couponMinimumPurchase" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
+        
+          <label for="validFrom" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Valid from</label>
+          <input type="date" id="validFrom" name="validFrom" value="<%= new Date().toISOString().slice(0, 10) %>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
+        
+          <label for="validTo" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Valid to</label>
+          <input type="date" id="validTo" name="validTo" value="<%= new Date().toISOString().slice(0, 10) %>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
+          <span class="alreadyExist text-red-600"></span>
+        
+          <div class="flex justify-end">
+            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none">
+              Create Coupon
+            </button>
+          </div>
+        </form>
+  
+       </div>
+     </div>
+   </div>
+ </div>
+</div>
+
+<!-- view coupon -->
+<section class="flex justify-center items-center">
+  <div class="container ">
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <div class="flex items-center justify-between py-4 bg-white  p-4">
+        <div class="flex items-center justify-between">
+    
+        </div>
+        <label for="table-search" class="sr-only">Search</label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400 " aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+            </svg>
+          </div>
+          <input id="userSearch"
+            class="block p-2 pl-10 text-sm  border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Search for users">
+        </div>
+      </div>
+    <div class="w-full overflow-x-auto">
+      <table class="min-w-full">
+
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white border rounded shadow-lg">
+      <thead class="bg-gray-100 ">
+        <tr>
+          <th class="py-3 px-6 text-left">COUPON PRICE</th>
+          <th class="py-3 px-6 text-left">MINIMUM PURCHASE</th>
+          <th class="py-3 px-6 text-left">COUPON CODE</th>  
+          <th class="py-3 px-6 text-left">VALID FROM</th>
+          <th class="py-3 px-6 text-left">VALID TO</th>
+          <th class="py-3 px-6 text-left">ACTION</th>
+        </tr>
+      </thead>
+      
+    <tbody>
+     <% coupondata.forEach((coupon)=>{ %>
+<tr>
+      <td class="px-6 py-4">
+        <div class="font-normal text-gray-500 ">
+          <%= coupon.couponValue %>
+        </div>
+  
+      </td>
+      <td class="px-6 py-4">
+        <div class="font-normal text-gray-500 ">
+          <%= coupon.minimumPurchase %>
+        </div>
+  
+      </td>
+      <td class="px-6 py-4">
+        <div class="font-normal userName text-gray-500 ">
+          <%= coupon.couponName %>
+        </div>
+  
+      </td>
+      <td class="px-6 py-4">
+        <div class="font-normal text-gray-500 ">
+          <%= coupon.validFrom.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) %>
+        </div>
+  
+      </td>
+      <td class="px-6 py-4">
+        <div class="font-normal text-gray-500 ">
+          <%= coupon.validTo.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) %>
+        </div>
+  
+      </td>
+      <td class="px-6 py-4">
+        <div class="flex gap-3"> 
+        <div class="font-normal text-gray-500 ">
+         <P class="coupon-edit" ><a href="/admin/editCoupon/<%=coupon._id%>"> <i class="fas fa-edit"></i></a></P>
+        </div>
+        <div class="font-normal text-gray-500 ">
+          <P class="coupon-edit" ><a href="/admin/deleteCoupon/<%=coupon._id%>" id="deleteCouponLink"> <i class="fas fa-trash-alt"></i></a></P>
+         </div>
+        </div>
+      </td>
+     </tr>
+     <% }) %>
+    </tbody>
+    </table>
+  </div>
+
+      </table>
+    </div>
+    </div>
+
+  </div>
+</section>     
+    </main>
+
+      <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js"></script>
+      <!-- font-awesome -->
+      <script src="https://kit.fontawesome.com/72e1a8d80d.js" crossorigin="anonymous"></script>
+
+      <script src="/js/search.js"></script>
+      <script src="/js/createCoupon.js"></script>
+
+
+<script>
+  
+const createBtn=document.getElementById('create-coupon-btn')
+const createCouponBox=document.querySelector('.openCoupon')
+const closeCouponBox=document.querySelector('.close-coupon-Box')
+
+const validateMsg=document.querySelector('.errorMsg')
+const errorMsgElementAlreadyExist=document.querySelector('.alreadyExist')
+
+// createCouponBox.style.display="none"
+
+createBtn.addEventListener('click',()=>{
+  createCouponBox.classList.remove('hidden')
+// createCouponBox.style.display='block'
+  console.log("hello");
+})
+
+
+closeCouponBox.addEventListener('click',()=>{
+  createCouponBox.classList.add('hidden')
+  // createCouponBox.style.display="none" 
+})
+
+function validateForm(){
+ 
+  const discountType=document.querySelector('input[name=discountType]:checked').value 
+const couponValue=document.querySelector('input[name=couponValue]').value
+  if(discountType==='percentage'){
+    console.log("hello");
+    if(couponValue>100){
+validateMsg.innerText="coupon value should below 100"
+return false
+    }
+  }else{
+    return true
+  }
+
+}
+
+function nameValidation() {
+    const name = document.getElementById("couponName").value.trim();
+    const nameError = document.getElementById("nameError");
+    const onlyLettersRegex = /^[a-zA-Z]+$/;
+
+    if (name === '' ) {
+        nameError.innerText = "Can not add space";
+        return false; // Indicate validation failure
+    
+ }  else if(name.length > 10 ){
+        nameError.innerText = "name should exceed above 10";
+        return false; // Indicate validation failure
+    }
+    else {
+        nameError.innerText = ""; // Clear error message
+        return true; // Indicate validation success
+    }
+}
+  
+function CouponValue() {
+      const name = document.getElementById("couponValue").value.trim();
+      const nameError = document.getElementById("valueError");
+  
+      if (name === '' ) {
+          nameError.innerText = "Can not add space";
+          return false; // Indicate validation failure
+      }else if(isNaN(name)){
+        nameError.innerText = "should be number"
+          }
+      else {
+          nameError.innerText = ""; // Clear error message
+          return true; // Indicate validation success
+      }
+  }
+
+
+function submitForm() {
+  const couponName = document.getElementById('couponName').value;
+  const discountType = document.querySelector('input[name="discountType"]:checked').value;
+  const couponValue = document.getElementById('couponValue').value;
+  const couponMinimumPurchase = document.getElementById('couponMinimumPurchase').value;
+  const validFrom = document.getElementById('validFrom').value;
+  const validTo = document.getElementById('validTo').value;
+
+  const dataForm={
+     couponName,
+     discountType,
+     couponValue,
+     couponMinimumPurchase,
+     validFrom,
+     validTo
+  }
+
+  fetch("/admin/couponPost",{
+    method:'POST',
+    body: JSON.stringify(dataForm),
+    headers:{
+      'Content-Type': 'application/json',
+    }
+  
+   }).then((response)=>{
+    if(response.ok){
+      window.location.href = '/admin/coupon'
+    }else if(response.status===400){
+      response.json().then((data)=>{
+        errorMsgElementAlreadyExist.textContent = data.error; 
+      })
+
+    }
+   }).catch((error)=>console.log("errro fetching creating new coupon",error))  
+}
+
+//fetch 
+const couponForm=document.querySelector('form')
+
+couponForm.addEventListener('submit',async(e)=>{
+  console.log('haifbdhj');
+       e.preventDefault()
+if(!validateForm){
+return ;
+}
+submitForm()
+})
+</script>
+<script>
+  document.getElementById('deleteCouponLink').addEventListener('click', function (event) {
+      event.preventDefault(); // Prevents the default behavior (e.g., navigating to the href)
+
+      // Add your custom logic here
+      var alertMessage = "Are you sure you want to delete this coupon?";
+      alert(alertMessage);
+
+      var href = event.currentTarget.getAttribute('href');
+      // Proceed with the link navigation regardless of the user's response
+      window.location.href = href;
+  });
+</script>
+<script>
+  const changeColour =document.getElementById("f");
+  changeColour.style.backgroundColor =  "#000000";
+</script>
+</body>
+</html>
+
+
+
+

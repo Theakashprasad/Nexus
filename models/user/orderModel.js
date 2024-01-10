@@ -30,6 +30,10 @@ const orderSchema = new Schema({
         type: Number,
         required: true
     },
+    discount:{
+        type: Schema.Types.ObjectId,
+        ref: 'coupon',
+    },
     shippingAddress: {
         type: Schema.Types.ObjectId,
         ref: 'address',
@@ -41,7 +45,7 @@ const orderSchema = new Schema({
     },
     orderDate: {
         type: Date,
-        default: Date.now
+        default: Date.now()
     },
 });
 

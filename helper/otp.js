@@ -9,8 +9,8 @@ const sendOTPByEmail = async (email, otp) => {
       port: 465,
       secure: true, //
       auth: {
-        user: "akashprasadyt123@gmail.com",
-        pass: "quuv atrp tguy xchw",
+        user: process.env.OTP_USERNAME,
+        pass: process.env.OTP_PASS,
       },
     });
     
@@ -28,6 +28,7 @@ const sendOTPByEmail = async (email, otp) => {
       const info = await transporter.sendMail(mailOptions)
       console.log('Email sent:' + info.response)
     } catch (err) {
+
       console.log(err);
       res.json("Internal server error")
     }

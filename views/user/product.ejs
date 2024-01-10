@@ -7,6 +7,9 @@
 <link rel="stylesheet" href="/dist/output.css">
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.rawgit.com/igorlino/elevatezoom-plus/1.1.6/src/jquery.ez-plus.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">  
+
 <style>
   .hidden {
     display: none;
@@ -90,25 +93,25 @@
               <div class="grid grid-cols-4 gap-4">
                 
                   <label class="group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 cursor-pointer <%= user.size[0] === 0 ? ' border-red-500 bg-gray-200 text-gray-400' : 'bg-gray-400 text-gray-900 ' %> shadow-sm">
-                  <input  type="radio" name="size-choice" value="0" class="sr-only" aria-labelledby="size-choice-0-label"   <%=user.size[0]===0 ? 'disabled="disabled"':'' %> >
+                  <input  type="radio" name="size-choice" value="0" class="sr-only" aria-labelledby="size-choice-0-label"   <%=user.size[0]<=0 ? 'disabled="disabled"':'' %> >
                   <span id="size-choice-0-label">S</span>
                   <span class="pointer-events-none absolute -inset-px rounded-md" aria-hidden="true"></span>
                 </label>
 
                 <label class="group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 cursor-pointer <%= user.size[1] === 0 ? ' border-red-500 bg-gray-200 text-gray-400' : 'bg-gray-400 text-gray-900 ' %> shadow-sm">
-                  <input type="radio" name="size-choice" value="1" class="sr-only" aria-labelledby="size-choice-1-label"<%=user.size[1]===0 ? 'disabled="disabled"':'' %> >
+                  <input type="radio" name="size-choice" value="1" class="sr-only" aria-labelledby="size-choice-1-label"<%=user.size[1]<=0 ? 'disabled="disabled"':'' %> >
                   <span id="size-choice-1-label">M</span>
                   <span class="pointer-events-none absolute -inset-px rounded-md" aria-hidden="true"></span>
                 </label>
 
                 <label class="group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 cursor-pointer <%= user.size[2] === 0 ? ' border-red-500 bg-gray-200 text-gray-400' : 'bg-gray-400 text-gray-900 ' %> shadow-sm">
-                  <input type="radio" name="size-choice" value="2" class="sr-only" aria-labelledby="size-choice-2-label" <%=user.size[2]===0 ? 'disabled="disabled"':'' %> >
+                  <input type="radio" name="size-choice" value="2" class="sr-only" aria-labelledby="size-choice-2-label" <%=user.size[2] <=0 ? 'disabled="disabled"':'' %> >
                   <span id="size-choice-2-label">L</span>
                   <span class="pointer-events-none absolute -inset-px rounded-md" aria-hidden="true"></span>
                 </label>
 
                 <label class="group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 cursor-pointer <%= user.size[3] === 0 ? ' border-red-500 bg-gray-200 text-gray-400' : 'bg-gray-400 text-gray-900 ' %> shadow-sm">
-                  <input type="radio" name="size-choice" value="3" class="sr-only" aria-labelledby="size-choice-3-label" <%=user.size[3]===0 ? 'disabled="disabled"':'' %> >
+                  <input type="radio" name="size-choice" value="3" class="sr-only" aria-labelledby="size-choice-3-label" <%=user.size[3] <= 0 ? 'disabled="disabled"':'' %> >
                   <span id="size-choice-3-label">XL</span>
                   <span class="pointer-events-none absolute -inset-px rounded-md" aria-hidden="true"></span>
                 </label>
@@ -146,14 +149,15 @@
     </div>
     </div>
     </div> -->
-    <div class="mb-4 lg:mb-0">
+    <!-- wishlist -->
+    <!-- <div class="mb-4 lg:mb-0">
     <button class="flex items-center justify-center w-full h-10 p-2 mr-4 text-gray-700 border border-gray-300 lg:w-11 hover:text-gray-50 dark:text-gray-200 dark:border-blue-600 hover:bg-blue-600 hover:border-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500 dark:hover:border-blue-500 dark:hover:text-gray-100">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class=" bi bi-heart" viewBox="0 0 16 16">
     <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z">
     </path>
     </svg>
     </button>
-    </div>
+    </div> -->
     <a  href="#" data-product-id="<%=user._id%>" id="firstLink" onclick="toggleLinks()" class="addToCart w-full px-4 py-3 text-center text-blue-600 bg-blue-100 border border-blue-600  dark:text-gray-900 dark:border-gray-900 dark:bg-gray-300 hover:bg-blue-700 hover:text-gray-900 dark:hover:bg-blue-300 lg:w-1/2 rounded-xl" >
     ADD TO Cart
     </a>
@@ -210,6 +214,7 @@
     if (firstLink.style.display !== 'none') {
       firstLink.style.display = 'none';
       secondLink.style.display = 'inline';
+      
     } 
   } 
 </script>
@@ -244,7 +249,7 @@ sizeRadioButtons.forEach(button => {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            productId,selectedSize
+            productId,selectedSize 
           })
         })
         .then(res => {
@@ -261,6 +266,27 @@ sizeRadioButtons.forEach(button => {
            }
         })
         .catch(err => console.log(err))
+
+
+        
+      Toastify({
+          text: "Added to Cart",
+          duration: 600,
+          destination: "https://github.com/apvarun/toastify-js",
+          newWindow: true,
+          close: true,
+          gravity: "top", // `top` or `bottom`
+          position: "center", // `left`, `center` or `right`
+          stopOnFocus: true, // Prevents dismissing of toast on hover
+          style: {
+            background: " #4CAF50  ",
+          },
+          onClick: function(){
+            alert("Toast clicked!");
+          }
+        }).showToast();
+        
+
 
     })
   })

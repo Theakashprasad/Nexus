@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-require('dotenv').config()
+// require('dotenv').config()
 // ++++++++++++++++++++++++++++++++++++++++++++++++    DATA BASE CONNECTION  ++++++++++++++++++++++++++++++++++++++++++++++++++
 const url=process.env.DB_CONNECT
 mongoose.connect(url).then(()=>{

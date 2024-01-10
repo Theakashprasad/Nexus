@@ -24,10 +24,21 @@ const cart = async (req, res) => {
       }
     ])
     checkUser = a ?? ''
-    // console.log('b4 cart data')
-    // console.log(JSON.stringify(checkUser,null,2));
+    
+    // console.log(JSON.stringify(checkUser[0].cartProduct,null,2));
     const productdetails = await productDB.find()
-    res.render("user/cart.ejs", { checkUser, productdetails });
+    let stock = false
+     checkUser.forEach((prod)=> {   
+      prod.products.size.forEach((val , idx)=>{  
+      if (val !== 0) { 
+      if(prod.cartProduct[0].size[idx] == 0 ){ 
+          stock = true
+      }
+      }
+    })
+    })
+console.log(stock);
+    res.render("user/cart.ejs", { checkUser, productdetails ,stock});
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");

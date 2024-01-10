@@ -37,7 +37,13 @@ const logInSchema = new mongoose.Schema(
     },    
      addressId:{
       type: mongoose.Schema.Types.ObjectId,
-   } 
+   } ,
+   coupon:[
+    {
+      type:String
+    }
+  ]
+  
   },
   {
     timestamps: true,

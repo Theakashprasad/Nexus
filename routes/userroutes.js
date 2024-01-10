@@ -9,6 +9,8 @@ const checkoutController = require("../controllers/user/checkoutController");
 const addressController = require("../controllers/user/addressController");
 const orderController = require("../controllers/user/orderController");
 const forgetController = require("../controllers/user/forgetController");
+const walletController = require("../controllers/user/walletController");
+const wishlistController = require("../controllers/user/wishlistController");
 
 
 //FOR CHECKING
@@ -24,6 +26,7 @@ router.post("/usersignup", usercontroller.usersignup);
 //OTP
 router.get("/otp", usercontroller.otp);
 router.post("/userOtp", usercontroller.userOtp);
+router.get('/resendOtp',usercontroller.resendOtp)
 
 //LOGIN
 router.get("/login", usercontroller.login);
@@ -76,8 +79,15 @@ router.post("/changePasswordPost",usercontroller.changePasswordPost)
 
 router.get("/forgetPassword",forgetController.forgetPassword)
 router.post("/forgetPasswordPost",forgetController.forgetPasswordPost)
-router.get("/forgetCheck",forgetController.forgetCheck)
+router.get("/forgetCheck",forgetController.forgetCheck) 
 router.post("/forgetCheckPost",forgetController.forgetCheckPost)
+
+router.get('/wallet',sessionMiddleware,walletController.wallet)
+router.post('/walletReturn',walletController.walletReturn);
+
+router.get("/wishlist",sessionMiddleware,wishlistController.wishlist);
+router.post("/wishlistPost",wishlistController.wishlistPost)
+router.get('/wishlistRemove/:proId',wishlistController.wishlistRemove)
 
 
 module.exports = router;

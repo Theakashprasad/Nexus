@@ -7,6 +7,7 @@ const admincontroller = require("../controllers/admin/admincontroller"); // lofi
 const catagorycontroller = require("../controllers/admin/catagoryController"); // catagory
 const productController = require("../controllers/admin/productController"); //product
 const orderController = require("../controllers/admin/orderController");
+const couponController = require('../controllers/admin/couponController');
 
 router.get("/", admincontroller.login);
 router.post("/postLogin", admincontroller.postLogin);
@@ -58,5 +59,11 @@ router.put("/deleteProduct/:userId", productController.deleteProduct);
 router.get("/order", adminSessionMiddleware, orderController.order);
 router.get("/orderView/:ordId", orderController.orderView);
 router.post("/orderPost", orderController.orderPost);
+
+router.get('/coupon',adminSessionMiddleware,couponController.coupon);
+router.post('/couponPost',couponController.couponPost);
+router.get("/editCoupon/:copId",couponController.editCoupon);
+router.post('/editCouponPost/:copId',couponController.editCouponPost);  
+router.get('/deleteCoupon/:copId',couponController.deleteCoupon);
 
 module.exports = router;

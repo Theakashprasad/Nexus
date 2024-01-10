@@ -6,13 +6,13 @@
     <title>Document</title>
     <link rel="stylesheet" href="/dist/output.css">
 </head>
-<body>
+<body class="overflow-x-hidden">
   <%- include('../partials/navbar.ejs') %>
   <div class="shadow-lg rounded-lg py-16" >
     <table class="w-full table-fixed">
           <thead>
             <tr class="bg-gray-200">
-              <th class="w-1/6 py-4 px-6 text-left text-gray-600 font-bold uppercase">Order ID</th>
+              <th class="w-1/6 py-4 px-6 text-left text-gray-600 font-bold uppercase">Order </th>
               <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">Iteams</th>
               <th class="w-1/6 py-4 px-6 text-center text-gray-600 font-bold uppercase">Total Amount</th>
               <th class="w-1/6 py-4 px-6 text-center text-gray-600 font-bold uppercase">Payment Mode</th>
@@ -44,8 +44,7 @@
               <td class="py-4 px-6 border-b border-gray-200 text-center"><%= pro.totalAmount %></td>
               <td class="py-4 px-6 border-b border-gray-200 text-center"><%= pro.paymentMethod %></td>
               <td class="py-4 px-6 border-b border-gray-200">
-                <% const address=
-                .find(item=> item._id.equals(pro.shippingAddress)); %>
+                <% const address=addressData.find(item=> item._id.equals(pro.shippingAddress)); %>
                 <%= address.address %></td>
               <td><a href="/order/<%= pro._id %>" class="bg-blue-500 rounded text-white px-1 py-1">VIEW</a></td>
             </tr>
@@ -68,10 +67,10 @@
                   class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 focus:bg-blue-700 focus:outline-none transition duration-300 ease-in-out">
                   Next
                 </a>
-                <% } %>
-                <p class="text-gray-900 font-bold items-center  ml-5"><%= paginate.page %> out of <%= maxPage %></p>
-      
+                <% } %>      
         </div>
+        <p class="text-gray-900 font-bold flex justify-center"><%= paginate.page %> out of <%= maxPage %></p>
+
       </section>
 
       <%- include("../partials/footer.ejs") %>

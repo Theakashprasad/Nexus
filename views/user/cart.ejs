@@ -54,10 +54,13 @@
             2 : 'l',
             3 : 'xl'
           } %>
+        <!-- <%=productdetails%> -->
           <% checkUser.forEach((prod)=> { %> 
           <% prod.products.size.forEach((val , idx)=>{  %>
           <% if (val !== 0) {%>
-          <div class="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5">
+           
+
+          <div class="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5 " >
             <div class="flex w-2/5"> <!-- product -->
               <div class="w-20">
                 <img class="h-24" src="<%=prod.cartProduct[0].product_img_url[0]%>" alt="">
@@ -69,7 +72,14 @@
                 <button id="" data-remove-id="<%=prod.cartProduct[0]._id%>" data-size-ind="<%=idx%>" class="removebtd font-semibold text-left hover:text-red-500 text-gray-500 text-xs underline">Remove</button>
               </div>
             </div>
-          
+            <%if(prod.cartProduct[0].size[idx] == 0 ){%>
+              <div class="w-60 h-10 text-sm bg-light py-2 flex items-center justify-center space-x-7 rounded-lg font-bold relatives ">
+              <p class="text-red-400 underline font-semibold text-xs">OUT OF STOCK</p>
+              </div>
+                  <%}else{%>
+                
+
+   
               <!-- plus mins -->
             <div class="w-60 h-10 text-sm bg-light py-2 flex items-center justify-center space-x-7 rounded-lg font-bold relatives ">
               <!-- Minus -->
@@ -99,6 +109,10 @@
                   </div>
 
             </div>
+    
+       
+            <%}%>
+
             <!-- end -->
             <span class="text-center w-1/5 font-semibold text-sm"><%= prod.cartProduct[0].product_price%></span>
             <span class="productTotalPrice pl-10 w-1/5 font-semibold text-sm"><%= prod.cartProduct[0].product_price * val %></span>
@@ -142,7 +156,7 @@
               <span>Total cost</span>
               <span id="total">$ <%= subtotal + 10 %> </span>
             </div>
-           <% if( subtotal === 0 ) { %>
+           <% if( subtotal === 0 || stock) { %>
 
               <% }else{ %>
                 <div id="checkoutButton" class="checkoutHide">

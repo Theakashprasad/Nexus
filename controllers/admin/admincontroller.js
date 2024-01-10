@@ -1,5 +1,6 @@
 const session = require("express-session");
 const user = require("../../models/user/usermodel");
+const adminDB = require('../../models/admin/adminModel');
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++     USER LOGIN    ++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -10,25 +11,28 @@ const login =  (req, res) => {
   }else{
     console.log("hai");
     req,session.invalid  = false
+    
     res.render("admin/login",{message: ''});  
   }
 } 
 
 const postLogin = async (req, res) => {
   try {
+    const adminData = await adminDB.findOne()
+    console.log(adminData);
     const { email, password } = req.body;
     const em = "admin@gmail.com";
     const ps = "123";
-    if (email != em) {
+    if (email != adminData.name) {
       req.session.errMsg = 'WRONG NAME'
       req,session.invalid  = true
       res.redirect("/admin/")
-    } else if (password != ps) {
+    } else if (password != adminData.password) {
       req,session.invalid  = true
       req.session.errMsg = 'WRONG PASSWORD'
       res.redirect("/admin/")
     } else {
-      req.session.adminData = em ;
+      req.session.adminData = adminData.name ;
       res.redirect("/admin/user");
     }
   } catch (error) {
@@ -53,13 +57,26 @@ const logout = (req,res)=>{
 
 const userManagement = async (req, res) => {
   try {
+    const page = parseInt(req.query.page) || 1;  //pagenation caode
+    const limit = 8;
+    const startIndex = (page - 1) * limit; 
+
+    const totalProducts = await user.countDocuments();
+
+    const maxPage = Math.ceil(totalProducts / limit);
+    if (page > maxPage) {
+      return res.redirect(`/product?page=${maxPage}`);  //checkig the page size
+    }
+
     const searchQuery = req.query.search || ""; // Get the search query from the URL or set it to an empty string if not provided
     // Use a regular expression to perform a case-insensitive search
     const data = await user.find({
       name: { $regex: searchQuery, $options: "i" },
-    });
+    }).limit(limit)  //limit
+    .skip(startIndex)  
+    .exec();//fetching data form DB which are only blocked === false
     // cosole.log(searchQuery);
-    res.render("admin/user.ejs", { data, searchQuery }); //updating searching then displaying user from DB
+    res.render("admin/user.ejs", { data, searchQuery, page , maxPage, }); //updating searching then displaying user from DB
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");

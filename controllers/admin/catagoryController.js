@@ -47,7 +47,7 @@ const createCatagory = async (req, res) => {
 
 const editcatagory = async (req, res) => {
   try {
-    const userId = req.params.userId;
+    const userId = req.params.userId;   // get the id of the user
     const user = await catagoryDB.findById(userId);
     res.render("admin/editcatagory", { user });
   } catch (error) {
@@ -57,6 +57,7 @@ const editcatagory = async (req, res) => {
 };
 
 const editCatagoryPost = async (req, res) => {
+  //edit the catagory
   try {
     const { categoryName, categoryDescription, categoryPublishDate } = req.body;
     const userId = req.params.userId;
@@ -104,18 +105,7 @@ const deleteCatagory = async (req, res) => {
       { blocked: !blocked }
     ); //updates blocked false to true
 
-//  const reomveImg = await catagoryDB.find(
-//       { _id: new ObjectId(userId) },
-//       { _id: 0, category_img_url: 1 }
-//     ); //findes img data stored in DB
-//     const reomveImgId = reomveImg[0].category_img_url.substring(8); //img is in array formate its extracted
-//     const filePath = path.resolve("public", "upload");
-//     fs.unlinkSync(path.join(filePath, reomveImgId), (err) => {
-//       //used to remove img in folder
-//       if (err) {
-//         console.log(err);
-//       }
-//     });
+
 res.json({ success: true });
 
     // res.redirect("/admin/catagory");

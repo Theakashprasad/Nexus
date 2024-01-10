@@ -3,10 +3,14 @@ const userDB = require("../../models/user/usermodel")
 const bcrypt = require("bcrypt");
 
 
-
 const forgetPassword = (req,res)=>{
-
-    res.render("user/forgetPassword")
+      if(req.session.invalid){
+        req.session.invalid =false
+         message=req.session.errmsg 
+        res.render("user/forgetPassword",{message:message})
+      } else{
+        res.render("user/forgetPassword",{message:''})
+      }
 }
 const forgetPasswordPost = async (req,res)=>{
  try {
@@ -27,7 +31,10 @@ const generateOTP = () => {
    req.session.otp = true
        res.redirect("/otp");
   }else{
-     res.send("no")
+    req.session.invalid = true
+    message ='Invalid Email'
+    req.session.errmsg = message;
+    res.redirect('/forgetPassword')
   }
  }  catch (error) {
   console.error(error);
