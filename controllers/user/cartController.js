@@ -37,7 +37,7 @@ const cart = async (req, res) => {
       }
     })
     })
-console.log(stock);
+// console.log(stock);
     res.render("user/cart.ejs", { checkUser, productdetails ,stock});
   } catch (error) {
     console.error(error);
@@ -49,6 +49,7 @@ const cartPost = async (req, res) => {
   try {
     const productId = req.body.productId;
     const selectedSize =req.body.selectedSize;
+    const productPrice =req.body.productPrice;
     const userId = req.session.user._id;
     const checkUser = await cartDB.findOne({ user: userId });
     const productdetails = await productDB.find();
@@ -65,12 +66,14 @@ const cartPost = async (req, res) => {
           arr[selectedSize] = 1
           checkUser.products.push({
             product : productId,
-            size : arr 
+            size : arr ,
+            price : productPrice
           });
             checkUser.save();
       }else{
        cartSize[0].product = productId
        cartSize[0].size[selectedSize] += 1    
+       
        checkUser.save();  
       } 
     } else {
@@ -79,6 +82,7 @@ const cartPost = async (req, res) => {
         products: [   
           {
             product: productId,
+            price : productPrice
           },
         ],
       });
@@ -108,13 +112,17 @@ const updateCart = async (req, res) => {
       return value.product == productId; 
     });
     let cartSizeQnt =  a[0].size[sizeInx]
-    if (productSizeQnt <= cartSizeQnt) {
+    console.log(productSizeQnt , cartSizeQnt-1);
+    if (productSizeQnt <= cartSizeQnt) { 
+      // console.log(`a[0].size[sizeInx] = productQnt.product_qty;`)  
+      // console.log(`a[0].size[${sizeInx}] = ${productQnt.product_qty}`)
       a[0].size[sizeInx] = productQnt.product_qty;
-      userData.save();
+      await userData.save();
       res.json({stock:true})
     }else{ 
+      console.log('hai');
       a[0].size[sizeInx] = qnt;
-      userData.save();
+      await userData.save();
       res.json({stock:false})
     }
   } catch (error) {

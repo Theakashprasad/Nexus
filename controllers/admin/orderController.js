@@ -19,7 +19,8 @@ const order = async (req, res) => {
     const orderData = await orderDB.find().limit(limit)  //limiting the data
     .skip(startIndex)
     .exec();
-
+   const a = await orderDB.find()
+   console.log(a);
     const userdata = await userDB.find()  //find the data
 
     res.render("admin/order", { orderData,userdata, page, maxPage });  //rendering the page

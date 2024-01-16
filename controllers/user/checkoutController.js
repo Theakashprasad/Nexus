@@ -4,12 +4,13 @@ const cartDB = require("../../models/user/cartModel");
 const productDB = require("../../models/admin/productModel");
 const orderDB = require("../../models/user/orderModel");
 const couponDB = require('../../models/admin/couponModel');
-const Razorpay = require('razorpay');
+const Razorpay = require('razorpay'); 
 
 const checkout = async (req, res) => {
   try {
     const userId = req.session.user._id;
     const addressID = req.query.id;
+    console.log(addressID);
     req.session.address = false
     const addressColection = await addressDB.find({user:userId});
     await user.findByIdAndUpdate(
@@ -19,10 +20,12 @@ const checkout = async (req, res) => {
       },
       { new: true }
     );
+    console.log("passed first update");
+
     const userDetails = await user.findById(userId); // used to find address from the user DB
     const addressId = userDetails.addressId; // userDb ->  addressID
     const addressData = await addressDB.findById(addressId);
-    addressDetails = addressData ?? "";
+    const addressDetails = addressData ?? "";
     const a = await cartDB.aggregate([
       {
          $match : {user : userId}
@@ -112,13 +115,22 @@ const confirmation = async (req,res)=>{
             const ordId = data.notes.orderId 
             const copId = data.notes.copId 
             const addressId = await user.findById(userId)
-            
+            const addresData = await addressDB.findById(addressId.addressId) 
+
             const orderCreate = new orderDB({
               user: userId,
               products: cartData.products,
               totalAmount: totalAmount,
               discount : copId,
-              shippingAddress: addressId.addressId,
+              shippingAddress: {
+                full_name: addresData.full_name,
+                address:addresData.address,
+                city: addresData.city,
+                state: addresData.state,
+                zipcode: addresData.zipcode,
+                country: addresData.country,
+                phone: addresData.phone
+            },
               paymentMethod: "ONLINE", 
             });
             await orderCreate.save();
@@ -144,10 +156,53 @@ const confirmation = async (req,res)=>{
     }
 };
 
+const coupon =async(req,res)=>{
+  try {
+  
+    const copValue = req.body.selectCpn ?? ''
+    const price = req.body.price
+    let copTotalPrice =0
+    let message= ''
+    let disPrice = 0
+    const copData = await couponDB.findOne({
+      couponName: copValue,
+      minimumPurchase: { $lte: price }
+    });
+   console.log(copData);
+    if(copData){
+      if(copData.discountType == 'percentage'){
+        copTotalPrice = Math.abs(((price * copData.couponValue )/100)-price)
+         message = 'Copon offer '+copData.couponValue+'% discont to this product'
+         disPrice = '-'+(price * copData.couponValue )/100
+  }else{ 
+    copTotalPrice =  Math.floor(Math.abs(copData.couponValue - price));
+    console.log(copTotalPrice);
+     message = 'Copon offer '+copData.couponValue+'$ discont to this product'
+     disPrice = '-'+copData.couponValue
+   }   
+      res.json({pro:true,copTotalPrice,message,disPrice})
+    }else{
+      message = 'Coupon has expired'    
+      res.json({pro:false , message })
+    }
+  } catch (error) {
+    console.error('Error placing order:', error);
+    res.status(500).json({ success: false, message: 'Internal Server Error ' });
+}
+ 
+}
+
+ 
+const checkoutFalure = (req,res)=>{ 
+  res.render("user/checkoutFailure.ejs")
+}
+
 module.exports = {
   checkout,
   checkoutPost,
   checkoutComplete,
   razorpayPost,
-  confirmation
+  confirmation,
+  coupon,
+  checkoutFalure
 };

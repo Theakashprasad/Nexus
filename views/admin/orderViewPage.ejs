@@ -14,13 +14,13 @@
   
     <div class="flex justify-start item-start space-y-2 flex-col">
       <h1 class="text-3xl  lg:text-2xl font-semibold leading-7 lg:leading-9 text-gray-800">ORD  <%= String(orderDetails._id).slice(19) %></h1>
-      <p class="text-base  font-medium leading-6 text-gray-600"> DATE :- <%= new Date(orderDetails.orderDate ).toISOString().slice(0, 10) %> </p>
+      <p class="text-base  font-medium leading-6 text-gray-600"> DATE :- <%= new Date(orderDetails.createdAt ).toISOString().slice(0, 10) %> </p>
     </div>
     <div class="mt-10 flex flex-col xl:flex-row jusitfy-center items-stretch w-full xl:space-x-8 space-y-4 md:space-y-6 xl:space-y-0">
       <div class="flex flex-col justify-start items-start w-full space-y-4 md:space-y-6 xl:space-y-8">
         
         <div class="flex  flex-col justify-start items-start dark:bg-gray-2  00 bg-gray-50  xl:px-8 w-full">
-      
+      <%let subTotal = 0 %>
           <% productIdData.forEach((proId)=>{ %>
                    <%proId.size.forEach((size,i)=>{%>
                              <%if(size!==0){%>
@@ -48,7 +48,7 @@
             </div>
           </div>
 
-         
+          <%subTotal = subTotal+(fullProducts.product_price * size)%>
       <p>-------------------------------------------------------------------------------------------------------------------------------------</p>
       <% } %>
       <%})%>    
@@ -61,7 +61,7 @@
             <div class="flex justify-center items-center w-full space-y-4 flex-col border-gray-200 border-b pb-4">
               <div class="flex justify-between w-full">
                 <p class="text-base  leading-4 text-gray-800">Subtotal</p>
-                <p class="text-base leading-4 text-gray-600">$ <%= orderDetails.totalAmount %></p>
+                <p class="text-base leading-4 text-gray-600">$ <%=subTotal%> </p>
               </div>
           
               <div class="flex justify-between items-center w-full">
@@ -70,8 +70,8 @@
               </div>
 
               <div class="flex justify-between items-center w-full">
-                <p class="text-base  leading-4 text-gray-800">Coupon</p>
-                <p class="text-base  leading-4 text-gray-600">Added</p>
+                <p class="text-base  leading-4 text-gray-800">Discount</p>
+                <p class="text-base  leading-4 text-gray-600"><%=orderDetails.discount%></p>
               </div>
 
             </div>
@@ -91,7 +91,7 @@
             <div class="flex justify-center w-full md:justify-start items-center space-x-4 py-8 border-b border-gray-200">
               <img src="https://i.ibb.co/5TSg7f6/Rectangle-18.png" alt="avatar" />
               <div class="flex justify-start items-start flex-col space-y-2">
-                <p class="text-base  font-semibold leading-4 text-left text-gray-800"><%=userDetails.name%></p>
+                  <p class="text-base  font-semibold leading-4 text-left text-gray-800"><%%></p>
                 <p class="text-sm  leading-5 text-gray-600">10 Previous Orders</p>
               </div>
             </div>
@@ -101,7 +101,7 @@
                 <path d="M19 5H5C3.89543 5 3 5.89543 3 7V17C3 18.1046 3.89543 19 5 19H19C20.1046 19 21 18.1046 21 17V7C21 5.89543 20.1046 5 19 5Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
                 <path d="M3 7L12 13L21 7" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
-              <p class="cursor-pointer text-sm leading-5 "><%=userDetails.email%></p>
+              <p class="cursor-pointer text-sm leading-5 "><%%></p>
             </div>
           </div>
           <div class="flex justify-between xl:h-full items-stretch w-full flex-col mt-6 md:mt-0">

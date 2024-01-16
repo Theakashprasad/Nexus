@@ -98,6 +98,7 @@ const editProductPost = async (req, res) => {
           description == "" ? data.product_description : description,
         product_category: category == "" ? data.product_category : category,
         product_price: price == "" ? data.product_price : price,
+        product_real_price : price == "" ? data.product_price : price,
         size : [quantity1==''?  data.size[0] : quantity1 , quantity2==''?  data.size[1] : quantity2 , quantity3==''?  data.size[2] : quantity3 , quantity4==''?  data.size[3] : quantity4 ],
         product_brand: brand == "" ? data.product_brand : brand,
         product_img_url: image == "" ? data.product_img_url : image,

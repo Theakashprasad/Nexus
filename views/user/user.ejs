@@ -44,7 +44,7 @@
         <!-- User Information -->
         <div class="bg-white p-8 rounded-lg shadow-md mb-8">
             <h2 class="text-xl pb-7 underline font-semibold">User Information</h2>
-            <div class="grid grid-cols-4">
+            <div class="grid grid-cols-5">
                 <div>
                     <label class="text-gray-900">Email:</label>
                     <p class="text-gray-400"><%=userDetails.email%></p>
@@ -59,6 +59,10 @@
                 </div> 
                 <div>
                     <a href="/changePassword" id="changeBtn" class="text-red-400 font-semibold   shadow-lg" >Change password</a>
+                </div> 
+                <div>
+                    <label class="text-gray-900">REFERAL CODE</label>
+                    <p class="text-gray-400 underline pl-7"><%=userDetails.referal %></p>
                 </div> 
             </div>
         </div>

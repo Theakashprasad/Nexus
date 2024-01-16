@@ -1,5 +1,7 @@
 const wishlistDB = require('../../models/user/wishlistModel');
-const productDB = require('../../models/admin/productModel')
+const productDB = require('../../models/admin/productModel');
+const cartDB = require('../../models/user/cartModel');
+const { ObjectId } = require('mongodb');
 
 const wishlist = async(req,res)=>{
     try {
@@ -7,7 +9,13 @@ const wishlist = async(req,res)=>{
     const userId = req.session.user._id
     const wishlistData = await wishlistDB.findOne({user:userId})
     const productData = await productDB.find()
-    res.render('user/wishlist.ejs',{wishlistData,productData}) 
+    let cart = await cartDB.findOne({user:userId})
+    let cartData
+    console.log(cart);
+     if(cart){
+          cartData = cart.products 
+     }
+    res.render('user/wishlist.ejs',{wishlistData,productData,cartData}) 
     }  catch (error) {
         console.error(error);
         res.status(500).send("Internal Server Error");
@@ -22,7 +30,6 @@ const wishlistPost = async(req,res)=>{
             const proId = req.body.productId
             const wishlistData = await wishlistDB.findOne({user:userId}) 
             if(wishlistData){ 
-    
                 wishlistData.products.push({
                     product: proId
                 })
@@ -63,9 +70,40 @@ const wishlistRemove = async(req,res)=>{
       }
   
 }
+
+
+const addToCart = async(req,res)=>{
+    try {
+     const proId = req.body.productId
+      const a = await cartDB.find()
+      const convertedObjectId = new ObjectId(proId);   
+      const userId = req.session.user._id;
+      const cartData = await cartDB.findOne({user:userId})  
+      const ifExist = await cartDB.findOne({
+        'products': { $elemMatch: { product: proId } }
+      });
+
+      if(ifExist){
+           
+      }else{
+        let arr = [0, 0, 0, 0]; 
+        arr[0] = 1
+        cartData.products.push({
+          product : proId,
+          size : arr 
+        });
+        cartData.save(); 
+      }
+    res.json({success:true})
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+      }
+ }
  
 module.exports = {
     wishlist,
     wishlistPost,
-    wishlistRemove
+    wishlistRemove,
+    addToCart
 }

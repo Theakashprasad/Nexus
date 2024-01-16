@@ -42,7 +42,10 @@ const logInSchema = new mongoose.Schema(
     {
       type:String
     }
-  ]
+  ] ,
+  referal :{
+    type : Number,
+  }
   
   },
   {

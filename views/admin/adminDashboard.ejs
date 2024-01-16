@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <%- include("../partials/adminNavBar.ejs") %>
+    <%- include("../partials/sidebar.ejs") %>  
+    <div class="p-4 sm:ml-64">
+     <div class="p-4 border-2 border-gray-200  dark:border-gray-700 mt-14">
+
+  
+    <div>
+        <canvas id="chart"></canvas>
+    </div>
+
+    <div class="form-check">
+        <label style="color: black; font-weight: bold;">Select Chart Type:</label>
+        <input class="form-check-input chartType" type="radio" name="chartType" id="yearlyChart" value="yearly"
+          checked>
+        <label class="form-check-label" for="yearlyChart">Yearly Chart</label>
+        <input class="form-check-input chartType" type="radio" name="chartType" id="monthlyChart" value="monthly">
+        <label class="form-check-label" for="monthlyChart">Monthly Chart</label>
+      </div>
+      <script>
+        const changeColour =document.getElementById("a");
+        changeColour.style.backgroundColor = "#000000";
+      </script>
+<script>
+    document.querySelectorAll('.chartType').forEach(function (radio) {
+      radio.addEventListener('change', function () {
+        let selectedValue = document.querySelector('input[name="chartType"]:checked').value;
+        updateCharts(selectedValue);
+      });
+    });
+    let label
+    let data
+    let myChart
+    let type
+    function updateCharts(selectedValue) {
+      if(myChart){
+        myChart.destroy();
+      }
+      const totalOrders = '<%=monthlyData%>'.split(',');
+  
+      const monthlyOrdersData = '<%= dailyOrdersData %>'.split(',');
+    if (selectedValue == "monthly") {
+  label= ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
+  data=monthlyOrdersData.map(Number)
+  type= 'line'
+  
+  } else if (selectedValue == "yearly") {
+    label= [ 2024, 2025 ,2026]
+    data=totalOrders
+    type='bar'
+    console.log(totalOrders);
+  }
+    const Data = {
+        type: type,
+        data: {
+          labels:  label,
+          datasets: [{
+            label: 'Total Orders',
+            data: data,
+            fill: true,
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      };
+      
+      const myMonthlyCtx = document.getElementById('chart').getContext('2d');
+      myChart= new Chart(myMonthlyCtx, Data);
+    }
+    window.onload=updateCharts('yearly')
+  
+  </script>
+</body>
+</html>

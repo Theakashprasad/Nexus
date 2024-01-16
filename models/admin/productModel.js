@@ -12,6 +12,10 @@ const productSchema = new mongoose.Schema({
     type: Number,
     min: 0,
   },
+  product_real_price: {
+    type: Number,
+    min: 0,
+  },
   product_category: {
     type: String,
   },

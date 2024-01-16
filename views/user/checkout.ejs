@@ -652,10 +652,10 @@ function pinValidation1() {
                     <!-- Your list items go here -->    
                     <% let subtotal= 0 %>
                     <% let sizeLib = {
-                      0 : 's',
-                      1 : 'm',
-                      2 : 'l',
-                      3 : 'xl'
+                      0 : '6',
+                      1 : '7',
+                      2 : '8',
+                      3 : '9'
                     } %>
                     <% checkUser.forEach((prod)=> { %> 
                     <% prod.products.size.forEach((val , idx)=>{  %>
@@ -694,37 +694,22 @@ function pinValidation1() {
                     <span>Shipping</span>
                     <span class="font-semibold text-gray-900"> + $10.00</span>
                 </div>
-                <% let copounField %>
-                <% let copName %>
-                <% let copValue %>
-                <%copounField = coupounData.filter((price)=>{ %>
-                      <% return subtotal >= price.minimumPurchase %>
-                  <% })%>
-                  <%copName = copounField[copounField.length-1]%>
+              
+                  
+                  <div class="flex justify-end ">
+                    <input class="bg-slate-200 border-l rounded-lg py-1" type="text" oninput="couponVal()" id="cupVal">
+                  </div>
 
-                 <% if(copName.discountType == 'percentage'){ %>
-                              <% copValue = (subtotal * copName.couponValue )/100%>
-                        <%=copName.discountType ?? '' %>
-                      <%}else{%>
-                      <%copValue=copName.couponValue%>
-                   <% } %>
-                   <p hidden id="coponId"  data-cop-val="<%=copValue%>" data-cop-id="<%=copName._id%>"></p>
-                
-                   <div class="flex justify-between py-4 text-gray-600">
-                    <span>Coupon</span>
-                    <select name="" id="selectCpn"  class="px-2 py-1 ">
-                      <option value=""></option>
-                      <option value="<%= copName == '' ? 'No Coupon Available' : copName.couponName %>">
-                        <%= copName == '' ? 'No Coupon Available' : copName.couponName %>
-                      </option>
-                    </select>
-                  </div >
-                  <div class="flex justify-end">
-                    <span class="text-sm underline mr-7">  <%= copName == '' ? '' : copName.couponValue ,copName.discountType %> off on this coupon</span>
+                  <div class="flex justify-between mt-3">
+                    <span id="dispCup">apply coupom</span>
                     <button type="submit" id="applyBtn" class="bg-blue-500 text-white font-bold py-1 px-3 rounded">
                       APPLY
                     </button>
                   </div>
+                  <div class="flex justify-between py-4 text-gray-600">
+                    <span>Discount</span>
+                    <span id="copTotalPriceDisplay" class="font-semibold text-gray-900">0</span>
+                </div>
             </div>
             <div class="font-bold text-xl px-8 flex justify-between py-8 text-gray-600">
                 <span>Total :-</span>
@@ -744,6 +729,12 @@ function pinValidation1() {
                         <input type="radio" name="buyOption" value="ONLINE" class="">
                         <span> ONLINE PAY  </span>
                       </label>
+
+                      <label class="flex">
+                        <input type="radio" name="buyOption" value="WALLET" class="pb-2">
+                        <span class=""> WALLET</span>
+                      </label>
+
                       </div>
               </section>
           </div>
@@ -769,26 +760,73 @@ function pinValidation1() {
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
   
+   let selectCpn
+   const copTotalPriceDisplay = document.getElementById('copTotalPriceDisplay');
+   const dispCup = document.getElementById('dispCup');
+
+    function couponVal(){
+    const cupVal = document.getElementById('cupVal').value
+       selectCpn = cupVal
+    }
        let subtotalValue = document.getElementById('subtotalValue');
        let subtotalAttributeValue;
        let copId ;
        subtotalAttributeValue = subtotalValue.getAttribute('dsts-price-subtotal');
+
   const applyBtn = document.getElementById('applyBtn')
   applyBtn.addEventListener('click',()=>{
-    const selectCpn = document.getElementById('selectCpn').value
+
+    fetch('/coupon', {
+         method: 'PUT',
+         redirect: 'follow',
+         headers: {
+           'Content-Type': 'application/json'
+         },
+         body: JSON.stringify({selectCpn:selectCpn,price:subtotalAttributeValue})
+       })
+       .then(res=>res.json())
+       .then(data => {
+        if(data.pro){
+          subtotalAttributeValue = data.copTotalPrice
+          subtotalValue.innerHTML = subtotalAttributeValue
+          copId = data.disPrice
+          copTotalPriceDisplay.textContent = copId
+          dispCup.innerHTML = data.message
+          console.log(data.message);
+        } else{
+          Toastify({
+          text: "No Copon",
+          duration: 1000,
+          newWindow: true,
+          close: true,
+          gravity: "top", // `top` or `bottom`
+          position: "right", // `left`, `center` or `right`
+          stopOnFocus: true, // Prevents dismissing of toast on hover
+          style: {
+            background: " #c20c0c  ",
+          },
+          onClick: function(){
+            alert("Toast clicked!");
+          }
+        }).showToast();
+        
+        }
+       })
+       .catch(err => console.log(err))
+
+
+
        if(selectCpn){
       const copdat = document.getElementById('coponId');
            copvalue = copdat.getAttribute('data-cop-val')
-           copId = copdat.getAttribute('data-cop-id')
            subtotalAttributeValue  = Math.floor(subtotalAttributeValue - copvalue)
            console.log(subtotalAttributeValue);
-    subtotalValue.innerHTML = subtotalAttributeValue
-    
+           subtotalValue.innerHTML = subtotalAttributeValue
+         
      
         Toastify({
           text: "Coupon added",
           duration: 1000,
-          destination: "https://github.com/apvarun/toastify-js",
           newWindow: true,
           close: true,
           gravity: "top", // `top` or `bottom`
@@ -805,6 +843,7 @@ function pinValidation1() {
         applyBtn.disabled = true;
     }
   })
+
 </script>
     <script>
          let selectedValue ;
@@ -826,11 +865,13 @@ function pinValidation1() {
           cod();
         }else if(selectedValue == 'ONLINE'){
           pay();
+        }else if(selectedValue == 'WALLET'){
+          Wallet();
         }else{
           Toastify({
           text: "Select Payment mode",
           duration: 1000,
-          destination: "https://github.com/apvarun/toastify-js",
+          destination: "https://github.com/apvarun/toastify-js", 
           newWindow: true,
           close: true,
           gravity: "top", // `top` or `bottom`
@@ -849,10 +890,7 @@ function pinValidation1() {
 
 
         function cod() {
-
         let ordId = subtotalValue.getAttribute('data-order-id');
-  
-
           fetch("/orderPost",{
             method : "POST",
             headers:{
@@ -919,12 +957,55 @@ function pay(){
                   }
                 };
                 var rzp1 = new Razorpay(options);
+
+                rzp1.on('payment.failed', function (response) {
+                  window.location.href= '/checkoutFalure'
+                  alert('payment failed')
+               })
+
                 rzp1.open();
                 e.preventDefault();
 
               })
               .catch(error => console.error('Error:', error));
 }
+
+ function Wallet(){
+  let ordId = subtotalValue.getAttribute('data-order-id');
+  fetch("/walletOrder",{
+            method : "POST",
+            headers:{
+                'Content-Type' : 'application/json' ,
+            },
+            body:JSON.stringify({subtotalAttributeValue,ordId,copId})
+          }).then(res=>res.json())
+          .then((data)=>{
+            if(data.success){
+window.location.href = `/checkoutComplete`
+            }else{
+              Toastify({
+          text: "Insufficient balance",
+          duration: 1000,
+          newWindow: true,
+          close: true,
+          gravity: "top", // `top` or `bottom`
+          position: "center", // `left`, `center` or `right`
+          stopOnFocus: true, // Prevents dismissing of toast on hover
+          style: {
+            background: " #c20c0c  ",
+          },
+          onClick: function(){
+            alert("Toast clicked!");
+          }
+        }).showToast();
+            }
+          }).catch((errror)=>{
+            console.log(errror);
+          })
+          
+        
+ }
+
 </script>
 
 

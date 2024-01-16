@@ -10,6 +10,7 @@
     <%- include("../partials/navbar.ejs") %>
 
     <%if(walletData){%>
+      
     <div class="flex justify-center">
         <div class="flex justify-between mt-12 ml-20 shadow-lg w-80 bg-gray-100 rounded-xl p-4 ">
             <p class="font-semibold text-2xl">WALLET AMOUNT - </p>
@@ -17,6 +18,10 @@
         </div>
     </div>
 
+    <div class="flex justify-end mr-12">
+      <button id="toggleReferal" class="bg-gray-400  text-white px-4 py-2 mt-4"> REFERAL</button>
+
+    </div>
 
 <div class="shadow-lg rounded-lg overflow-hidden mx-4 md:mx-10 py-24">
     <table class="w-full table-fixed">
@@ -25,6 +30,7 @@
           <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">DATE</th>
           <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">AMOUNT</th>
           <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">ORDER </th>
+          <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">ORDER </th>
           <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">STATUS</th>
  
         </tr>
@@ -32,36 +38,132 @@
       <tbody class="bg-white">
       
         
-        <%walletData.history.forEach((iteam)=>{%>
+        <%walletData.history.reverse().forEach((iteam)=>{%>
+          <%if(!iteam.referal){%>
 
         <tr>
           <td class="py-4 px-6 border-b border-gray-200"><%= new Date(iteam.date ).toISOString().slice(0, 10)%></td>
           <td class="py-4 px-6 border-b border-gray-200"><%=iteam.amount%> </td>
           <td class="py-4 px-6 border-b border-gray-200">ORD <%= String(iteam.orderId).slice(19)%></td>
+          <td class="py-4 px-6 border-b border-gray-200">
+            <% const orderstatus = orderData.find((itm) => itm._id.equals(iteam.orderId)) %>
+            <%=orderstatus?.Status %>
+          </td>
           <% if(iteam.status == 'CREDIT'  ){%>
             <td class="py-4 px-6 border-b border-gray-200 text-green-500">+<%=iteam.status%> </td>
           <%}else{%>
-            <td class="py-4 px-6 border-b border-gray-200"><%=iteam.status%> </td>
+            <td class="py-4 px-6 border-b border-gray-200 text-orange-500"> -- <%=iteam.status%> </td>
              <%}%>
           
         </tr>
-
+        <%}%>
        <% })%>
       
-<%}else{%>
-  <div class="flex justify-center">
-    <div class="flex justify-between my-12 ml-20 shadow-lg w-80 bg-gray-100 rounded-xl p-4 ">
-        <p class="font-semibold text-2xl">WALLET AMOUNT - </p>
-        <h1 class="font-medium pt-2 underline text-lg"> $ 0</h1>
-    </div>
-</div>
-   <%}%>
 
       </tbody>
     </table>
   </div>
   
+  <%}else{%>
+    <div class="flex justify-center">
+      <div class="flex justify-between my-12 ml-20 shadow-lg w-80 bg-gray-100 rounded-xl p-4 ">
+          <p class="font-semibold text-2xl">WALLET AMOUNT - </p>
+          <h1 class="font-medium pt-2 underline text-lg"> $ 0</h1>
+      </div>
+  </div>
+     <%}%>
+
+
+  <!-- for referal-->
+
+  <%if(walletData){%>
+  
+
+  <div id="referal" class="hidden flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full bg-white bg-opacity-70 ">
+    <button id="closs" class="absolute right-64 text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8  flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white close-coupon-Box-edit">
+      <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+      </svg>
+    </button>
+    <table class="w-auto table-fixed border-gray-600">
+      <thead>
+        <tr class="bg-gray-900">
+          <th class="w-1/4 py-4 px-6 text-left text-white font-bold uppercase">DATE</th>
+          <th class="w-1/4 py-4 px-6 text-left text-white font-bold uppercase">AMOUNT</th>
+          <th class="w-1/4 py-4 px-6 text-left text-white font-bold uppercase">USER NAME</th>
+          <th class="w-1/4 py-4 px-6 text-left text-white font-bold uppercase">STATUS</th>
+
+        </tr>
+      </thead>
+      <tbody class="bg-gray-100">
+      
+        
+        <%walletData.history.reverse().forEach((iteam)=>{%>
+          <%if(iteam.referal){%>
+
+        <tr>
+          <td class="py-4 px-6 border-b border-gray-200"><%= new Date(iteam.date ).toISOString().slice(0, 10)%></td>
+          <td class="py-4 px-6 border-b border-gray-200"><%=iteam.amount%> </td>
+          <td class="py-4 px-6 border-b border-gray-200"><%=iteam.referal %></td>
+          <% if(iteam.status == 'CREDIT'  ){%>
+            <td class="py-4 px-6 border-b border-gray-200 text-green-500">+<%=iteam.status%> </td>
+          <%}else{%>
+            <td class="py-4 px-6 border-b border-gray-200 text-orange-500"> -- <%=iteam.status%> </td>
+             <%}%>
+          
+        </tr>
+        <%}%>
+       <% })%>
+      
+
+      </tbody>
+    </table>
+  </div>
+
+  <% }else{%>
+dhfj
+     <%} %>
+
+<section class="my-6">
+  <div class="pagination flex justify-center gap-4">
+    <% if (paginate.hasPreviousPages) { %>
+      <a href="?page=<%= paginate.page - 1 %>"
+        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Previous</a>
+      <% } %>
+
+        <% if (paginate.hasNextPages && page < maxPage) { %>
+          <a href="?page=<%= paginate.page + 1 %>"
+            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 focus:bg-blue-700 focus:outline-none transition duration-300 ease-in-out">
+            Next
+          </a>
+          <% } %>
+
+  </div>
+  <p class="text-gray-900 font-bold flex justify-center"><%= paginate.page %> out of <%= maxPage %></p>
+
+</section>
   <%- include("../partials/footer.ejs") %>
 
+
+  <script>
+    // Get the button and referal div elements
+    const toggleButton = document.getElementById('toggleReferal');
+    const referalDiv = document.getElementById('referal');
+    const closs = document.getElementById('closs');
+
+  
+    // Add a click event listener to the button
+    toggleButton.addEventListener('click', function () {
+      // Toggle the 'hidden' class to show/hide the referal div
+      referalDiv.classList.remove('hidden');
+      console.log('sdhs');
+    });
+    closs.addEventListener('click', function () {
+      // Toggle the 'hidden' class to show/hide the referal div
+      referalDiv.classList.add('hidden');
+      console.log('sdhs');
+    });
+  </script>
 </body>
 </html>

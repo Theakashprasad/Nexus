@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/dist/output.css">
+  
+  <title>Document</title>
+</head>
+<body>
+
+
+<%- include("../partials/adminNavBar.ejs") %>
+<%- include("../partials/sidebar.ejs") %>  
+
+  <!-- main content -->
+  <div class="p-4 sm:ml-64">
+     <div class="p-4 border-2 border-gray-200  dark:border-gray-700 mt-14">
+
+         
+  <div class="flex justify-end mb-14 mr-20 gap-3">
+    <button class="download-btn bg-gray-400 hover:bg-blue-400 text-black font-bold py-2 px-4 rounded" onclick="downloadSalesReport('xlsx')">Download Excel</button>
+    <button class="download-btn bg-gray-400 hover:bg-orange-400 text-black font-bold py-2 px-4 rounded">
+      <a href="/admin/salesReportPDF">PDF</a>
+    </button>
+
+  </div>
+
+ 
+
+<!-- useer content -->
+<div class="shadow-lg rounded-lg overflow-hidden mx-4 md:mx-10 pt-11">
+   <table class="w-full table-fixed">
+     <thead>
+       <tr class="bg-gray-100">
+         <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">Username</th>
+         <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">Product Name</th>
+         <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">Quantity</th>
+         <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">Price</th>
+         <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">Status</th>
+         <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">Order Date</th>
+         <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">Address</th>
+
+       </tr>
+     </thead>
+     <tbody class="bg-white">
+       <%orderProducts.forEach((data,i)=>{%>
+  
+       <tr>
+         <td class="py-4 px-6 border-b border-gray-200"><%=data.shippingAddress.full_name%></td>
+         <td class="py-4 px-6 border-b border-gray-200"><%=data.Allproducts%></td>
+         <td class="py-4 px-6 border-b border-gray-200"><%=data.products.size%></td>
+         <td class="py-4 px-6 border-b border-gray-200"><%=data.products.price%></td>
+         <td class="py-4 px-6 border-b border-gray-200"><%=data.Status%></td>
+         <td class="py-4 px-6 border-b border-gray-200"><%= new Date(data.createdAt ).toISOString().slice(0, 10) %></td>
+         <td class="py-4 px-6 border-b border-gray-200"><%=data.shippingAddress.address%></td>
+       </tr>
+       <% })%>
+
+     </tbody>
+   </table>
+ </div>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
+
+ <script>
+  const changeColour =document.getElementById("b");
+  changeColour.style.backgroundColor =  "#000000";
+</script>
+<script>
+  function downloadSalesReport(fileType) {
+    const ws = XLSX.utils.table_to_sheet(document.querySelector('table'));
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sales Report');
+    XLSX.writeFile(wb, `sales_report.${fileType}`);
+  }
+</script>
+
+<script>
+  function downloadSaleReport() {
+      window.print();
+  }
+</script>
+
+</body>
+</html>

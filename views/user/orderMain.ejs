@@ -16,6 +16,7 @@
               <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">Iteams</th>
               <th class="w-1/6 py-4 px-6 text-center text-gray-600 font-bold uppercase">Total Amount</th>
               <th class="w-1/6 py-4 px-6 text-center text-gray-600 font-bold uppercase">Payment Mode</th>
+              <th class="w-1/6 py-4 px-6 text-center text-gray-600 font-bold uppercase">Status</th>
               <th class="w-1/4 py-4 px-6 text-left  text-gray-600 font-bold uppercase">Shipping address</th>
               <th class="w-14 py-4 text-left text-gray-600 font-bold uppercase"></th>
      
@@ -43,9 +44,8 @@
               </td>
               <td class="py-4 px-6 border-b border-gray-200 text-center"><%= pro.totalAmount %></td>
               <td class="py-4 px-6 border-b border-gray-200 text-center"><%= pro.paymentMethod %></td>
-              <td class="py-4 px-6 border-b border-gray-200">
-                <% const address=addressData.find(item=> item._id.equals(pro.shippingAddress)); %>
-                <%= address.address %></td>
+              <td class="py-4 px-6 border-b border-gray-200 text-center"><%= pro.Status %></td>
+              <td class="py-4 px-6 border-b border-gray-200"><%= pro.shippingAddress.address %></td>
               <td><a href="/order/<%= pro._id %>" class="bg-blue-500 rounded text-white px-1 py-1">VIEW</a></td>
             </tr>
               <%  })  %>

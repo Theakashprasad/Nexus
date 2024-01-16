@@ -5,7 +5,9 @@ const addressDb = require("../../models/user/addressModel");
 const userDB = require("../../models/user/usermodel");
 const couponDB = require("../../models/admin/couponModel");
 const walletDB = require("../../models/user/wallet");
-const { ObjectId } = require("mongodb");
+const { ObjectId } = require("mongodb"); 
+const PDFDocument = require('../../PDF/PDFtable');
+const invoiceGenerate = require('../../PDF/invoice');
 
 const orderMain = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
@@ -49,15 +51,13 @@ const order = async (req, res) => {
     const orderId = req.params.ordId;
     const userDetails = await userDB.findById(userId); // used to find address from the user DB
     const addressId = userDetails.addressId;
-    let addressDetails = await addressDb.findById(addressId);
-    addressDetails = addressDetails ?? "";
+   
     const orderDetails = await orderDB.findById(orderId);
     const productIdData = orderDetails.products;
     const productData = await productDB.find();
-    const couponData = await couponDB.findById(orderDetails.discount);
+    const couponData = orderDetails.discount
     res.render("user/order.ejs", {
       userDetails,
-      addressDetails,
       orderDetails,
       productData,
       productIdData,
@@ -77,13 +77,23 @@ const orderPost = async (req, res) => {
     const totalAmount = req.body.subtotalAttributeValue;
     const ordId = req.body.ordId;
     const copId = req.body.copId;
-    const addressId = await userDB.findById(userId);
+    console.log(copId);
+    const addressId = await userDB.findById(userId); 
+    const addresData = await addressDb.findById(addressId.addressId)
     const orderCreate = new orderDB({
       user: userId,
       products: cartData.products,
       totalAmount: totalAmount,
       discount: copId,
-      shippingAddress: addressId.addressId,
+      shippingAddress: {
+        full_name: addresData.full_name,
+        address:addresData.address,
+        city: addresData.city,
+        state: addresData.state,
+        zipcode: addresData.zipcode,
+        country: addresData.country,
+        phone: addresData.phone
+    },
       paymentMethod: "COD",
     });
     await orderCreate.save();
@@ -96,7 +106,7 @@ const orderPost = async (req, res) => {
       for (let i = 0; i < a.length; i++) {
         c.push(a[i] - b[i]);
       }
-      console.log(c);
+      // console.log(c);
       product.size = c;
       product.save();
     });
@@ -112,11 +122,10 @@ const orderCancel = async (req, res) => {
     const proId = req.body.proId;
     const ordId = req.body.ordId;
     const statusValue = req.body.statusValue;
-    const ordData = await orderDB.findById(ordId)
-    console.log(ordData.Status);
-    // NOT COD
-    if (!(ordData.paymentMethod === "COD" && ordData.Status === 'CANCEL')) {
+    const ordData = await orderDB.findById(ordId);
 
+    // NOT COD
+    if (!(ordData.paymentMethod === "COD" && ordData.Status === "CANCEL")) {
       const amount = req.body.amount.slice(1);
       const proId = req.body.proId;
       const ordId = req.body.ordId;
@@ -125,7 +134,6 @@ const orderCancel = async (req, res) => {
       let balance = 0;
 
       if (walletData) {
-        console.log("hai");
         balance = Number(walletData.balance) + Number(amount);
         const newHistoryEntry = {
           amount: amount,
@@ -140,8 +148,8 @@ const orderCancel = async (req, res) => {
         const result = await walletDB.updateOne({ user: userId }, updateQuery);
       } else {
         balance = amount;
-        console.log(userId);
-        const wallet = new walletDB({
+
+        const wallet = new walletDB({ 
           user: userId,
           balance: balance,
           history: [
@@ -155,20 +163,32 @@ const orderCancel = async (req, res) => {
         await wallet.save();
       }
     }
-    console.log(statusValue);
+
     if (statusValue == "RETURN") {
-     await orderDB.findByIdAndUpdate(ordId, {
+      await orderDB.findByIdAndUpdate(ordId, {
         Status: "RETURN",
       });
     } else {
-      console.log('cancel');
+      //cancel
+const products = await productDB.find();
+    ordData.products.forEach((pro, i) => {
+      let product = products.find((item) => item._id.equals(pro.product));
+      const b = pro.size;
+      const a = product.size;
+      let c = [];
+      for (let i = 0; i < a.length; i++) {
+        c.push(a[i] + b[i]);
+      }
+      product.size = c;
+      product.save();
+      console.log(product.size);
+    });
+
       await orderDB.findByIdAndUpdate(ordId, {
         Status: "CANCEL",
       });
     }
-
-    //    COD
- 
+    
 
     res.json({ success: true });
   } catch (error) {
@@ -177,9 +197,92 @@ const orderCancel = async (req, res) => {
   }
 };
 
+const invoice = async(req,res)=>{
+  try {
+
+    const order_id = req.params.id
+    const userId = req.session.user._id;
+
+    const user = await userDB.findById(userId )
+    const o = await orderDB.findById(order_id)
+    const p = await productDB.find()
+    const orderProducts = await orderDB.aggregate([
+      {
+        $match: {
+          _id: new ObjectId(order_id)
+        }
+      },
+      {
+        $unwind: '$products'
+      },
+      {
+        $addFields: {
+          productIndex: '$products.productIndex',
+          sizeIndex: {
+            $range: [
+              0,
+              { $size: '$products.size' }
+            ]
+          }
+        }
+      },
+      {
+        $unwind: {
+          path: '$products.size',
+          includeArrayIndex: 'sizeIndex'
+        }
+      },
+      {
+        $match: {
+          'products.size': {
+            $ne: 0
+          }
+        }
+      },
+      {
+        $lookup: {
+          from: 'products',
+          localField: 'products.product',
+          foreignField: '_id',
+          as: 'Allproducts'
+        }
+      }
+    ]);
+    
+      //  console.log(JSON.stringify(o,null,2));
+      //  console.log(JSON.stringify(p,null,2));
+
+      console.log('order products printing')
+       console.log(orderProducts);
+
+
+    const doc = new PDFDocument();
+
+    const pdfDoc = invoiceGenerate(doc, orderProducts, user)
+
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", 'inline; filename="sales-details.pdf"');
+
+    pdfDoc.pipe(res);
+
+    // End the PDF document
+    pdfDoc.end();
+
+
+
+} catch (e) {
+    console.log(e)
+    res.redirect('/404-not-found')
+}
+
+}
+
+
+
 module.exports = {
   orderMain,
   order,
   orderPost,
   orderCancel,
+  invoice,
 };

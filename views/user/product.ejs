@@ -72,7 +72,7 @@
     <h2 class="max-w-xl mt-6 mb-6 text-xl font-extrabold leading-loose tracking-wide text-gray-700 md:text-2xl "><%= user.product_name %> </h2>
     <p class="text-lg font-semibold text-gray-900 dark:text-gray-500 cursor-auto my-3"> <%=user.product_category%></p>
     <p class="inline-block text-2xl font-semibold text-gray-700 dark:text-gray-400 ">
-    <span>$ <%=user.product_price %></span>
+    <p id="productPrice" >$ <%=user.product_price %></p>
     <span class="ml-3 text-base font-normal text-gray-500 line-through dark:text-gray-400">$<%=user.product_price*1.2 %></span></p>
    </div>
   
@@ -94,25 +94,25 @@
                 
                   <label class="group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 cursor-pointer <%= user.size[0] === 0 ? ' border-red-500 bg-gray-200 text-gray-400' : 'bg-gray-400 text-gray-900 ' %> shadow-sm">
                   <input  type="radio" name="size-choice" value="0" class="sr-only" aria-labelledby="size-choice-0-label"   <%=user.size[0]<=0 ? 'disabled="disabled"':'' %> >
-                  <span id="size-choice-0-label">S</span>
+                  <span id="size-choice-0-label">6</span>
                   <span class="pointer-events-none absolute -inset-px rounded-md" aria-hidden="true"></span>
                 </label>
 
                 <label class="group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 cursor-pointer <%= user.size[1] === 0 ? ' border-red-500 bg-gray-200 text-gray-400' : 'bg-gray-400 text-gray-900 ' %> shadow-sm">
                   <input type="radio" name="size-choice" value="1" class="sr-only" aria-labelledby="size-choice-1-label"<%=user.size[1]<=0 ? 'disabled="disabled"':'' %> >
-                  <span id="size-choice-1-label">M</span>
+                  <span id="size-choice-1-label">7</span>
                   <span class="pointer-events-none absolute -inset-px rounded-md" aria-hidden="true"></span>
                 </label>
 
                 <label class="group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 cursor-pointer <%= user.size[2] === 0 ? ' border-red-500 bg-gray-200 text-gray-400' : 'bg-gray-400 text-gray-900 ' %> shadow-sm">
                   <input type="radio" name="size-choice" value="2" class="sr-only" aria-labelledby="size-choice-2-label" <%=user.size[2] <=0 ? 'disabled="disabled"':'' %> >
-                  <span id="size-choice-2-label">L</span>
+                  <span id="size-choice-2-label">8</span>
                   <span class="pointer-events-none absolute -inset-px rounded-md" aria-hidden="true"></span>
                 </label>
 
                 <label class="group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 cursor-pointer <%= user.size[3] === 0 ? ' border-red-500 bg-gray-200 text-gray-400' : 'bg-gray-400 text-gray-900 ' %> shadow-sm">
                   <input type="radio" name="size-choice" value="3" class="sr-only" aria-labelledby="size-choice-3-label" <%=user.size[3] <= 0 ? 'disabled="disabled"':'' %> >
-                  <span id="size-choice-3-label">XL</span>
+                  <span id="size-choice-3-label">9</span>
                   <span class="pointer-events-none absolute -inset-px rounded-md" aria-hidden="true"></span>
                 </label>
 
@@ -236,6 +236,8 @@ sizeRadioButtons.forEach(button => {
       button.parentElement.classList.add('bg-indigo-600', 'text-white');
   });
 });
+var productPriceElement = document.getElementById('productPrice');
+var productPrice = productPriceElement.innerText.split('$ ')[1]; // Assuming the format is "$ value"
 
   const addToCart = document.querySelectorAll('.addToCart')
   addToCart.forEach((btn) => {
@@ -249,7 +251,7 @@ sizeRadioButtons.forEach(button => {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            productId,selectedSize 
+            productId,selectedSize ,productPrice
           })
         })
         .then(res => {

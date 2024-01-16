@@ -22,7 +22,7 @@
   </style>
 </head>
 
-<body class="bg-gray-100 mt-12 ">
+<body class="bg-gray-100 mt-64 ">
   <div class="container mx-auto p-10 ">
     <a href="/admin/product"class="absolute top-3 right-64 text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8  flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white close-coupon-Box-edit">
       <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -79,19 +79,19 @@
 
       <!-- Quantity -->
       <div class="mb-4">
-        <label for="quantity1" class="block text-gray-700 text-sm font-bold mb-2">SMALL</label>
+        <label for="quantity1" class="block text-gray-700 text-sm font-bold mb-2">SIZE 6</label>
         <input oninput="quantityValidation('quantity1')" type="text" id="quantity1" name="quantity1" value="<%=user.size[0]%>"
             class="shadow appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
         
-        <label for="quantity2" class="block text-gray-700 text-sm font-bold mb-2">MEDIUM</label>
+        <label for="quantity2" class="block text-gray-700 text-sm font-bold mb-2">SIZE 7</label>
         <input oninput="quantityValidation('quantity2')" type="text" id="quantity2" name="quantity2" value="<%=user.size[1]%>"
             class="shadow appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
     
-        <label for="quantity3" class="block text-gray-700 text-sm font-bold mb-2">LARGE</label>
+        <label for="quantity3" class="block text-gray-700 text-sm font-bold mb-2">SIZE 8</label>
         <input oninput="quantityValidation('quantity3')" type="text" id="quantity3" name="quantity3" value="<%=user.size[2]%>"
             class="shadow appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
     
-        <label for="quantity4" class="block text-gray-700 text-sm font-bold mb-2">EXTRA LARGE</label>
+        <label for="quantity4" class="block text-gray-700 text-sm font-bold mb-2">SIZE 9</label>
         <input oninput="quantityValidation('quantity4')" type="text" id="quantity4" name="quantity4" value="<%=user.size[3]%>"
             class="shadow appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
     </div>

@@ -1,206 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cropper</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.4/cropper.min.css'>
-    <link rel="stylesheet" href="style.css">
-    
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toggle Select Example</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+  <style>
+    /* Add your custom styles here if needed */
+  </style>
 </head>
-<style>
-  body{
-    position: relative;
-}
+<body class="bg-gray-100 p-8">
 
-/* user side image previewer */
+  <!-- First button and select field -->
+  <button class="bg-blue-500 text-white px-4 py-2 rounded" onclick="toggleSelect('select1')">Open Select 1</button>
 
-#imagePreview img{
-    height: 50px;
-    max-width: 80px;
-}
+  <select id="select1" class="hidden mt-4 p-2 border rounded">
+    <option value="option1">Option 1</option>
+    <option value="option2">Option 2</option>
+    <option value="option3">Option 3</option>
+  </select>
 
-#cropper110Modal{
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(53, 52, 52, 0.532);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    display: none;
-}
+  <!-- Second button and select field -->
+  <button class="bg-green-500 text-white px-4 py-2 rounded" onclick="toggleSelect('select2')">Open Select 2</button>
 
-#cropper110Modal img {
-	max-width: 100%;
-}
+  <select id="select2" class="hidden mt-4 p-2 border rounded">
+    <option value="optionA">Option A</option>
+    <option value="optionB">Option B</option>
+    <option value="optionC">Option C</option>
+  </select>
 
-.cropper110-page {
-	margin: 1em auto;
-	max-width: 768px;
-	height: 100%;
-}
-
-.cropper110-box {
-	padding: 0.5em;
-	width: calc(100%/2 - 1em);
-    max-height: 60vh;
-}
-
-
-
-.cropper110-crop , .cropper110-close {
-    padding: .5rem 1rem;
-    background-color: rgb(0,0,0);
-    color: #fff;
-    font-weight: bold;
-}
-
-.cropper110-close{
-    background-color: red;
-}
-
-
-
-
-
-</style>
-<body>
-
-    <!-- cropper modal -->
-    <div id="cropper110Modal">
-        <div id="imageCropBox">
-            <div style="text-align: end;">
-                <button class="cropper110-close">close</button>
-            </div>
-            <section class="cropper110-page">
-                <div class="cropper110-box">
-                    <div class="cropper110-cropping-box"></div>
-                </div>
-
-                <div>
-                    <button class="cropper110-crop mx-3">Crop</button>
-                </div>
-            </section>
-        </div>
-    </div>
-    <!-- /cropper modal/  -->
-
-    <!-- form  -->
-    <section>
-        <form action="">
-            <label for="fileUploader"></label>
-            <input type="file" id="fileUploader" data-image-preview="#imagePreview" accept=".jpg,.png,.jpeg" multiple>
-            <div id="imagePreview"></div>
-        </form>
-    </section>
-    <!-- /form/  -->
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/cropperjs/0.8.1/cropper.min.js'></script>
-    <script src="script.js"></script>
-    <script>
-      let fileInputs = document.querySelectorAll('[data-image-preview]')
-
-
-let croppingBox = document.querySelector('.cropper110-cropping-box'),
-    crop = document.querySelector('.cropper110-crop'),
-    cropper = '',
-    currentInput = null,
-    imgNames = null,
-    imgSrc = null;
-
-fileInputs.forEach(fileInput => {
-    fileInput.addEventListener('change', () => {
-        let previewDiv = document.querySelector(fileInput.dataset.imagePreview)
-        previewDiv.innerHTML = ""
-        for (let each of fileInput.files) {
-            let imgSrc = URL.createObjectURL(each)
-            let img = document.createElement('img')
-            img.src = imgSrc
-            img.dataset.fileName = each.name
-            img.dataset.input = fileInput.id
-            img.addEventListener('click', cropImage)
-
-            previewDiv.append(img)
-
+  <script>
+    function toggleSelect(selectId) {
+      const allSelects = document.querySelectorAll('select'); // Get all select elements
+      allSelects.forEach(select => {
+        if (select.id === selectId) {
+          // Toggle the selected select
+          select.classList.toggle('hidden');
+        } else {
+          // Hide other selects
+          select.classList.add('hidden');
         }
-    })
-})
-
-
-function cropImage(e) {
-    
-    document.getElementById('cropper110Modal').style.display = 'flex'
-
-    let img = document.createElement('img');
-    img.id = 'image';
-    img.src = e.target.src;
-    croppingBox.innerHTML = '';
-    croppingBox.appendChild(img);
-    cropper = new Cropper(img);
-
-    imgNames = e.target.dataset.fileName
-    currentInput = e.target.dataset.input
-
-}
-
-
-
-//crop and save on click
-crop.addEventListener('click', e => {
-    e.preventDefault();
-    // get result to data uri
-
-    let imgSrc = cropper.getCroppedCanvas({
-        width: 300 // input value
-    }).toDataURL();
-
-    if (imgSrc && imgNames !== null) {
-        let fileUploader = document.getElementById(currentInput)
-        fetch(imgSrc)
-            .then(res => res.blob())
-            .then(blob => {
-                let file = new File([blob], `${imgNames}-${Date.now()}.png`, { type: "image/jpeg" })
-
-                const dt = new DataTransfer()
-                for (let each of fileUploader.files) {
-                    if (each.name !== imgNames) {
-                        dt.items.add(each)
-                    } else {
-                        dt.items.add(file)
-                    }
-                }
-
-
-                fileUploader.files = dt.files
-
-
-                let previewDiv = document.querySelector(fileUploader.dataset.imagePreview)
-                previewDiv.innerHTML = ""
-                let res = ""
-
-                for (let each of fileUploader.files) {
-                    let src = URL.createObjectURL(each)
-                    res += `<img src="${src}" data-file-name="${each.name}" data-input="${fileUploader.id}" onclick="cropImage(event)" class="previewImages">`
-                }
-
-                previewDiv.innerHTML = res
-
-
-            })
+      });
     }
+  </script>
 
-    document.querySelector('.cropper110-close').click()
-});
-
-document.querySelector('.cropper110-close')
-    .addEventListener('click', () => {
-        document.getElementById('cropper110Modal').style.display = 'none'
-    })
-    </script>
-
-    
 </body>
-
 </html>

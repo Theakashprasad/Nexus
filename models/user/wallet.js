@@ -17,16 +17,17 @@ const walletSchema = new mongoose.Schema({
       },
       amount: {
         type: Number,
-        required: true,
       },
       status: {
         type: String, // 'credit' or 'debit'
-        required: true,
       },
       orderId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Order',
       },
+      referal :{
+        type:String
+      }
     },
   ],
  

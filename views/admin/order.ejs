@@ -35,10 +35,7 @@
        <% orderData.forEach(user => { %>
        <tr>
          <td class="py-4 px-6 border-b border-gray-200 text-center ">ODR <%= String(user._id).slice(19) %></td>
-         <td class="py-4 px-6 border-b border-gray-200  text-center">
-          <%const userName = userdata.find(item=>item._id.equals( user.user ))%>
-          <%=userName.name%>
-        </td>
+         <td class="py-4 px-6 border-b border-gray-200  text-center"> <%= user.shippingAddress.full_name %> </td>
          <td class="py-4 pl-16 border-b text-center border-gray-200"><%= user.totalAmount %></td>
          <%let c = 0 %>
          <td class="py-4 px-4 border-b text-center border-gray-200"><% user.products.forEach((prd)=>{%>

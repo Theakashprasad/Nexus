@@ -31,23 +31,24 @@ const orderSchema = new Schema({
         required: true
     },
     discount:{
-        type: Schema.Types.ObjectId,
-        ref: 'coupon',
+        type : Number,
+        default : 0 
     },
     shippingAddress: {
-        type: Schema.Types.ObjectId,
-        ref: 'address',
-        required: true
+        full_name: String,
+        address:String,
+        city: String,
+        state: String,
+        zipcode: String,
+        country: String,
+        phone: Number
     },
     paymentMethod: {
         type: String,
         required: true
     },
-    orderDate: {
-        type: Date,
-        default: Date.now()
-    },
-});
+},  {timestamps:true}
+)
 
 module.exports = mongoose.model('Order', orderSchema);
 

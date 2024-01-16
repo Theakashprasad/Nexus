@@ -56,6 +56,12 @@
                     <p id="passwordTwoError" class="text-red-400 text-xs"></p>
                   </div>
 
+                  <div>
+                    <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Referal</label>
+                    <input oninput="ReferalValidation()" type="tel" name="referal" id="referal" placeholder="Enter Referal N0: " class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
+                    <p id="referalError" class="text-red-400 text-xs"></p>
+                  </div>
+
                   <div class="form-check mt-2">
                     <input class="form-check-input" type="checkbox" id="showPassword" onclick="togglePasswordVisibility()">
                     <label class="form-check-label" style="color:blanchedalmond;" for="showPassword">Show Password</label>
@@ -64,7 +70,7 @@
                 </div>
       
                 <!-- error message -->
-                <p class="font-semibold text-white"><%= message%></p>
+                <p class="font-semibold text-red-400"><%= message%></p>
                 <p id="alert" class="text-red-400 text-xs"></p>
 
                 <button id="signUpForm" type="submit" class="w-full text-black  bg-gray-50 bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign in</button>
@@ -91,7 +97,7 @@ function v() {
             return false; 
           }
     
-    return emailValidation() && nameValidation() && passwordOneValidation() && numberValidation()
+    return emailValidation() && nameValidation() && passwordOneValidation() && numberValidation() && ReferalValidation()
 }
         function emailValidation(){
             const email = document.getElementById("email").value;
@@ -165,6 +171,28 @@ function numberValidation(){
         numberError.innerText = "";
     }
 }
+
+
+function ReferalValidation(){
+  const referal = document.getElementById("referal").value;
+    const referalError = document.getElementById("referalError");
+    if (referal === '' ) {
+      referalError.innerText = "Can not add space";
+          return false; // Indicate validation failure
+      } else if(referal.length > 4 ){
+        referalError.innerText = "number should not exceed above 4";
+          return false; // Indicate validation failure
+      }else if(isNaN(referal)){
+        referalError.innerText = "should be number"
+          }
+      else {
+        referalError.innerText = ""; // Clear error message
+          return true; // Indicate validation success
+      }
+}
+
+
+
       </script>
 
 <script>
