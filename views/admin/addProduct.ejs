@@ -93,7 +93,7 @@
     
     <form class="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4" action="addProductPost"
       method="post" enctype="multipart/form-data" oninput="return v()">
-
+       <p class="text-red-400"><%=message%></p>
       <!-- product Name -->
       <div class="mb-4">
         <label for="" class="block text-gray-700 text-sm font-bold mb-2">Product Name</label>
@@ -101,16 +101,16 @@
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           required>
       </div>
-      <p id="NameError"></p>
+      <p class="text-red-400" id="NameError"></p>
 
          <!-- Description  -->
          <div class="mb-4">
-          <label for="" class="block text-gray-700 text-sm font-bold mb-2">Description</label>
-          <input type="text" id="" name="description"
+          <label  class="block text-gray-700 text-sm font-bold mb-2">Description</label>
+          <input id="dicrp" type="text" name="description" oninput="discValidation()"   
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             required>
         </div>
-
+        <p class="text-red-400" id="dicripError"></p>
            <!-- Category  -->
            <div class="mb-4">
             <label for="category" class="block text-gray-700 text-sm font-bold mb-2">Category</label>
@@ -129,11 +129,11 @@
          <!--  Price -->
          <div class="mb-4">
           <label for="" class="block text-gray-700 text-sm font-bold mb-2">Price</label>
-          <input oninput="priceValidation()" type="text" id="price" name="price"
+          <input oninput="priceValidation()" type="number" id="price" name="price"
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             required>
         </div>
-        <p id="PriceError"></p>
+        <p class="text-red-400" id="PriceError"></p>
 
       <!-- Quantity -->
       <div class="mb-4">
@@ -151,17 +151,17 @@
        class="shadow appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       ></input>
       </div>
-      <p id="quantityError"></p>
+      <p class="text-red-400" id="quantityError"></p>
 
 
    <!-- brand -->
    <div class="mb-4">
     <label for="" class="block text-gray-700 text-sm font-bold mb-2">Brand</label>
-    <input type="text" id="" name="brand"
+    <input type="text" id="brand" name="brand" oninput="brandValidation()"
       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       required>
   </div>
-    
+  <p class="text-red-400" id="brandError"></p>
         
   
     <!-- cropper modal -->
@@ -183,13 +183,13 @@
   </div>
   <!-- /cropper modal/  -->
 
-  <!-- form  -->
+
   <section>
-      <form action="">
+    
           <label for="fileUploader"></label>
           <input type="file" id="fileUploader"  name="image" data-image-preview="#imagePreview" accept=".jpg,.png,.jpeg" multiple>
           <div id="imagePreview"></div>
-      </form>
+ 
   </section>
 
       <div class="flex items-center justify-between">
@@ -197,26 +197,64 @@
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
           save
         </button>
+        <p class="text-red-400" id="filleroor"></p>
+
       </div>
     </form>
   </div>
 
   <script>
     function v(){
-     return nameValidation() && qantityValidation() && priceValidation()
+      productName = document.getElementById("productName").value.trim();
+      discription = document.getElementById("dicrp").value.trim();
+      NameError = document.getElementById("filleroor");
+
+      if(productName ==='' ||  discription === ''){
+        console.log('uwyedyghjsw');
+        NameError.innerText = "Please fill all the fields";
+      return false;
+    }
+     return nameValidation() && qantityValidation() && priceValidation() && discValidation()
     }
   
              function nameValidation(){
                productName = document.getElementById("productName").value.trim();
                NameError = document.getElementById("NameError");
-               if(productName===""){
-                 NameError.innerText = "Full name should contain at least one non-space character";
+               const onlyLettersRegex = /^[a-zA-Z]+$/;
+               if(productName==""){
+                 NameError.innerText = "Can not add spaces";
                 return false
-              }    else {
+              }else if (!onlyLettersRegex.test(productName)) {
+                NameError.innerText = "Name can only contain letters";
+                      return false; // Indicate validation failure  
+              } else {
                 NameError.innerText = ""; // Clear error message
           return true; // Indicate validation success
       }
+              } 
+              
+
+              function discValidation(){
+                console.log('dicriop');
+               discription = document.getElementById("dicrp").value.trim();
+               dicripError = document.getElementById("dicripError");
+               const onlyLettersRegex = /^[a-zA-Z]+$/;
+
+               if(discription==""){
+                dicripError.innerText = "Can not add spaces";
+                return false
+              } else if (!onlyLettersRegex.test(discription)) {
+                dicripError.innerText = "Name can only contain letters";
+                      return false; // Indicate validation failure    
               }
+               else {
+                dicripError.innerText = ""; // Clear error message
+          return true; // Indicate validation success
+      }
+              }
+
+
+
   
            function qantityValidation(){
           const quantity = document.getElementById("quantity").value;
@@ -238,13 +276,31 @@
               if(price<0){
                 PriceError.innerText = "price should not be less than 0"
             return false
-          }else if(isNaN(quantity)){
-            PriceError.innerText = "should be number"
-        }else{
+              }else{
             PriceError.innerText = ""
             return true; 
           }        
            }
+
+
+           function brandValidation(){
+               productName = document.getElementById("brand").value.trim();
+               NameError = document.getElementById("brandError");
+               const onlyLettersRegex = /^[a-zA-Z]+$/;
+               if(productName==""){
+                 NameError.innerText = "Can not add spaces";
+                return false
+              }else if (!onlyLettersRegex.test(productName)) {
+                NameError.innerText = "Name can only contain letters";
+        return false; // Indicate validation failure  
+              } else {
+                NameError.innerText = ""; // Clear error message
+          return true; // Indicate validation success
+      }
+              } 
+
+
+
     </script>
  <script src='https://cdnjs.cloudflare.com/ajax/libs/cropperjs/0.8.1/cropper.min.js'></script>
 <script>

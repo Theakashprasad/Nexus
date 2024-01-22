@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>CART</title>
+    <link rel="icon" type="image/x-icon" href="/image/icons8-n-50.png">
     <link rel="stylesheet" href="/dist/output.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">  
@@ -72,7 +73,7 @@
                 <button id="" data-remove-id="<%=prod.cartProduct[0]._id%>" data-size-ind="<%=idx%>" class="removebtd font-semibold text-left hover:text-red-500 text-gray-500 text-xs underline">Remove</button>
               </div>
             </div>
-            <%if(prod.cartProduct[0].size[idx] == 0 ){%>
+            <%if(prod.cartProduct[0].size[idx] == 0 || prod.cartProduct[0].blocked){%>
               <div class="w-60 h-10 text-sm bg-light py-2 flex items-center justify-center space-x-7 rounded-lg font-bold relatives ">
               <p class="text-red-400 underline font-semibold text-xs">OUT OF STOCK</p>
               </div>
@@ -118,7 +119,7 @@
             <span class="productTotalPrice pl-10 w-1/5 font-semibold text-sm"><%= prod.cartProduct[0].product_price * val %></span>
           </div>
         <% subtotal = subtotal + ( prod.cartProduct[0].product_price * val) %>
-         
+         <%totalIteams++%>
           <% } %>
               <% }) %>
               <% }) %>
@@ -133,7 +134,7 @@
         <div id="summary" class="w-1/4 px-8 py-10">
           <h1 class="font-semibold text-2xl border-b pb-8">Order Summary</h1>
           <div class="flex justify-between mt-10 mb-5">
-            <span class="font-semibold text-sm uppercase">Items <%= totalIteams %> </span>
+            <span class="font-semibold text-sm uppercase">Items - <%= totalIteams %> </span>
           </div>
           <div class="flex justify-between py-4">
             <span>SUB TOTAL  </span>
@@ -141,9 +142,9 @@
           </div>
           <div>
             <label class="font-medium inline-block mb-3 text-sm uppercase">Shipping</label>
-            <select class="block p-2 text-gray-600 w-full text-sm">
+            <p class="bg-white block p-2 text-gray-600 w-full text-sm">
               <option>Standard shipping - $10.00</option>
-            </select>
+            </p>
           </div>
           <!-- <div class="py-10">
             <label for="promo" class="font-semibold inline-block mb-3 text-sm uppercase">Promo Code</label>

@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <link rel="stylesheet" href="dist/output.css">
+      <link rel="icon" type="image/x-icon" href="/image/icons8-n-50.png">
+
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">  
 
@@ -17,12 +19,12 @@
 
   <div class=" flex">
     <!-- search,filter,sort -->
-    <div class="border rounded p-6 shadow-lg mt-10 ml-24 "  style="height: 300px;">
+    <div class="border rounded p-6 shadow-lg mt-10 ml-24 hidden sm:block"  style="height: 300px;">
       <!-- search -->
       <div class="flex justify-center border-l-neutral-950 pt-6  ">
         <div>
            <form action="" method="">
-              <input id="userSearch" class="bg-gray-300 h-9 " type="search" name="search" placeholder="   Search...">
+              <input id="userSearch" class="rounded-3xl bg-gray-300 h-9 " type="search" name="search"  placeholder="   Search...">
            </form>
         </div> 
       </div>   
@@ -58,12 +60,14 @@
               <span class="ml-2"> Higher To Lower Price </span>
             </label>
           </div>
-        </div>
-        
-        <!-- Apply Button -->
-        <button type="submit" id="applyBtn" class="bg-blue-500 text-white font-bold py-2 px-4 rounded">
+        </div> 
+        <div class="flex justify-start">
+        <button type="submit" id="applyBtn" class="bg-blue-500 text-white font-bold py-2 px-4 rounded ">
           APPLY
         </button>
+      </div>
+        <!-- Apply Button -->
+        
       </form>
     </div>
     
@@ -154,13 +158,8 @@
           if(data.session){
             window.location.href = `/login`
           }
-          console.log(data.session);
-        }).catch((Error)=>{
-          console.log(Error);
-        })
-
-
-      Toastify({
+          if(data.added){
+            Toastify({
           text: "Added to wishlist",
           duration: 600,
           destination: "https://github.com/apvarun/toastify-js",
@@ -177,6 +176,31 @@
           }
         }).showToast();
         
+          }else{
+            Toastify({
+          text: "Alredy Added",
+          duration: 600,
+          destination: "https://github.com/apvarun/toastify-js",
+          newWindow: true,
+          close: true,
+          gravity: "top", // `top` or `bottom`
+          position: "center", // `left`, `center` or `right`
+          stopOnFocus: true, // Prevents dismissing of toast on hover
+          style: {
+            background: " #c20c0c",
+          },
+          onClick: function(){
+            alert("Toast clicked!");
+          }
+        }).showToast();
+          }
+          console.log(data.session);
+        }).catch((Error)=>{
+          console.log(Error);
+        })
+
+
+
 
       })
     

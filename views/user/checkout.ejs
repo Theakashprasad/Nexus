@@ -3,6 +3,8 @@
 <html class="border-l" lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>CHECKOUT</title>
+    <link rel="icon" type="image/x-icon" href="/image/icons8-n-50.png">
     <link rel="stylesheet" href="dist/output.css">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
@@ -87,9 +89,12 @@
 
                  <div class="md:col-span-3 ">
                    <label for="city">City</label>
-                   <input type="text" name="city" id="city" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                   <input type="text" name="city" id="city" oninput="cityValidation()" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                      value="" placeholder="" />
+                     
+                     <p id="cityError" class="text-xs text-red-500"></p>
                  </div>
+
 
                  <div class="md:col-span-2">
                    <label for="country">Country / region</label>
@@ -193,8 +198,13 @@ function v(){
   const name = document.getElementById("full_name").value;
     const address = document.getElementById("address").value;
     const alert = document.getElementById("alert");
+    const city = document.getElementById("city").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const zip = document.getElementById("zipcode").value.trim();
 
-    if (address.trim() === "" || name.trim() === "" ) {
+
+
+    if (address.trim() === "" || name.trim() === "" || city == ''  || phone == ''  || zip == ''   ) {
             alert.innerHTML="please fill all the field"
             return false; 
           }
@@ -236,12 +246,40 @@ function v(){
  } else if(name.length > 30 ){
      nameError.innerText = "words should not exceed above 30";
      return false; // Indicate validation failure
+ }else if(name.length<6){
+  nameError.innerText = "Invalid address";
  }
  else {
      nameError.innerText = ""; // Clear error message
      return true; // Indicate validation success
  }
 }
+
+
+
+function cityValidation() {
+ const namecity = document.getElementById("city").value.trim();
+ const cityError = document.getElementById("cityError");
+
+ if (namecity === '' ) {
+  cityError.innerText = "Can not add space";
+     return false; // Indicate validation failure
+ }
+ else if (!isNaN(namecity)) {
+  cityError.innerText = "Invalid, should not be a number";
+  return false; // Indicate validation failure
+}
+ else if(namecity.length > 15 ){
+  cityError.innerText = "words should not exceed above 15";
+     return false; // Indicate validation failure
+ }
+ else {
+     nameError.innerText = ""; // Clear error message
+     return true; // Indicate validation success
+ }
+}
+
+
 
 function numberValidation() {
  const name = document.getElementById("phone").value.trim();
@@ -250,8 +288,8 @@ function numberValidation() {
  if (name === '' ) {
      nameError.innerText = "Can not add space";
      return false; // Indicate validation failure
- } else if(name.length > 10 ){
-     nameError.innerText = "number should not exceed above 10";
+ } else if(name.length != 10 ){
+     nameError.innerText = "inavlid number";
      return false; // Indicate validation failure
  }else if(isNaN(name)){
    nameError.innerText = "should be number"
@@ -270,8 +308,8 @@ function pinValidation() {
  if (name === '' ) {
      nameError.innerText = "Can not add space";
      return false; // Indicate validation failure
- } else if(name.length > 6 ){
-     nameError.innerText = "number should not exceed above 6";
+ } else if(name.length != 6 ){
+     nameError.innerText = "pin Invalid";
      return false; // Indicate validation failure
  }else if(isNaN(name)){
    nameError.innerText = "should be number"
@@ -456,9 +494,10 @@ window.location.href = `/checkout?id=${addressId}`
                     </div>
 
                   <div class="md:col-span-2">
-                    <label for="city">City</label>
-                    <input type="text" name="city1" id="city1" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                    <label for="city">City</label>  
+                    <input type="text" name="city1" id="city1"  oninput="cityValidation1()" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                       value="" placeholder="" />
+                      <p id="cityError1" class="text-xs text-red-500"></p>
                   </div>
 
                   <div class="md:col-span-2">
@@ -589,7 +628,9 @@ window.location.href = `/checkout?id=${addressId}`
     } else if(name.length > 15 ){
         nameError.innerText = "words should not exceed above 15";
         return false; // Indicate validation failure
-    }
+      }else if(name.length<6){
+  nameError.innerText = "Invalid address";
+ }
     else {
         nameError.innerText = ""; // Clear error message
         return true; // Indicate validation success
@@ -603,12 +644,33 @@ function numberValidation1() {
     if (name === '' ) {
         nameError.innerText = "Can not add space";
         return false; // Indicate validation failure
-    } else if(name.length > 10 ){
-        nameError.innerText = "number should not exceed above 10";
+    } else if(name.length != 10 ){
+        nameError.innerText = "invalid number";
         return false; // Indicate validation failure
     }else if(isNaN(name)){
       nameError.innerText = "should be number"
         }
+    else {
+        nameError.innerText = ""; // Clear error message
+        return true; // Indicate validation success
+    }
+}
+
+
+
+function cityValidation1() {
+    const name = document.getElementById("city1").value.trim();
+    const nameError = document.getElementById("cityError1");
+
+    if (name === '' ) {
+        nameError.innerText = "Can not add space";
+        return false; // Indicate validation failure
+    } else if(name.length > 15 ){
+        nameError.innerText = "words should not exceed above 15";
+        return false; // Indicate validation failure
+      }else if(name.length<6){
+  nameError.innerText = "Invalid city";
+ }
     else {
         nameError.innerText = ""; // Clear error message
         return true; // Indicate validation success
@@ -623,8 +685,8 @@ function pinValidation1() {
     if (name === '' ) {
         nameError.innerText = "Can not add space";
         return false; // Indicate validation failure
-    } else if(name.length > 6 ){
-        nameError.innerText = "number should not exceed above 6";
+    } else if(name.length != 6 ){
+        nameError.innerText = "Invalid pin";
         return false; // Indicate validation failure
     }else if(isNaN(name)){
       nameError.innerText = "should be number"
@@ -701,9 +763,12 @@ function pinValidation1() {
                   </div>
 
                   <div class="flex justify-between mt-3">
-                    <span id="dispCup">apply coupom</span>
+                    <span id="dispCup">apply coupon</span>
                     <button type="submit" id="applyBtn" class="bg-blue-500 text-white font-bold py-1 px-3 rounded">
                       APPLY
+                    </button>
+                    <button type="submit" id="cancelCop" class="hidden bg-orange-400 text-white font-bold py-1 px-3 rounded">
+                     <a href="/checkout">CANCEL</a>
                     </button>
                   </div>
                   <div class="flex justify-between py-4 text-gray-600">
@@ -772,7 +837,7 @@ function pinValidation1() {
        let subtotalAttributeValue;
        let copId ;
        subtotalAttributeValue = subtotalValue.getAttribute('dsts-price-subtotal');
-
+          const cancelCop = document.getElementById('cancelCop')
   const applyBtn = document.getElementById('applyBtn')
   applyBtn.addEventListener('click',()=>{
 
@@ -793,6 +858,9 @@ function pinValidation1() {
           copTotalPriceDisplay.textContent = copId
           dispCup.innerHTML = data.message
           console.log(data.message);
+          cancelCop.classList.remove('hidden')
+          applyBtn.classList.add('hidden')
+
         } else{
           Toastify({
           text: "No Copon",

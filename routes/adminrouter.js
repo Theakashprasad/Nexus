@@ -75,18 +75,22 @@ router.get('/coupon',adminSessionMiddleware,couponController.coupon);
 router.post('/couponPost',adminSessionMiddleware,couponController.couponPost);
 router.get("/editCoupon/:copId",adminSessionMiddleware,couponController.editCoupon);
 router.post('/editCouponPost/:copId',adminSessionMiddleware,couponController.editCouponPost);  
-router.get('/deleteCoupon/:copId',adminSessionMiddleware,couponController.deleteCoupon);
+router.post('/deleteCoupon',adminSessionMiddleware,couponController.deleteCoupon);
 
+// +++++++++++++++++++++++++++++++++++++++++++++++++++         OFFER               ++++++++++++++++++++++++++++++++++++++++++++++++++
 
 router.get('/offer',adminSessionMiddleware,offerController.offer);
 router.post('/offerAdd',adminSessionMiddleware,offerController.offerAdd);
-router.get('/offerDel/:offID',adminSessionMiddleware,offerController.offerDel);
+router.post('/offerDel',adminSessionMiddleware,offerController.offerDel);
 router.get('/offerEdit/:offID',adminSessionMiddleware,offerController.offerEdit);
 router.post('/offerEditPost/:offID',adminSessionMiddleware,offerController.offerEditPost);
 
+// +++++++++++++++++++++++++++++++++++++++++++++++++++         DASHBOARD               ++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 router.get('/dashBoard',adminSessionMiddleware,dashBoard.dashBoard);  
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++         SALES REPORT               ++++++++++++++++++++++++++++++++++++++++++++++++++
 
 router.get('/salesReport',adminSessionMiddleware,salesReport.salesReport);  
 router.get('/salesReportPDF',adminSessionMiddleware,salesReport.salesReportPDF);  

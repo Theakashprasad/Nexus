@@ -48,7 +48,7 @@
   
        <tr>
          <td class="py-4 px-6 border-b border-gray-200"><%=data.shippingAddress.full_name%></td>
-         <td class="py-4 px-6 border-b border-gray-200"><%=data.Allproducts%></td>
+         <td class="py-4 px-6 border-b border-gray-200"><%=data.Allproducts[0]?.product_name%></td>
          <td class="py-4 px-6 border-b border-gray-200"><%=data.products.size%></td>
          <td class="py-4 px-6 border-b border-gray-200"><%=data.products.price%></td>
          <td class="py-4 px-6 border-b border-gray-200"><%=data.Status%></td>
@@ -63,7 +63,7 @@
  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
 
  <script>
-  const changeColour =document.getElementById("b");
+  const changeColour =document.getElementById("h");
   changeColour.style.backgroundColor =  "#000000";
 </script>
 <script>

@@ -5,15 +5,13 @@ const productDB = require("../../models/admin/productModel");
 const orderDB = require("../../models/user/orderModel");
 const addressDb = require("../../models/user/addressModel");
 const cartDb = require("../../models/admin/catagoryModel");
-const walletDB = require('../../models/user/wallet');
-const { some } = require("lodash");
-const { ObjectId } = require('mongodb');
-
+const walletDB = require("../../models/user/wallet");
+const { ObjectId } = require("mongodb");
 
 //test for checking purpose
 const a = async (req, res) => {
-      const a = await walletDB.find()
-      console.log(JSON.stringify(a,null,2));
+  const a = await walletDB.find();
+  console.log(JSON.stringify(a, null, 2));
 };
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++   HOME   ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -56,36 +54,35 @@ const usersignup = async (req, res) => {
       req.session.invalid = true;
       req.session.errmsg = "Email Already exists";
       return res.redirect("/signup");
-    }
-    else {
-      let referalBOL = false
-      let refExistingOrNot
-      if(data.referal){
-         refExistingOrNot = await userDB.findOne({referal : data.referal})
-        if(!refExistingOrNot){
+    } else {
+      let referalBOL = false;
+      let refExistingOrNot;
+      if (data.referal) {
+        refExistingOrNot = await userDB.findOne({ referal: data.referal });
+        if (!refExistingOrNot) {
           req.session.invalid = true;
           req.session.errmsg = "Rferal Does Not exists";
           return res.redirect("/signup");
         }
-        console.log('from referal');
-        let amountToAdd = 500 
+        console.log("from referal");
+        let amountToAdd = 500;
         newHistoryEntry = {
           amount: 500,
           status: "CREDIT",
-          referal : data.name 
-        }
+          referal: data.name,
+        };
         const result = await walletDB.findOneAndUpdate(
           { user: new ObjectId(refExistingOrNot._id) }, // find the document by user ID
           {
             $inc: { balance: amountToAdd },
-            $push: { history: newHistoryEntry }
+            $push: { history: newHistoryEntry },
           }, // increment the balance and push to history
           {
-            returnDocument: 'after', // return the updated document
-            upsert: true // create a new document if it doesn't exist
+            returnDocument: "after", // return the updated document
+            upsert: true, // create a new document if it doesn't exist
           }
         );
-        referalBOL = true
+        referalBOL = true;
       }
       const saltRound = 10; //bcrypting the code for securety
       const hashpassword = await bcrypt.hash(data.password, saltRound);
@@ -102,8 +99,8 @@ const usersignup = async (req, res) => {
       email = "akashprasadyt123@gmail.com";
       sendOtp(email, otp);
 
-      const referal =  Math.floor(1000 + Math.random() * 9000); 
-      
+      const referal = Math.floor(1000 + Math.random() * 9000);
+
       const added = new userDB({
         //adding new user into the DB
         name: data.name,
@@ -111,7 +108,7 @@ const usersignup = async (req, res) => {
         password: data.password,
         phone: data.number,
         otp: otp,
-        referal : referal,
+        referal: referal,
       });
       console.log(added);
       if (!added) {
@@ -125,27 +122,25 @@ const usersignup = async (req, res) => {
       req.session.otpName = data.email;
       res.redirect("/otp");
 
-  if(referalBOL){
-
-    let amountToAdd = 500
-    newHistoryEntry = {
-      amount: 500,
-      status: "CREDIT",
-      referal : refExistingOrNot.name 
-    }
-               await walletDB.findOneAndUpdate(
-      { user: new ObjectId(added._id) }, // find the document by user ID
-      {
-        $inc: { balance: amountToAdd },
-        $push: { history: newHistoryEntry }
-      }, // increment the balance and push to history
-      {
-        returnDocument: 'after', // return the updated document
-        upsert: true // create a new document if it doesn't exist
+      if (referalBOL) {
+        let amountToAdd = 500;
+        newHistoryEntry = {
+          amount: 500,
+          status: "CREDIT",
+          referal: refExistingOrNot.name,
+        };
+        await walletDB.findOneAndUpdate(
+          { user: new ObjectId(added._id) }, // find the document by user ID
+          {
+            $inc: { balance: amountToAdd },
+            $push: { history: newHistoryEntry },
+          }, // increment the balance and push to history
+          {
+            returnDocument: "after", // return the updated document
+            upsert: true, // create a new document if it doesn't exist
+          }
+        );
       }
-    );
-  }
-
     }
   } catch (error) {
     console.log(error);
@@ -307,12 +302,18 @@ const shop = async (req, res) => {
         .exec();
     }
 
-    const cartData = await cartDb.find();
+    const cartData = await cartDb.find({ blocked: false }); //it is categoey DB
     res.render("user/shop.ejs", { data, cartData, page, maxPage, filter });
   } catch (error) {
     console.error("Error creating user:", error);
     return res.status(500).send("fetch error:check once more");
   }
+};
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++   CONTACT   ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+const contact = (req, res) => {
+  res.render("user/contact.ejs");
 };
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++   PRODUCT   ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -445,6 +446,7 @@ module.exports = {
   userOtp,
   resendOtp,
   shop,
+  contact,
   product,
   user,
   editUser,

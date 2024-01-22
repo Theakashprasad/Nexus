@@ -47,10 +47,12 @@
          <!-- Description  -->
          <div class="mb-4">
           <label for="" class="block text-gray-700 text-sm font-bold mb-2">Description</label>
-          <input type="text" id="" name="description" value="<%=user.product_description%>"
+          <input type="text" id="dicrp" name="description" value="<%=user.product_description%>" oninput="discValidation()"
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             required>
         </div>
+        <p id="dicripError" class="text-red-500"></p>
+
 
            <!-- Category  -->
            <div class="mb-4">
@@ -70,7 +72,7 @@
          <!--  Price -->
          <div class="mb-4">
           <label for="" class="block text-gray-700 text-sm font-bold mb-2">Price</label>
-          <input oninput="priceValidation()" type="text" id="price" name="price" value="<%=user.product_price%>"
+          <input oninput="priceValidation()" type="number" id="price" name="price" value="<%=user.product_price%>"
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             required>
         </div>
@@ -102,10 +104,11 @@
    <!-- brand -->
    <div class="mb-4">
     <label for="" class="block text-gray-700 text-sm font-bold mb-2">Brand</label>
-    <input type="text" id="" name="brand" value="<%=user.product_brand%>"
+    <input type="text" id="brand" name="brand" value="<%=user.product_brand%>" oninput="brandValidation()"
       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       required>
   </div>
+      <p id="brandError" class="text-red-500"></p>
 
     
         
@@ -125,6 +128,8 @@
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
           save
         </button>
+        <p id="filleroor" class="text-red-500"></p>
+
       </div>
     </form>
   </div>
@@ -132,17 +137,37 @@
 
   <script>
     
+  // function v(){
+  //  return nameValidation() && qantityValidation() && priceValidation()
+  // }
+
+
   function v(){
-   return nameValidation() && qantityValidation() && priceValidation()
-  }
+    productName = document.getElementById("productName").value.trim();
+      discription = document.getElementById("dicrp").value.trim();
+      filleroor = document.getElementById("filleroor");
+      brand = document.getElementById("brand").value.trim();
+
+
+      if(productName ==='' ||  discription === '' || brand == ''){
+        console.log('kdsjksd');
+        filleroor.innerText = "Please fill all the fields";
+      return false;
+    }
+     return nameValidation() && qantityValidation() && priceValidation() && discValidation()
+    }
+
+
 
            function nameValidation(){
              productName = document.getElementById("productName").value.trim();
              NameError = document.getElementById("NameError");
+             const onlyLettersRegex = /^[a-zA-Z]+$/;
              if(productName===""){
-               NameError.innerText = "Full name should contain at least one non-space character";
+               NameError.innerText = "Can not add spaces";
               return false
-            }    else {
+            }
+            else {
               NameError.innerText = ""; // Clear error message
         return true; // Indicate validation success
     }
@@ -166,6 +191,27 @@
     }
 
 
+    function discValidation(){
+                console.log('dicriop');
+               discription = document.getElementById("dicrp").value.trim();
+               dicripError = document.getElementById("dicripError");
+               const onlyLettersRegex = /^[a-zA-Z]+$/;
+
+               if(discription==""){
+                dicripError.innerText = "Can not add spaces";
+                return false
+              } else if (!onlyLettersRegex.test(discription)) {
+                dicripError.innerText = "Name can only contain letters";
+                      return false; // Indicate validation failure    
+              }
+               else {
+                dicripError.innerText = ""; // Clear error message
+          return true; // Indicate validation success
+      }
+              }
+
+
+
            function priceValidation(){
             const price = document.getElementById("price").value;
             const PriceError = document.getElementById("PriceError");
@@ -179,6 +225,23 @@
           return true; 
         }        
          }
+         
+         function brandValidation(){
+               productName = document.getElementById("brand").value.trim();
+               branderror = document.getElementById("brandError");
+               const onlyLettersRegex = /^[a-zA-Z]+$/;
+               if(productName==""){
+                branderror.innerText = "Can not add spaces";
+                return false
+              }else if (!onlyLettersRegex.test(productName)) {
+                branderror.innerText = "Name can only contain letters";
+        return false; // Indicate validation failure  
+              } else {
+                branderror.innerText = ""; // Clear error message
+          return true; // Indicate validation success
+      }
+              } 
+
   </script>
 
 </body>

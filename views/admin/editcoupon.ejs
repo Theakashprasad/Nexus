@@ -47,9 +47,10 @@ class="openCoupon-edit fixed top-0 left-0 right-0 z-50   w-full overflow-x-hidde
        <input type="radio" id="fixed" name="discountType" value="fixed" onchange="discountCoupon()" <%= couponData.discountType === 'fixed' ? 'checked="checked"' : '' %> >
        <label for="fixed">Fixed</label>
 
-       <label for="couponMinimumPurchase" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Minimum Purchase</label>
-       <input type="text" value="<%=couponData.minimumPurchase%>" id="couponMinimumPurchase-edit" name="couponMinimumPurchase" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
-     
+       <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Minimum Purchase</label>
+       <input oninput="minvalidation()" type="number" value="<%=couponData.minimumPurchase%>" id="couponMinimumPurchase-edit" name="couponMinimumPurchase" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
+       <span id="minError" class="errorMsg text-red-500"></span>
+
        <label for="validFrom" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Valid from</label>
        <input type="date" id="validFrom-edit" name="validFrom" value="<%= new Date(couponData.validFrom).toISOString().slice(0, 10) %>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
      
@@ -72,6 +73,8 @@ class="openCoupon-edit fixed top-0 left-0 right-0 z-50   w-full overflow-x-hidde
 <script>
   
 function validateForm() {
+  const name = document.getElementById("couponValue").value.trim();
+   
   return CouponValue()&&discountCoupon()
 }
 function CouponValue() {
@@ -84,6 +87,9 @@ function CouponValue() {
           return false; // Indicate validation failure
       }else if(isNaN(name)){
         nameError.innerText = "should be number"
+          }
+          else if(name < 0){
+            nameError.innerText = "Number should not be less than 0"
           }
       else {
           nameError.innerText = ""; // Clear error message
@@ -108,6 +114,28 @@ return false
  }
 
 }
+
+function minvalidation(){
+  const name = document.getElementById("couponMinimumPurchase-edit").value.trim();
+      const nameError = document.getElementById("minError");
+  console.log('sdsj');
+      if (name === '' ) {
+          nameError.innerText = "Can not add space";
+          return false; // Indicate validation failure
+      }else if(isNaN(name)){
+        nameError.innerText = "should be number"
+        return false; // Indicate validation failure
+          }
+          else if(name < 0){
+            nameError.innerText = "Number should not be less than 0"
+          }
+      else {
+          nameError.innerText = ""; // Clear error message
+          return true; // Indicate validation success
+      }
+}
+
+
 </script>
 
 

@@ -3,9 +3,10 @@ function generateInvoice(doc, document, user) {
 
   // Add the header - https://pspdfkit.com/blog/2019/generate-invoices-pdfkit-node/
   doc
+    .text('_NEXUS_',{align: "left"})
     .fillColor("#444444")
     .fontSize(20)
-    .text("Invoice", 0, 50, { align: "center" })
+    .text("INVOICE", 0, 50, { align: "center" })
     .fontSize(8)
     .text("To", 200, 50, { align: "right" })
     .text(`${user.name}`, 200, 60, { align: "right" })

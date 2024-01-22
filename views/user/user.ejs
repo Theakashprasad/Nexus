@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USER PROFILE</title>
+    <link rel="icon" type="image/x-icon" href="/image/icons8-n-50.png">
     <link rel="stylesheet" href="/dist/output.css">
     
     <title>User Page</title>
@@ -72,41 +74,41 @@
         <div class="rounded-md w-1/2">
             <form id="payment-form" method="POST" action="">
                 <section>
-                    <h2 class="uppercase tracking-wide text-lg font-semibold text-gray-700 my-2">ADDRESS</h2>
+                    <h2 class="uppercase tracking-wide text-lg font-semibold text-gray-700 my-2">ADDRESS : </h2>
                     <fieldset class="mb-3 bg-white shadow-lg rounded text-gray-600">
                         <label class="flex border-b border-gray-200 h-12 py-3 items-center">
-                            <span class="text-right px-2">Name</span>
+                            <span class="text-right px-2">Name : </span>
                             <p class="ml-4"><%= addressDetails.full_name %></p>
                             <p class="ml-4"></p>
                         </label>
                       
                         <label class="flex border-b border-gray-200 h-12 py-3 items-center">
-                            <span class="text-right px-2">Address</span>
+                            <span class="text-right px-2">Address : </span>
                             <p class="ml-4"><%= addressDetails.address %></p>
                             <p class="ml-4"></p>
                         </label>
                         <label class="flex border-b border-gray-200 h-12 py-3 items-center">
-                            <span class="text-right px-2">Phone</span>
+                            <span class="text-right px-2">Phone : </span>
                             <p class="ml-4"><%= addressDetails.phone %></p>
                             <p class="ml-4"></p>
                         </label>
                         <label class="flex border-b border-gray-200 h-12 py-3 items-center">
-                            <span class="text-right px-2">City</span>
+                            <span class="text-right px-2">City : </span>
                             <p class="ml-4"><%= addressDetails.city %></p>
                             <p class="ml-4"></p>
                         </label>
                         <label class="inline-flex w-2/4 border-gray-200 py-3">
-                            <span class="text-right px-2">State</span>
+                            <span class="text-right px-2">State : </span>
                             <p class="ml-4"> <%= addressDetails.state %></p>
                             <p class="ml-4"></p>
                         </label>
                         <label class="xl:w-1/4 xl:inline-flex  items-center flex xl:border-none border-t border-gray-200 py-3">
-                            <span class="text-right px-2 xl:px-0 xl:text-none">ZIP</span>
+                            <span class="text-right px-2 xl:px-0 xl:text-none">ZIP : </span>
                             <p class="ml-4"><%= addressDetails.zipcode %></p>
                             <p class="ml-4"></p>
                         </label>
                         <label class="flex border-t border-gray-200 h-12 py-3 items-center select relative">
-                            <span class="text-right px-2">Country</span>
+                            <span class="text-right px-2">Country : </span>
                             <p class="ml-4"><%= addressDetails.country %></p>
                             <p class="ml-4"></p>
                         </label>

@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tailwind Modal Example</title>
+  <title>ADDRESS</title>
+  <link rel="icon" type="image/x-icon" href="/image/icons8-n-50.png">
   <link rel="stylesheet" href="/dist/output.css">
 </head>
 
@@ -63,8 +64,9 @@
 
                     <div class="md:col-span-3 ">
                       <label for="city">City</label>
-                      <input type="text" name="city" id="city" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                      <input oninput="cityValidation()" type="text" name="city" id="city" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                         value="" placeholder="" />
+                        <p id="cityError" class="text-xs text-red-500"></p>
                     </div>
 
                     <div class="md:col-span-2">
@@ -200,62 +202,89 @@
     }
 }
 
-    function addressValidation() {
-    const name = document.getElementById("address").value.trim();
-    const nameError = document.getElementById("addressError");
 
-    if (name === '' ) {
-        nameError.innerText = "Can not add space";
-        return false; // Indicate validation failure
-    } else if(name.length > 15 ){
-        nameError.innerText = "words should not exceed above 15";
-        return false; // Indicate validation failure
-    }
-    else {
-        nameError.innerText = ""; // Clear error message
-        return true; // Indicate validation success
-    }
+function addressValidation() {
+ const name = document.getElementById("address").value.trim();
+ const nameError = document.getElementById("addressError");
+
+ if (name === '' ) {
+     nameError.innerText = "Can not add space";
+     return false; // Indicate validation failure
+ } else if(name.length > 30 ){
+     nameError.innerText = "words should not exceed above 30";
+     return false; // Indicate validation failure
+ }else if(name.length<6){
+  nameError.innerText = "Invalid address";
+ }
+ else {
+     nameError.innerText = ""; // Clear error message
+     return true; // Indicate validation success
+ }
 }
 
-function numberValidation() {
-    const name = document.getElementById("phone").value.trim();
-    const nameError = document.getElementById("phoneError");
 
-    if (name === '' ) {
-        nameError.innerText = "Can not add space";
-        return false; // Indicate validation failure
-    } else if(name.length > 10 ){
-        nameError.innerText = "number should not exceed above 10";
-        return false; // Indicate validation failure
-    }else if(isNaN(name)){
-      nameError.innerText = "should be number"
-        }
-    else {
-        nameError.innerText = ""; // Clear error message
-        return true; // Indicate validation success
-    }
+function cityValidation() {
+ const namecity = document.getElementById("city").value.trim();
+ const cityError = document.getElementById("cityError");
+
+ if (namecity === '' ) {
+  cityError.innerText = "Can not add space";
+     return false; // Indicate validation failure
+ }
+ else if (!isNaN(namecity)) {
+  cityError.innerText = "Invalid, should not be a number";
+  return false; // Indicate validation failure
+}
+ else if(namecity.length > 15 ){
+  cityError.innerText = "words should not exceed above 15";
+     return false; // Indicate validation failure
+ }
+ else {
+     nameError.innerText = ""; // Clear error message
+     return true; // Indicate validation success
+ }
+}
+
+
+
+function numberValidation() {
+ const name = document.getElementById("phone").value.trim();
+ const nameError = document.getElementById("phoneError");
+
+ if (name === '' ) {
+     nameError.innerText = "Can not add space";
+     return false; // Indicate validation failure
+ } else if(name.length != 10 ){
+     nameError.innerText = "inavlid number";
+     return false; // Indicate validation failure
+ }else if(isNaN(name)){
+   nameError.innerText = "should be number"
+     }
+ else {
+     nameError.innerText = ""; // Clear error message
+     return true; // Indicate validation success
+ }
 }
 
 
 function pinValidation() {
-    const name = document.getElementById("zipcode").value.trim();
-    const nameError = document.getElementById("zipcodeError");
+ const name = document.getElementById("zipcode").value.trim();
+ const nameError = document.getElementById("zipcodeError");
 
-    if (name === '' ) {
-        nameError.innerText = "Can not add space";
-        return false; // Indicate validation failure
-    } else if(name.length > 6 ){
-        nameError.innerText = "number should not exceed above 6";
-        return false; // Indicate validation failure
-    }else if(isNaN(name)){
-      nameError.innerText = "should be number"
-        }
-    else {
-        nameError.innerText = ""; // Clear error message
-        return true; // Indicate validation success
-    }
+ if (name === '' ) {
+     nameError.innerText = "Can not add space";
+     return false; // Indicate validation failure
+ } else if(name.length != 6 ){
+     nameError.innerText = "pin Invalid";
+     return false; // Indicate validation failure
+ }else if(isNaN(name)){
+   nameError.innerText = "should be number"
+     }
+ else {
+     nameError.innerText = ""; // Clear error message
+     return true; // Indicate validation success
+ }
 }
-
 </script>
 
 

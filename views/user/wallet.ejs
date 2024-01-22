@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>WALLET</title>
+    <link rel="icon" type="image/x-icon" href="/image/icons8-n-50.png">
     <link rel="stylesheet" href="/dist/output.css">
 </head>
 <body>
@@ -30,8 +31,8 @@
           <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">DATE</th>
           <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">AMOUNT</th>
           <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">ORDER </th>
-          <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">ORDER </th>
-          <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">STATUS</th>
+          <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">STATUS </th>
+          <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">ACCOUNT</th>
  
         </tr>
       </thead>
@@ -47,7 +48,7 @@
           <td class="py-4 px-6 border-b border-gray-200">ORD <%= String(iteam.orderId).slice(19)%></td>
           <td class="py-4 px-6 border-b border-gray-200">
             <% const orderstatus = orderData.find((itm) => itm._id.equals(iteam.orderId)) %>
-            <%=orderstatus?.Status %>
+            <%=orderstatus?.Status == 'PENDING' ? 'PURCHASE' : orderstatus?.Status  %>
           </td>
           <% if(iteam.status == 'CREDIT'  ){%>
             <td class="py-4 px-6 border-b border-gray-200 text-green-500">+<%=iteam.status%> </td>

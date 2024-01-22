@@ -51,9 +51,9 @@
        <% data.forEach(user => { %>
        <tr>
           <td class="py-4 px-6 border-b border-gray-200"> <img src="<%= user.category_img_url%> " alt="no  img"> </td>
-         <td class="py-4 px-6 border-b userName border-gray-200"><%= user. product_category %></td>
+         <td class="py-4 px-6 border-b userName border-gray-200" ><%= user. product_category %></td>
          <td class="py-4 px-6 border-b border-gray-200"><%= user.category_description %></td>
-         <td class="py-4 px-6 border-b border-gray-200"><%= user.category_publishDate %></td>
+         <td class="py-4 px-6 border-b border-gray-200 text-center" > <%= new Date(user.category_publishDate ).toISOString().slice(0, 10) %></td>
          <td class="py-4 pl-11 border-b border-gray-200">
             <div class=" text-white px-4 py-2 rounded bg-blue-500 w-16 mb-4">
               <a href="/admin/editCatagory/<%= user._id %>">EDIT</a>
@@ -88,6 +88,27 @@
       </div>
   </div>
 </div>
+
+
+<section class="my-6">
+  <div class="pagination flex justify-center gap-4">
+    <% if (paginate.hasPreviousPages) { %>
+      <a href="?page=<%= paginate.page - 1 %>"
+        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Previous</a>
+      <% } %>
+
+        <% if (paginate.hasNextPages && page < maxPage) { %>
+          <a href="?page=<%= paginate.page + 1 %>"
+            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 focus:bg-blue-700 focus:outline-none transition duration-300 ease-in-out">
+            Next
+          </a>
+          <% } %>
+
+  </div>
+  <p class="text-gray-900 font-bold flex justify-center"><%= paginate.page %> out of <%= maxPage %></p>
+
+</section>
+
  <script>
    const changeColour =document.getElementById("c");
    changeColour.style.backgroundColor = "#000000";
@@ -106,7 +127,12 @@
         console.log('hai');
       const userId = button.getAttribute("data-user-id");
       const userBlocked = button.getAttribute("data-user-blocked")
-      console.log("userId");
+
+      const tdElement = button.closest('tr').querySelector('.userName');
+        const productCategoryValue = tdElement.textContent;
+
+        // Now you can use productCategoryValue as needed
+        console.log(productCategoryValue);
      
       fetch(`/admin/deleteCatagory/${userId}`,{ 
             method : "PUT",
@@ -115,6 +141,7 @@
             },
             body : JSON.stringify({
               blocked: userBlocked,
+              productCategoryValue
             }),
       }).then(res=>res.json()).then(data=>{
         if(data.success){

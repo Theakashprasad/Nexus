@@ -38,6 +38,9 @@ router.get("/logout", usercontroller.logout);
 //SHOP
 router.all("/shop",blockingmiddleware, usercontroller.shop);   
 
+//CONTACT
+router.get('/contact',usercontroller.contact)
+
 //PRODUCT
 router.get("/product/:userId",blockingmiddleware, usercontroller.product);
 

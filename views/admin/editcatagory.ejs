@@ -32,29 +32,31 @@
       </svg>
     </a>
     <form class="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4" action="/admin/editCatagoryPost/<%= user._id %>"
-      method="post" enctype="multipart/form-data">
+      method="post" enctype="multipart/form-data" onsubmit="return v()" > 
 
 
       <!-- Category Name -->
       <div class="mb-4">
         <label for="productName" class="block text-gray-700 text-sm font-bold mb-2">Category Name</label>
-        <input type="text" id="productName" name="categoryName" placeholder="<%= user. product_category %>"
+        <input  oninput="categoryValidation()" type="text" id="productName" name="categoryName" value="<%= user. product_category %>"
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
       </div>
+      <p class="text-red-400" id="error"></p>
       <!-- Category Description -->
       <div class="mb-4">
         <label for="categoryDescription" class="block text-gray-700 text-sm font-bold mb-2">Category Description</label>
-        <input  type="text" id="categoryDescription" name="categoryDescription" placeholder="<%= user.category_description %>"
+        <input oninput="description()" type="text" id="categoryDescription" name="categoryDescription" value="<%= user.category_description %>"
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
          ></input>
       </div>
-
+      <p class="text-red-400" id="desError"></p>
       <!-- Product DATE -->
       <div class="mb-4">
         <label for="categoryDate" class="block text-gray-700 text-sm font-bold mb-2">publish date</label>
         <input type="date" id="categoryDate" name="categoryPublishDate" min="0" step="0.01" 
         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-        <p><%=user.category_publishDate %></p>
+        <p> <%= new Date(user.category_publishDate).toISOString().slice(0, 10)%></p>
+       
       </div>
 
       <div class="flex items-center justify-between">
@@ -62,6 +64,7 @@
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
           Add Category
         </button>
+        <p class="text-red-400" id="mainError"></p>
       </div>
                  <!-- Category Image -->
                   <div class="mb-4">
@@ -73,6 +76,62 @@
             
     </form>
   </div>
+
+  <script>
+    
+    function v(){
+      const productName = document.getElementById("productName").value.trim();
+      const description = document.getElementById("categoryDescription").value.trim();
+      const error = document.getElementById("mainError");
+   
+    if(productName ==='' ||  description === ''){
+      error.innerText = "Please fill in form";
+      return false;
+    }
+    return categoryValidation()
+    }
+
+    function categoryValidation(){
+      const productName = document.getElementById("productName").value.trim();
+        const error = document.getElementById("error");
+        const onlyLettersRegex = /^[a-zA-Z]+$/;
+        console.log(productName);
+        if(productName === ""){
+          error.innerText = "enter valid name";
+          return false;
+        }else if (!onlyLettersRegex.test(productName)) {
+          error.innerText = "Name can only contain letters";
+        return false; // Indicate validation failure
+        }else{
+          error.innerText = ""
+          return true;
+        }
+    }
+
+
+    function description(){
+      const productName = document.getElementById("categoryDescription").value.trim();
+        const error = document.getElementById("desError");
+        const onlyLettersRegex = /^[a-zA-Z]+$/;
+        console.log(productName);
+        if(productName === ""){
+          error.innerText = "enter valid name";
+          return false;
+        }else if (!onlyLettersRegex.test(productName)) {
+          error.innerText = "Name can only contain letters";
+        return false; // Indicate validation failure
+        }else if (productName.length >60) {
+          error.innerText = "description can not exceed above 60";
+        return false; // Indicate validation failure
+        }
+        else{
+          error.innerText = ""
+          return true;
+        }
+    }
+
+  </script>
+
 </body>
 
 </html>

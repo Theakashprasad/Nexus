@@ -6,9 +6,9 @@ const dashBoard = async (req, res) => {
     let dailyData;
     let monthlyData;
     // Aggregate monthly orders
-    const monthlyOrders = async () => {
+    const monthlyOrders = async () => {      //4 the monthly orders
       try {
-        const monthlyresult = await orderCollection.aggregate([
+        const monthlyresult = await orderCollection.aggregate([  //use aggregate
           {
             $group: {
               _id: { month: { $month: "$createdAt" }, year: { $year: "$createdAt" } },
@@ -16,7 +16,7 @@ const dashBoard = async (req, res) => {
             },
           },
           {
-            $sort: { "_id.year": 1, "_id.month": 1 },
+            $sort: { "_id.year": 1, "_id.month": 1 },   //sorting to 
           },
           {
             $project: {
