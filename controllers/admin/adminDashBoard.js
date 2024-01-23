@@ -63,6 +63,8 @@ const dashBoard = async (req, res) => {
         console.error("Error aggregating yearly orders:", error);
       }
     };
+
+             
     const data = await orderCollection.find()
     // console.log(data);
     await monthlyOrders();
