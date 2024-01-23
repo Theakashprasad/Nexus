@@ -67,7 +67,7 @@
                    <div class="md:col-span-3">
                      <label for="">Full Name</label>
                      <input oninput="nameValidation()" type="text" name="full_name" id="full_name"
-                       class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value=""  />
+                       class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"   />
                        <p id="nameError" class="text-xs text-red-500"></p>
                    </div>
             
@@ -88,9 +88,9 @@
                  </div>
 
                  <div class="md:col-span-3 ">
-                   <label for="city">City</label>
+                   <label for="">City</label>
                    <input type="text" name="city" id="city" oninput="cityValidation()" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                     value="" placeholder="" />
+                       />
                      
                      <p id="cityError" class="text-xs text-red-500"></p>
                  </div>
@@ -208,7 +208,7 @@ function v(){
             alert.innerHTML="please fill all the field"
             return false; 
           }
- return nameValidation() 
+ return nameValidation()  && addressValidation() &&  cityValidation() &&  numberValidation() &&  pinValidation()
 }
 </script>
 
@@ -261,7 +261,7 @@ function cityValidation() {
  const namecity = document.getElementById("city").value.trim();
  const cityError = document.getElementById("cityError");
 
- if (namecity === '' ) {
+ if (namecity === "" ) {
   cityError.innerText = "Can not add space";
      return false; // Indicate validation failure
  }
@@ -272,6 +272,10 @@ function cityValidation() {
  else if(namecity.length > 15 ){
   cityError.innerText = "words should not exceed above 15";
      return false; // Indicate validation failure
+ }
+ else if(namecity == 'tvm' ){
+  cityError.innerText = "";
+     return true; // Indicate validation failure
  }
  else {
      nameError.innerText = ""; // Clear error message
