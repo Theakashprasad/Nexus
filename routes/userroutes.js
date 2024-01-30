@@ -35,6 +35,8 @@ router.post("/login", usercontroller.userLogin);
 //LOGOUT
 router.get("/logout", usercontroller.logout);
 
+router.get('/get-product-datas',usercontroller.getProducts)
+
 //SHOP
 router.all("/shop",blockingmiddleware, usercontroller.shop);   
 
@@ -50,17 +52,15 @@ router.post("/cartPost",sessionMiddleware,cartController.cartPost);
 router.post("/updateCart",sessionMiddleware,cartController.updateCart);            
 router.post("/removeCart",sessionMiddleware,cartController.removeCart); 
 
-
 //CHECKOUT
 router.get("/checkout",sessionMiddleware,checkoutController.checkout);
 router.post("/checkoutPost",sessionMiddleware,checkoutController.checkoutPost)
 router.get("/checkoutComplete",sessionMiddleware,checkoutController.checkoutComplete);
 router.post("/razorpay",sessionMiddleware,checkoutController.razorpayPost)
 router.post("/confirmation",sessionMiddleware,checkoutController.confirmation)
-router.put("/coupon",sessionMiddleware,checkoutController.coupon)
+router.put("/coupon",sessionMiddleware,checkoutController.coupon) 
 router.get("/checkoutFalure",sessionMiddleware,checkoutController.checkoutFalure);
-
- 
+router.post('/checkoutAddress',sessionMiddleware,checkoutController.checkoutAddress) 
 
 //ADDRESS
 router.get("/address",sessionMiddleware,addressController.address);
@@ -76,7 +76,6 @@ router.get("/order/:ordId",sessionMiddleware,orderController.order);
 router.post("/orderPost",sessionMiddleware,orderController.orderPost);
 router.post("/orderCancel",sessionMiddleware,orderController.orderCancel);
 router.get("/invoice/:id",sessionMiddleware,orderController.invoice);
-
 
 //USER PROFILE
 router.get("/user",sessionMiddleware,usercontroller.user);
@@ -94,8 +93,6 @@ router.post("/forgetCheckPost",forgetController.forgetCheckPost)
 router.get('/wallet',sessionMiddleware,walletController.wallet)
 router.post('/walletReturn',sessionMiddleware,walletController.walletReturn);
 router.post('/walletOrder',sessionMiddleware,walletController.walletOrder);
- 
-
 
 //WISHLIST
 router.get("/wishlist",sessionMiddleware,wishlistController.wishlist);

@@ -11,13 +11,7 @@
     <%- include("../partials/sidebar.ejs") %>  
     <div class="p-4 sm:ml-64">
      <div class="p-4 border-2 border-gray-200  dark:border-gray-700 mt-14">
-
-  
-    <div>
-        <canvas id="chart"></canvas>
-    </div>
-
-    <div class="form-check">
+      <div class="form-check">
         <label style="color: black; font-weight: bold;">Select Chart Type:</label>
         <input class="form-check-input chartType" type="radio" name="chartType" id="yearlyChart" value="yearly"
           checked>
@@ -25,10 +19,20 @@
         <input class="form-check-input chartType" type="radio" name="chartType" id="monthlyChart" value="monthly">
         <label class="form-check-label" for="monthlyChart">Monthly Chart</label>
       </div>
+  
+    <div>
+        <canvas id="chart"></canvas>
+    </div>
+
+    <div class="w-full h-72">
+      <canvas class="w-full h-72" id="categoryChart"></canvas>
+      
+  </div>
       <script>
         const changeColour =document.getElementById("a");
         changeColour.style.backgroundColor = "#000000";
       </script>
+
 <script>
     document.querySelectorAll('.chartType').forEach(function (radio) {
       radio.addEventListener('change', function () {
@@ -39,21 +43,32 @@
     let label
     let data
     let myChart
+  let myCategoryChart
+  let catLabels
+let catResultData
+
     let type
     function updateCharts(selectedValue) {
       if(myChart){
+        myCategoryChart.destroy()
         myChart.destroy();
       }
       const totalOrders = '<%=monthlyData%>'.split(',');
   
       const monthlyOrdersData = '<%= dailyOrdersData %>'.split(',');
     if (selectedValue == "monthly") {
+      catResultData='<%=montlyData[1]%>'.split(',')
+      catResultData=catResultData.map((ele)=>Number(ele))
+      catLabels='<%=montlyData[0]%>'.split(',')
   label= ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
   data=monthlyOrdersData.map(Number)
   type= 'line'
   
   } else if (selectedValue == "yearly") {
     label= [ 2024, 2025 ,2026]
+    catResultData='<%=yerlyData[1]%>'.split(',')
+    catResultData=catResultData.map((ele)=>Number(ele))
+    catLabels='<%=yerlyData[0]%>'.split(',')
     data=totalOrders
     type='bar'
     console.log(totalOrders);
@@ -81,9 +96,26 @@
       
       const myMonthlyCtx = document.getElementById('chart').getContext('2d');
       myChart= new Chart(myMonthlyCtx, Data);
+
+      const Data2 = {
+        type: 'pie',
+        data: {
+          labels:  catLabels,
+          datasets: [{
+            label: 'Total Orders',
+            data: catResultData,
+            fill: true,
+            borderWidth: 1
+          }]
+        },
+      };
+      const myCategoryCtx = document.getElementById('categoryChart').getContext('2d');
+      myCategoryChart= new Chart(myCategoryCtx, Data2);
     }
     window.onload=updateCharts('yearly')
-  
   </script>
+ <script>
+
+ </script> 
 </body>
 </html>

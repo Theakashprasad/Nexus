@@ -95,7 +95,7 @@
               </button>
               </div>
                   <!-- quantity -->
-              <input class="quantity mx-2 border text-center w-8" type="text" value="<%= val %>">
+              <input class="quantity mx-2 border text-center w-8" type="text" value="<%= val %>" readonly>
               
                   <!-- Plus -->
                   <div class="plus plus-minus"  data-item-index="<%= idx %>"  data-item-qnt="<%=val %>" data-item-id="<%=prod.cartProduct[0]._id%>" data-item-price="<%= prod.cartProduct[0].product_price%>">
@@ -108,10 +108,8 @@
                   </svg>
                 </button>
                   </div>
-
             </div>
     
-       
             <%}%>
 
             <!-- end -->
@@ -136,14 +134,14 @@
           <div class="flex justify-between mt-10 mb-5">
             <span class="font-semibold text-sm uppercase">Items - <%= totalIteams %> </span>
           </div>
-          <div class="flex justify-between py-4">
+          <!-- <div class="flex justify-between py-4">
             <span>SUB TOTAL  </span>
             <span>$ <%= subtotal %></span>
-          </div>
+          </div> -->
           <div>
             <label class="font-medium inline-block mb-3 text-sm uppercase">Shipping</label>
             <p class="bg-white block p-2 text-gray-600 w-full text-sm">
-              <option>Standard shipping - $10.00</option>
+              <option>Standard shipping - 10.00</option>
             </p>
           </div>
           <!-- <div class="py-10">
@@ -155,7 +153,7 @@
             <div class="border-t mt-8">
             <div class="flex font-semibold justify-between py-6 text-sm uppercase">
               <span>Total cost</span>
-              <span id="total">$ <%= subtotal + 10 %> </span>
+              <span id="total"><%= subtotal + 10 %> </span>
             </div>
            <% if( subtotal === 0 || stock) { %>
 

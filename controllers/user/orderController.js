@@ -22,12 +22,12 @@ const orderMain = async (req, res) => {
   try {
     const userId = req.session.user._id;
 
-    const a = await orderDB //order data
+    const orderDetails = await orderDB //order data
       .find({ user: userId })
+      .sort({ createdAt: -1 }) 
       .limit(limit)
       .skip(startIndex)
       .exec();
-    let orderDetails = a.reverse();
     // console.log(JSON.stringify(orderDetails,null,2));
     const addressData = await addressDb.find(); //address data
     const productData = await productDB.find();
@@ -99,12 +99,16 @@ const orderPost = async (req, res) => {
       paymentMethod: "COD",
     });
     await orderCreate.save();
+
     const products = await productDB.find(); //pro data
+
     orderCreate.products.forEach((pro, i) => {
+    
       //looking through to check
-      let product = products.find((item) => item._id.equals(pro.product)); //data if it is equal
+      let product = products.find((item) => item._id.equals(pro.product.valueOf())); //data if it is equal
       const a = product.size;
       const b = pro.size;
+      
       let c = [];
       for (let i = 0; i < a.length; i++) {
         c.push(a[i] - b[i]);

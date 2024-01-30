@@ -92,7 +92,7 @@ router.get('/dashBoard',adminSessionMiddleware,dashBoard.dashBoard);
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++         SALES REPORT               ++++++++++++++++++++++++++++++++++++++++++++++++++
 
-router.get('/salesReport',adminSessionMiddleware,salesReport.salesReport);  
+router.all('/salesReport',adminSessionMiddleware,salesReport.salesReport);  
 router.get('/salesReportPDF',adminSessionMiddleware,salesReport.salesReportPDF);  
 
 

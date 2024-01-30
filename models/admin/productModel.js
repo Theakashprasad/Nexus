@@ -1,5 +1,6 @@
 const { text } = require("express");
 const mongoose = require("mongoose");
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const productSchema = new mongoose.Schema({
   product_name: {
@@ -9,7 +10,7 @@ const productSchema = new mongoose.Schema({
     type: String,
   },  
   product_price: {
-    type: Number,
+    type: Number, 
     min: 0,
   },
   product_real_price: {
@@ -33,7 +34,11 @@ const productSchema = new mongoose.Schema({
   
   product_img_url: {
     type: [String],
-  },
+  }, 
 });
+
+productSchema.plugin(mongoosePaginate);
+
+
 productCollection = mongoose.model("product", productSchema);
 module.exports = productCollection;

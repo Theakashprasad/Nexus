@@ -15,12 +15,13 @@ const order = async (req, res) => {
     if (page > maxPage) {
       return res.redirect(`/product?page=${maxPage}`); //checking if the page is gte
     }
-    const a = await orderDB
+    const orderData = await orderDB
       .find()
+      .sort({ createdAt: -1 }) 
       .limit(limit) //limiting the data
       .skip(startIndex)
       .exec();
-      const orderData  = a.reverse()
+
     const userdata = await userDB.find(); //find the data 
 
     res.render("admin/order", { orderData, userdata, page, maxPage }); //rendering the page

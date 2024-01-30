@@ -1,272 +1,400 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <link rel="stylesheet" href="dist/output.css">
-      <link rel="icon" type="image/x-icon" href="/image/icons8-n-50.png">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="dist/output.css" />
+    <link rel="icon" type="image/x-icon" href="/image/icons8-n-50.png" />
 
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">  
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"
+    ></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
+  </head>
+  <body class="w-screen overflow-x-hidden">
+    <!-- source: https://github.com/mfg888/Responsive-Tailwind-CSS-Grid/blob/main/index.html -->
 
-</head>
-<body class="w-screen overflow-x-hidden">
-  <!-- source: https://github.com/mfg888/Responsive-Tailwind-CSS-Grid/blob/main/index.html -->
-  
-  <!-- for the nav -->
-  <%- include("../partials/navbar.ejs") %>
+    <!-- for the nav -->
+    <%- include("../partials/navbar.ejs") %>
 
-  <div class=" flex">
-    <!-- search,filter,sort -->
-    <div class="border rounded p-6 shadow-lg mt-10 ml-24 hidden sm:block"  style="height: 300px;">
-      <!-- search -->
-      <div class="flex justify-center border-l-neutral-950 pt-6  ">
-        <div>
-           <form action="" method="">
-              <input id="userSearch" class="rounded-3xl bg-gray-300 h-9 " type="search" name="search"  placeholder="   Search...">
-           </form>
-        </div> 
-      </div>   
-      <!-- search end -->
-      <form action="/shop" method="post">
-        <label for="selectOption" class="text-black mr-2 uppercase font-semibold">Filter by Category:</label> <br>
-        <select id="selectOption" name="selectOption" class="bg-white text-black px-2 py-1 rounded">
-          <option value=""><%= filter == '' ? 'All' : filter %></option>
-    
-          <% cartData.forEach((list)=> { %>
-            
+    <div class="flex">
+      <!-- search,filter,sort -->
+      <div
+        class="border rounded p-6 shadow-lg mt-10 ml-24 hidden sm:block"
+        style="height: 300px"
+      >
+        <!-- search -->
+        <div class="flex justify-center border-l-neutral-950 pt-6">
+          <div>
+            <form action="" method="">
+              <input
+                id="userSearch"
+                class="rounded-3xl bg-gray-300 h-9"
+                type="search"
+                name="search"
+                placeholder="   Search..."
+              />
+            </form>
+          </div>
+        </div>
+        <!-- search end -->
+        <form action="/shop" method="post">
+          <label
+            for="selectOption"
+            class="text-black mr-2 uppercase font-semibold"
+            >Filter by Category:</label
+          >
+          <br />
+          <select
+            id="selectOption"
+            name="selectOption"
+            class="bg-white text-black px-2 py-1 rounded"
+          >
+            <option value=""><%= filter == '' ? 'All' : filter %></option>
+
+            <% cartData.forEach((list)=> { %>
+
             <option value="<%=list.product_category%>">
               <%= list.product_category %>
             </option>
-          <% }) %>
-    
-          <option value=""><%= filter == '' ? filter : 'All' %></option>
-        </select>
-    
-        <!-- Sort by Price Section -->
-        <div class="mt-12">
-          <label for="selectOption" class="text-black mr-2 uppercase font-semibold">Sort by Price  :</label> <br>
-          <div class="my-2">
-            <label class="inline-flex items-center">
-              <input type="radio" class="form-radio text-blue-500" name="option" value="1">
-              <span class="ml-2">  Lower To Higher Price </span>
-            </label>
+            <% }) %>
+
+            <option value=""><%= filter == '' ? filter : 'All' %></option>
+          </select>
+
+          <!-- Sort by Price Section -->
+          <div class="mt-12">
+            <label
+              for="selectOption"
+              class="text-black mr-2 uppercase font-semibold"
+              >Sort by Price :</label
+            >
+            <br />
+            
+            <div class="my-2">
+              <label class="inline-flex items-center">
+                <input
+                  type="radio"
+                  class="form-radio text-blue-500"
+                  name="option"
+                  value="1"
+                />
+                <span class="ml-2"> Lower To Higher Price </span>
+              </label>
+            </div>
+
+            <div class="my-2">
+              <label class="inline-flex items-center">
+                <input
+                  type="radio"
+                  class="form-radio text-green-500"
+                  name="option"
+                  value="-1"
+                />
+                <span class="ml-2"> Higher To Lower Price </span>
+              </label>
+            </div>
           </div>
-    
-          <div class="my-2">
-            <label class="inline-flex items-center">
-              <input type="radio" class="form-radio text-green-500" name="option" value="-1">
-              <span class="ml-2"> Higher To Lower Price </span>
-            </label>
+          <div class="mt-10 flex justify-center">
+            <button
+              type="submit"
+              id="applyBtn"
+              class="bg-blue-500 text-white font-bold py-2 px-4 rounded"
+            >
+              APPLY
+            </button>
           </div>
-        </div> 
-        <div class="flex justify-start">
-        <button type="submit" id="applyBtn" class="bg-blue-500 text-white font-bold py-2 px-4 rounded ">
-          APPLY
-        </button>
+          <!-- Apply Button -->
+        </form>
       </div>
-        <!-- Apply Button -->
-        
-      </form>
-    </div>
-    
 
-
-
-
-  <!-- content -->
-<section id="Projects" class="w-fit   pb-24 mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5">
-  <% data.forEach(user=>{ %>
-    <div class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
-      <a href="/product/<%= user._id %>">
-          <img id="mainImage" src="<%=user.product_img_url[0]%>" alt="Nike Vomero 5 Men's Shoes"
-              style="object-fit: cover; width: 100%; height: 350px;"> <!-- Adjust the height as needed -->
-      </a>
-      <div class="px-4 py-3 w-72">
-          <span class="text-gray-400 mr-3 uppercase text-xs"><%=user.product_brand%></span>
-          <p class="text-lg font-bold text-black truncate block capitalize userName"><%=user.product_name%></p>
-          <div class="flex items-center">
-              <p class="text-lg font-semibold text-black cursor-auto my-3">$<%=user.product_price%></p>
-  
-              <div class="addToCart ml-auto bg-gray-300 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue active:bg-green-500 transition duration-300"
-                  data-item-id="<%=user._id%>">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                      stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                  </svg>
-              </div>
-  
-          </div>
-      </div>
-  </div>
-  
-  <% }) %>
-</section>
-</div>
-
-
-<section class="my-6">
-  <div class="pagination flex justify-center gap-4">
-    <% if (paginate.hasPreviousPages) { %>
-      <a href="?page=<%= paginate.page - 1 %>"
-        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Previous</a>
-      <% } %>
-
-        <% if (paginate.hasNextPages && page < maxPage) { %>
-          <a href="?page=<%= paginate.page + 1 %>"
-            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 focus:bg-blue-700 focus:outline-none transition duration-300 ease-in-out">
-            Next
+      <!-- content -->
+      <section
+        id="Projects"
+        class="w-fit pb-24 mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5"
+      >
+        <% data.forEach(user=>{ %>
+        <div
+          class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl"
+        >
+          <a href="/product/<%= user._id %>">
+            <img
+              id="mainImage"
+              src="<%=user.product_img_url[0]%>"
+              alt="Nike Vomero 5 Men's Shoes"
+              style="object-fit: cover; width: 100%; height: 350px"
+            />
+            <!-- Adjust the height as needed -->
           </a>
-          <% } %>
+          <div class="px-4 py-3 w-72">
+            <span class="text-gray-400 mr-3 uppercase text-xs"
+              ><%=user.product_brand%></span
+            >
+            <p
+              class="text-lg font-bold text-black truncate block capitalize userName"
+            >
+              <%=user.product_name%>
+            </p>
+            <div class="flex items-center">
+              <p class="text-lg font-semibold text-black cursor-auto my-3">
+                $<%=user.product_price%>
+              </p>
 
-  </div>
-  <p class="text-gray-900 font-bold items-center text-center "><%= paginate.page %> out of <%= maxPage %></p>
+              <div
+                class="addToCart ml-auto bg-gray-300 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue active:bg-green-500 transition duration-300"
+                data-item-id="<%=user._id%>"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
 
-</section>
-<!-- footer -->
-<%- include("../partials/footer.ejs") %>
- 
-<!-- script for hovering -->
-<script>
-  kofiWidgetOverlay.draw('mohamedghulam', {
-          'type': 'floating-chat',
-          'floating-chat.donateButton.text': 'Support me',
-          'floating-chat.donateButton.background-color': '#323842',
-          'floating-chat.donateButton.text-color': '#fff'
+        <% }) %>
+      </section>
+    </div>
+
+    <nav aria-label="Page navigation" class="mt-4 mb-24">
+      <ul class="pagination flex justify-center space-x-4">
+        <% if (currentPage > 1) { %>
+        <li class="page-item">
+          <a
+            class="page-link text-lg"
+            href="/shop/?page=<%= currentPage - 1 %>&limit=<%= limit %>&sortedValue=<%= locals.sortVal %>"
+            >Previous</a
+          >
+        </li>
+        <% } %> <% for (let i = 1; i <= totalPages; i++) { %> <% if (i ===
+        currentPage) { %>
+        <li
+          class="block h-8 w-8 rounded border-blue-600 bg-blue-600 text-center leading-8 text-white"
+        >
+          <span class="page-link text-lg"><%= i %></span>
+        </li>
+        <% } else { %>
+        <li class="page-item">
+          <a
+            class="page-link text-lg"
+            href="/shop/?page=<%= i %>&limit=<%= limit %>&sortedValue=<%= locals.sortVal %>"
+            ><%= i %></a
+          >
+        </li>
+        <% } %> <% } %> <% if (currentPage < totalPages) { %>
+        <li class="page-item">
+          <a
+            class="page-link text-lg"
+            href="/shop/?page=<%= currentPage + 1 %>&limit=<%= limit %>&sortedValue=<%= locals.sortVal %>"
+            >Next</a
+          >
+        </li>
+        <% } %>
+      </ul>
+    </nav>
+
+    <!-- footer -->
+    <%- include("../partials/footer.ejs") %>
+
+    <!-- script for hovering -->
+    <script>
+      kofiWidgetOverlay.draw("mohamedghulam", {
+        type: "floating-chat",
+        "floating-chat.donateButton.text": "Support me",
+        "floating-chat.donateButton.background-color": "#323842",
+        "floating-chat.donateButton.text-color": "#fff",
       });
-</script>
+    </script>
 
-<script>
-  const addToCart = document.querySelectorAll(".addToCart")
-  addToCart.forEach(value => {
-    value.addEventListener("click",(e)=>{
-      const productId = value.dataset.itemId
-      console.log(productId);
+    <script>
+      const addToCart = document.querySelectorAll(".addToCart");
+      addToCart.forEach((value) => {
+        value.addEventListener("click", (e) => {
+          const productId = value.dataset.itemId;
+          console.log(productId);
 
-        fetch("/wishlistPost",{
-          method : 'POST',
-          headers:{
-            'Content-Type': 'application/json'
-          },
-          body : JSON.stringify({
-              productId
+          fetch("/wishlistPost", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              productId,
+            }),
           })
-        }).then(res=>res.json())
-        .then(data=>{
-          if(data.session){
-            window.location.href = `/login`
-          }
-          if(data.added){
-            Toastify({
-          text: "Added to wishlist",
-          duration: 600,
-          destination: "https://github.com/apvarun/toastify-js",
-          newWindow: true,
-          close: true,
-          gravity: "top", // `top` or `bottom`
-          position: "center", // `left`, `center` or `right`
-          stopOnFocus: true, // Prevents dismissing of toast on hover
-          style: {
-            background: " #4CAF50  ",
-          },
-          onClick: function(){
-            alert("Toast clicked!");
-          }
-        }).showToast();
-        
-          }else{
-            Toastify({
-          text: "Alredy Added",
-          duration: 600,
-          destination: "https://github.com/apvarun/toastify-js",
-          newWindow: true,
-          close: true,
-          gravity: "top", // `top` or `bottom`
-          position: "center", // `left`, `center` or `right`
-          stopOnFocus: true, // Prevents dismissing of toast on hover
-          style: {
-            background: " #c20c0c",
-          },
-          onClick: function(){
-            alert("Toast clicked!");
-          }
-        }).showToast();
-          }
-          console.log(data.session);
-        }).catch((Error)=>{
-          console.log(Error);
-        })
-
-
-
-
-      })
-    
-  });
-</script>
-
-<script>
-  let selectedSortOption
-  document.addEventListener('DOMContentLoaded', function () {
-    // Add event listener to each radio input
-    const radioInputs = document.querySelectorAll('input[type="radio"]');
-    
-    radioInputs.forEach(input => {
-      input.addEventListener('change', function () {
-        // Log the selected value to the console (you can replace this with your custom logic)
-        console.log('Selected option:', this.value);
-        selectedSortOption = this.value
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.session) {
+                window.location.href = `/login`;
+              }
+              if (data.added) {
+                Toastify({
+                  text: "Added to wishlist",
+                  duration: 600,
+                  destination: "https://github.com/apvarun/toastify-js",
+                  newWindow: true,
+                  close: true,
+                  gravity: "top", // `top` or `bottom`
+                  position: "center", // `left`, `center` or `right`
+                  stopOnFocus: true, // Prevents dismissing of toast on hover
+                  style: {
+                    background: " #4CAF50  ",
+                  },
+                  onClick: function () {
+                    alert("Toast clicked!");
+                  },
+                }).showToast();
+              } else {
+                Toastify({
+                  text: "Alredy Added",
+                  duration: 600,
+                  destination: "https://github.com/apvarun/toastify-js",
+                  newWindow: true,
+                  close: true,
+                  gravity: "top", // `top` or `bottom`
+                  position: "center", // `left`, `center` or `right`
+                  stopOnFocus: true, // Prevents dismissing of toast on hover
+                  style: {
+                    background: " #c20c0c",
+                  },
+                  onClick: function () {
+                    alert("Toast clicked!");
+                  },
+                }).showToast();
+              }
+              console.log(data.session);
+            })
+            .catch((Error) => {
+              console.log(Error);
+            });
+        });
       });
-    });
-  });
+    </script>
 
+    <script>
+      let selectedSortOption;
+      document.addEventListener("DOMContentLoaded", function () {
+        // Add event listener to each radio input
+        const radioInputs = document.querySelectorAll('input[type="radio"]');
 
-    function applyFunction() {
-      console.log('ji');
-      // Get the selected value of the filter dropdown
-      const selectOption = document.getElementById('selectOption');
-      const selectedCategory = selectOption.value;
+        radioInputs.forEach((input) => {
+          input.addEventListener("change", function () {
+            // Log the selected value to the console (you can replace this with your custom logic)
+            console.log("Selected option:", this.value);
+            selectedSortOption = this.value;
+          });
+        });
+      });
 
+      function applyFunction() {
+        console.log("ji");
+        // Get the selected value of the filter dropdown
+        const selectOption = document.getElementById("selectOption");
+        const selectedCategory = selectOption.value;
 
-      console.log('Selected Category:', selectedSortOption);
-      fetch('/shop',{
-        method: 'POST',
-        headers:{
-          'Content-Type': 'application/json'
-        },
-        body:JSON.stringify({selectedCategory,selectedSortOption})
-      }).then(res=>res.json())
-      .then((data)=>{
-        if(data.sucess){
-          window.location.reload()
-        }
-      })
-      .catch(err=>console.log(err))
-    }
-
-</script>
-
-<script>
-  const searchInput = document.getElementById('userSearch');
-  const userCards = document.querySelectorAll('.w-72');
-
-  searchInput.addEventListener('input', () => {
-    const searchText = searchInput.value.toLowerCase();
-
-    userCards.forEach(userCard => {
-      const userName = userCard
-        .querySelector('.userName')
-        .textContent.toLowerCase();
-
-      if (userName.includes(searchText)) {
-        userCard.style.display = '';
-      } else {
-        userCard.style.display = 'none';
+        console.log("Selected Category:", selectedSortOption);
+        fetch("/shop", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ selectedCategory, selectedSortOption }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.sucess) {
+              window.location.reload();
+            }
+          })
+          .catch((err) => console.log(err));
       }
-    });
-  });
-</script>
-</body>
+    </script>
+
+    <script>
+      let allProductsData;
+
+      window.onload = () => {
+        fetch("/get-product-datas")
+          .then((res) => res.json())
+          .then((res) => {  
+            allProductsData = res.products;
+          });
+      };
+
+      const searchInput = document.getElementById("userSearch");
+      const userCards = document.querySelectorAll(".w-72");
+
+      searchInput.addEventListener("input", () => {
+        const searchText = searchInput.value.toLowerCase();
+
+        const searchedProducts = allProductsData.filter((each,idx) =>{
+        if(!searchText && idx > 5) return;
+         return each.product_name.toLowerCase().includes(searchText)
+        }
+        );
+        setProducts(searchedProducts) 
+
+        // userCards.forEach(userCard => {
+        //   const userName = userCard
+        //     .querySelector('.userName')
+        //     .textContent.toLowerCase();
+
+        //   if (userName.includes(searchText)) {
+        //     userCard.style.display = '';
+        //   } else {
+        //     userCard.style.display = 'none';
+        //   }
+        // });
+      });
+
+      function setProducts(products) {
+        let domString = "";
+        for (let user of products) {
+           domString += `
+           <div class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+            <a href="/product/${user._id}">
+              <img id="mainImage" src="${user.product_img_url[0]}" alt="Nike Vomero 5 Men's Shoes"
+                style="object-fit: cover; width: 100%; height: 350px;">
+            </a>
+            <div class="px-4 py-3 w-72">
+              <span class="text-gray-400 mr-3 uppercase text-xs">${user.product_brand}</span>
+              <p class="text-lg font-bold text-black truncate block capitalize userName">${user.product_name}</p>
+              <div class="flex items-center">
+                <p class="text-lg font-semibold text-black cursor-auto my-3">$${user.product_price}</p>
+                <div class="addToCart ml-auto bg-gray-300 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue active:bg-green-500 transition duration-300"
+                  data-item-id="${user._id}">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+
+        }
+        const productListDiv = document.getElementById('Projects')
+        productListDiv.innerHTML = domString
+      }
+    </script>
+  </body>
 </html>

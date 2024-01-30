@@ -7,6 +7,9 @@ const addressDb = require("../../models/user/addressModel");
 const cartDb = require("../../models/admin/catagoryModel");
 const walletDB = require("../../models/user/wallet");
 const { ObjectId } = require("mongodb");
+const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
+
 
 //test for checking purpose
 const a = async (req, res) => {
@@ -256,59 +259,57 @@ const resendOtp = async (req, res) => {
 
 const shop = async (req, res) => {
   try {
-    const sort = req.body.option ?? "";
-    // const sort2 = req.body.option2 ?? ''
-    let data;
-    const filter = req.body.selectOption ?? "";
-    const page = parseInt(req.query.page) || 1;
+    let data; 
     const limit = 6;
-    const startIndex = (page - 1) * limit;
 
-    const totalProducts = await productDB.countDocuments();
+    const ifSorted = req.query.sortedValue
+    const page = parseInt(req.query.page) || 1;
+    const skip = (page - 1) * limit;
 
-    const maxPage = Math.ceil(totalProducts / limit);
-    if (page > maxPage) {
-      return res.redirect(`/product?page=${maxPage}`);
+    let sort = req.body.option ?? "";
+
+    if(!sort && ifSorted){
+      sort = ifSorted
     }
 
+    const filter = req.body.selectOption ?? "";
+  
     let sortObj = {};
     sortObj.product_price = parseInt(sort);
 
     if (sort && filter) {
-      data = await productDB
-        .find({ product_category: filter }, { blocked: false })
-        .limit(limit)
-        .skip(startIndex)
-        .sort(sortObj)
-        .exec();
+   
+        data = await productDB.paginate({ product_category: filter , blocked: false }, { offset: skip, limit: limit ,sort: sortObj  })
+
     } else if (sort) {
-      data = await productDB
-        .find({ blocked: false })
-        .limit(limit)
-        .skip(startIndex)
-        .sort(sortObj)
-        .exec();
+    
+       data = await productDB.paginate({ blocked: false }, { offset: skip, limit, sort: sortObj });
+
     } else if (filter) {
-      data = await productDB
-        .find({ product_category: filter }, { blocked: false })
-        .limit(limit)
-        .skip(startIndex)
-        .exec();
+
+        data = await productDB.paginate({ product_category: filter , blocked: false }, { offset: skip, limit: limit })
+
     } else {
-      data = await productDB
-        .find({ blocked: false })
-        .limit(limit)
-        .skip(startIndex)
-        .exec();
-    }
+  
+      const options = { page, limit, sort: { 'createdAt': 1 } };
+  
+        data = await productDB.paginate({}, { offset: skip, limit: limit })
+      } 
 
     const cartData = await cartDb.find({ blocked: false }); //it is categoey DB
-    res.render("user/shop.ejs", { data, cartData, page, maxPage, filter });
+    // res.render("user/shop.ejs", { data, cartData, page, maxPage, filter });
+    res.render("user/shop.ejs", { data:data.docs , cartData, totalPages :data.totalPages , currentPage:data.page ,filter,limit ,sortVal : sort});
+
   } catch (error) {
     console.error("Error creating user:", error);
     return res.status(500).send("fetch error:check once more");
   }
 };
+
+const  getProducts = async(req,res)=>{
+  const products = await productDB.find()
+  res.json({products})
+}
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++   CONTACT   ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -452,4 +453,5 @@ module.exports = {
   editUser,
   changePassword,
   changePasswordPost,
+  getProducts
 };

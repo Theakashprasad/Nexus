@@ -42,8 +42,8 @@
  <button id="openModal" class="bg-blue-500 mt-6 text-white font-bold py-2 px-4 rounded inline-block">ADD ADDRESS +</button><br>
 
  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++     ADD ADDRESS    ++++++++++++++++++++++++++++++++++++++++++++++++++ -->
- <div id="myModal" class="fixed inset-0 z-50 hidden overflow-auto bg-black bg-opacity-50">
-   <div class="flex items-center justify-center h-full">
+ <div id="myModal" class="fixed inset-0 z-50 hidden overflow-auto bg-black bg-opacity-50 w-full flex justify-center ">
+   <div class="flex items-center justify-center h-full w-1/2">
      <div class="bg-white p-8 rounded shadow-lg">
 
        <div class="flex justify-end">
@@ -64,7 +64,7 @@
                <div class="lg:col-span-4">
                  <div class="grid gap-4 gap-y-2 text-sm grid-cols-2 md:grid-cols-2">
                  
-                   <div class="md:col-span-3">
+                   <div class="md:col-span-5">
                      <label for="">Full Name</label>
                      <input oninput="nameValidation()" type="text" name="full_name" id="full_name"
                        class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"   />
@@ -79,7 +79,7 @@
                      <p id="addressError" class="text-xs text-red-500"></p>
                    </div>
 
-                 <div class="md:col-span-3">
+                 <div class="md:col-span-4">
                    <label for="">Phone number</label>
                    <input oninput="numberValidation()" type="text" name="phone" id="phone"
                      class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
@@ -87,7 +87,7 @@
                      <p id="phoneError" class="text-xs text-red-500"></p>
                  </div>
 
-                 <div class="md:col-span-3 ">
+                 <div class="md:col-span-4 ">
                    <label for="">City</label>
                    <input type="text" name="city" id="city" oninput="cityValidation()" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                        />
@@ -96,7 +96,7 @@
                  </div>
 
 
-                 <div class="md:col-span-2">
+                 <div class="md:col-span-4">
                    <label for="country">Country / region</label>
                    <div class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
                      <input  id="country" placeholder="Country"
@@ -129,7 +129,7 @@
                    </div>
                  </div>
 
-                 <div class="md:col-span-3">
+                 <div class="md:col-span-4">
                    <label for="state">State / province</label>
                    <div class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
                      <input  id="state" placeholder="State"
@@ -146,7 +146,7 @@
                    </div>
                  </div>
 
-                 <div class="md:col-span-1">
+                 <div class="md:col-span-4">
                    <label for="">Pin code</label>
                    <input oninput="pinValidation()" type="text" name="zipcode" id="zipcode"
                      class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
@@ -273,12 +273,8 @@ function cityValidation() {
   cityError.innerText = "words should not exceed above 15";
      return false; // Indicate validation failure
  }
- else if(namecity == 'tvm' ){
-  cityError.innerText = "";
-     return true; // Indicate validation failure
- }
  else {
-     nameError.innerText = ""; // Clear error message
+  cityError.innerText = ""; // Clear error message
      return true; // Indicate validation success
  }
 }
@@ -344,27 +340,27 @@ function pinValidation() {
                            
                             <label class="flex border-b border-gray-200 h-12 py-3 items-center">
                                 <span class="text-right px-2">Address</span>
-                                <p class="ml-4"><%= addressDetails.address %></p>
+                                <p id="addressDea" class="ml-4"><%= addressDetails.address %></p>
                             </label>
                             <label class="flex border-b border-gray-200 h-12 py-3 items-center">
                                 <span class="text-right px-2">Phone</span>
-                                <p class="ml-4"><%= addressDetails.phone %></p>
+                                <p id="adressPhon" class="ml-4"><%= addressDetails.phone %></p>
                             </label>
                             <label class="flex border-b border-gray-200 h-12 py-3 items-center">
                                 <span class="text-right px-2">City</span>
-                                <p class="ml-4"><%= addressDetails.city %></p>
+                                <p id="addressCity" class="ml-4"><%= addressDetails.city %></p>
                             </label>
                             <label class="inline-flex w-2/4 border-gray-200 py-3">
                                 <span class="text-right px-2">State</span>
-                                <p class="ml-4"> <%= addressDetails.state %></p>
+                                <p id="addressState" class="ml-4"> <%= addressDetails.state %></p>
                             </label>
                             <label class="xl:w-1/4 xl:inline-flex  items-center flex xl:border-none border-t border-gray-200 py-3">
                                 <span class="text-right px-2 xl:px-0 xl:text-none">ZIP</span>
-                                <p class="ml-4"><%= addressDetails.zipcode %></p>
+                                <p id="addressZip" class="ml-4"><%= addressDetails.zipcode %></p>
                             </label>
                             <label class="flex border-t border-gray-200 h-12 py-3 items-center select relative">
                                 <span class="text-right px-2">Country</span>
-                                <p class="ml-4"><%= addressDetails.country %></p>
+                                <p id="adressCountry" class="ml-4"><%= addressDetails.country %></p>
                             </label>
                         </fieldset>
                     </section>
@@ -372,8 +368,6 @@ function pinValidation() {
             </div>
 
               
-            <button onclick="selectAddress()" class=" bg-green-500 text-white py-2 px-4 rounded  ml-5">SELECT ADDRESS</button>
-
                 
                  <%  if(addressDetails){  %>
                
@@ -438,11 +432,40 @@ function pinValidation() {
   select.forEach((value)=>{
     value.addEventListener("change",()=>{
   addressId = value.dataset.addressId
+  
+  addressName = document.getElementById('addressName')
+  addressDea = document.getElementById('addressDea')
+  adressPhon = document.getElementById('adressPhon')
+  addressCity= document.getElementById('addressCity')
+  addressState= document.getElementById('addressState')
+  addressZip= document.getElementById('addressZip')
+  adressCountry= document.getElementById('adressCountry')
+
+  fetch(`/checkoutAddress`,{ 
+            method : "POST",
+            headers:{
+              'Content-Type': 'application/json',
+            },
+            body : JSON.stringify({
+              addressId
+            }),
+      }).then(res=>res.json()).
+      then(data=>{
+       console.log(data.data.address);
+       addressName.innerText = data.data.full_name
+       addressDea.innerText = data.data.address
+       adressPhon.innerText = data.data.phone
+       addressCity.innerText = data.data.city
+       addressState.innerText = data.data.state
+       addressZip.innerText = data.data.zipcode
+       adressCountry.innerText = data.data.country
+
+      }).catch(error=>{ 
+        console.log(error);
+      })
 })
 })
-function selectAddress(){
-window.location.href = `/checkout?id=${addressId}`
-    }
+
 </script>
   <!-- ++++++++++++++++++++++++++++++++++++++++++++++++  END SELECT ADDRESS    ++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
@@ -450,8 +473,8 @@ window.location.href = `/checkout?id=${addressId}`
 
 
 
-  <div id="editModel" class="fixed inset-0 z-50 hidden overflow-auto bg-black bg-opacity-50">
-    <div class="flex items-center justify-center h-full">
+  <div id="editModel" class="fixed inset-0 z-50 hidden overflow-auto bg-black bg-opacity-50  w-full flex justify-center">
+    <div class="flex items-center justify-center h-full w-1/2">
       <div class="bg-white p-8 rounded shadow-lg">
 
         <div class="flex justify-end">
@@ -471,7 +494,7 @@ window.location.href = `/checkout?id=${addressId}`
               <div class="lg:col-span1">
                 <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
 
-                  <div class="md:col-span-3">
+                  <div class="md:col-span-5">
                     <label for="">Full Name</label>
                     <input type="text" name="full_name1" id="full_name1" oninput="nameValidation1()"
                       class=" h-10 border mt-1 rounded px-4 w-full bg-gray-50"  />
@@ -480,7 +503,7 @@ window.location.href = `/checkout?id=${addressId}`
                     </div>
 
                   
-                  <div class="md:col-span-2">
+                  <div class="md:col-span-5">
                     <label for="Phone">Phone number</label>
                     <input type="text" name="Phone1" id="Phone1" oninput="numberValidation1()"
                       class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
@@ -489,7 +512,7 @@ window.location.href = `/checkout?id=${addressId}`
 
                     </div>
 
-                  <div class="md:col-span-3">
+                  <div class="md:col-span-5">
                     <label for="address">Address / Street</label>
                     <input type="text" name="address1" id="address1"  oninput="addressValidation1()"
                       class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="" />
@@ -497,14 +520,14 @@ window.location.href = `/checkout?id=${addressId}`
 
                     </div>
 
-                  <div class="md:col-span-2">
+                  <div class="md:col-span-4">
                     <label for="city">City</label>  
                     <input type="text" name="city1" id="city1"  oninput="cityValidation1()" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                       value="" placeholder="" />
                       <p id="cityError1" class="text-xs text-red-500"></p>
                   </div>
 
-                  <div class="md:col-span-2">
+                  <div class="md:col-span-4">
                     <label for="country">Country / region</label>
                     <div class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
                       <input name="country1" id="country1" placeholder="Country"
@@ -517,7 +540,7 @@ window.location.href = `/checkout?id=${addressId}`
                     </div>
                   </div>
 
-                  <div class="md:col-span-2">
+                  <div class="md:col-span-4">
                     <label for="state">State / province</label>
                     <div class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
                       <input name="state1" id="state1" placeholder="State"
@@ -527,7 +550,7 @@ window.location.href = `/checkout?id=${addressId}`
                     </div>
                   </div>
 
-                  <div class="md:col-span-1">
+                  <div class="md:col-span-4">
                     <label for="zipcode">Pin code</label>
                     <input type="text" name="zipcode1" id="zipcode1" oninput="pinValidation1()"
                       class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
@@ -1079,9 +1102,6 @@ window.location.href = `/checkoutComplete`
  }
 
 </script>
-
-
-
 
 </body>
 </html>

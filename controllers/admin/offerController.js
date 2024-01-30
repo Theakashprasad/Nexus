@@ -64,7 +64,7 @@ const offerAdd = async (req, res) => {
                   {
                     $max: [
                       0, // Ensures that the result is not negative
-                      {
+                      {   
                         $subtract: [
                           "$product_price",
                           { $multiply: ["$product_price", decVal] },

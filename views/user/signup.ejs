@@ -117,7 +117,7 @@ function v() {
     function nameValidation() {
     const name = document.getElementById("name").value.trim();
     const nameError = document.getElementById("nameError");
-    const onlyLettersRegex = /^[a-zA-Z]+$/;
+    const onlyLettersRegex =/^[a-zA-Z ]+$/;
 
     if (name === '' ) {
         nameError.innerText = "Can not add space";

@@ -9,16 +9,9 @@ const Razorpay = require("razorpay");
 const checkout = async (req, res) => {
   try {
     const userId = req.session.user._id; //use ID
-    const addressID = req.query.id; //addres ID
     req.session.address = false; //make it false for rendering purpose
     const addressColection = await addressDB.find({ user: userId });
-    await user.findByIdAndUpdate(
-      userId,
-      {
-        addressId: addressID,
-      },
-      { new: true }
-    );
+
     console.log("passed first update");
 
     const userDetails = await user.findById(userId); // used to find address from the user DB
@@ -101,8 +94,8 @@ const razorpayPost = (req, res) => {
 
 const confirmation = async (req, res) => {
   try {
-    const a = "rzp_test_llt7AmvYnR8R68";
-    const b = "PhgoT6EHfKbw5rxJtQN6DJqY";
+    const a = process.env.RAZOR_ID; //RAZOR PAY ID
+    const b = process.env.RAZOR_SECRET; //RAZOR PAY  SC
     var instance = new Razorpay({ key_id: a, key_secret: b });
     let data = await instance.payments.fetch(req.body.razorpay_payment_id);
     const userId = req.session.user._id;
@@ -139,7 +132,7 @@ const confirmation = async (req, res) => {
         let product = products.find((item) => item._id.equals(pro.product.valueOf()));
         
 
-   const a = product.size;
+        const a = product.size;
         const b = pro.size;
         let c = [];
         for (let i = 0; i < a.length; i++) {
@@ -171,7 +164,9 @@ const coupon = async (req, res) => {
 
     if (copData) {
       if (copData.discountType == "percentage") {
-        copTotalPrice = Math.abs((price * copData.couponValue) / 100 - price);
+        // copTotalPrice = Math.abs((price * copData.couponValue) / 100 - price);
+        copTotalPrice = Math.floor(Math.abs((price * copData.couponValue) / 100 - price));
+
         message =
           "Copon offer " + copData.couponValue + "% discont to this product";
         disPrice = "-" + (price * copData.couponValue) / 100;
@@ -197,6 +192,25 @@ const checkoutFalure = (req, res) => {
   res.render("user/checkoutFailure.ejs");
 };
 
+const checkoutAddress  = async(req , res)=>{
+  const userId = req.session.user._id; //use ID
+  const addressID = req.body.addressId
+   await user.findByIdAndUpdate(
+    userId,
+    {
+      addressId: addressID,
+    },
+    { new: true }
+  ); 
+
+  const addressData = await addressDB.findById(addressID)
+  console.log(addressData); 
+  res.json({data:addressData})
+
+}
+
+
+
 module.exports = {
   checkout,
   checkoutPost,
@@ -205,4 +219,5 @@ module.exports = {
   confirmation,
   coupon,
   checkoutFalure,
+  checkoutAddress
 };

@@ -96,7 +96,9 @@ const walletOrder = async (req, res) => {
     const addressId = await userDB.findById(userId);
     const addresData = await addressDb.findById(addressId.addressId);
     const price = req.body.subtotalAttributeValue;
+    
     if (walletData.balance > price) {
+      
       const orderCreate = new orderDB({
         //saving the data to orderdb
         user: userId,
@@ -132,7 +134,7 @@ const walletOrder = async (req, res) => {
       const products = await productDB.find();
       orderCreate.products.forEach((pro, i) => {
         let product = products.find((item) => item._id.equals(pro.product));
-        const a = product.size;
+        const a = product.size; 
         const b = pro.size;
         let c = [];
         for (let i = 0; i < a.length; i++) {
