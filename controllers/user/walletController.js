@@ -133,7 +133,7 @@ const walletOrder = async (req, res) => {
 
       const products = await productDB.find();
       orderCreate.products.forEach((pro, i) => {
-        let product = products.find((item) => item._id.equals(pro.product));
+        let product = products.find((item) => item._id.equals(pro.product.valueOf()));
         const a = product.size; 
         const b = pro.size;
         let c = [];
@@ -141,7 +141,7 @@ const walletOrder = async (req, res) => {
           c.push(a[i] - b[i]);
         }
         // console.log(c);
-        product.size = c;
+        product.size = c; 
         product.save();
       });
       await cartDB.findByIdAndDelete(ordId);

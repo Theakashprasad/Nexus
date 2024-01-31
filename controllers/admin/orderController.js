@@ -8,7 +8,7 @@ const userDB = require("../../models/user/usermodel");
 const order = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1; //pagenation code
-    const limit = 4;
+    const limit = 7;
     const startIndex = (page - 1) * limit;
     const totalProducts = await orderDB.countDocuments();
     const maxPage = Math.ceil(totalProducts / limit);

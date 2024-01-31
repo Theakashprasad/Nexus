@@ -164,9 +164,15 @@ const salesReportPDF = async (req, res) => {
      dateTon = req.query.datato
      dateFrom = new Date(dateFromn);
      dateTo = new Date(dateTon);
-     if(req.query.datafrom){
+     console.log(req.query.datafrom !=0);
+     if(req.query.datafrom!=0){
     
       orderProducts = await orderDB.aggregate([
+        {
+          $match: {
+            Status: "DEVLIVERED",
+          }
+        },
         {
            $match: {
             "createdAt": {
@@ -230,9 +236,12 @@ const salesReportPDF = async (req, res) => {
      }
      else{
 
-       orderProducts = await orderDB.aggregate([
-
-        //use for the PDF page
+      orderProducts = await orderDB.aggregate([
+        {
+          $match: {
+            Status: "DEVLIVERED",
+          }
+        },
         {
           $unwind: "$products",
         },
@@ -267,14 +276,11 @@ const salesReportPDF = async (req, res) => {
             as: "Allproducts",
           },
         },
-        {
-          $sort: {
-            createdAt: -1, // Sort in descending order based on createdAt
-          },
-        },
       ]);
+     
     
      }
+     console.log(orderProducts);
   const doc = new PDFDocument(); //sesding data to the PDF
 
   const pdfDoc = invoiceGenerate(doc, orderProducts);
