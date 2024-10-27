@@ -17,11 +17,7 @@ else {
     next()
   }
 
-// if(user.blocked){
-//   res.send("block")
-// }  else{
-//   next
-// }
+
 };
 
 

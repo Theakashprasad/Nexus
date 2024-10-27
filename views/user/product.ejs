@@ -34,14 +34,14 @@
 
             <!-- main image -->
             <div class="relative mb-6 lg:mb-10 lg:h-96">
-                <img id="mainImage" data-fade-in="css-147n82m" class="css-viwop1 object-contain w-full lg:h-full"css-147n82m" src="<%=user.product_img_url[0].replace(/\\/g, '/')%>"  alt="Nike Vomero 5 Men's Shoes" style="object-fit: contain;">
+                <img id="mainImage" data-fade-in="css-147n82m" class="css-viwop1 object-contain w-full lg:h-full css-147n82m" src="<%=user.product_img_url[0].replace(/\\/g, '/')%>"  alt="Nike Vomero 5 Men's Shoes" style="object-fit: contain;">
             </div>
-
+ 
             <!-- rest of the images -->
             <div class=" flex-wrap hidden -mx-2 md:flex">
                 <div class="w-1/2 p-2 sm:w-1/4">
                     <a class="block border border-gray-200 hover:border-blue-400 dark:border-gray-700 dark:hover:border-blue-300" href="#">
-                        <img data-fade-in="css-147n82m" class="css-viwop1 u-full-width u-full-height css-147n82m"  src="<%=user.product_img_url[1].replace(/\\/g, '/')%>"  alt="Nike Vomero 5 Men's Shoes" style="object-fit: contain;">                    </a>
+                        <img data-fade-in="css-147n82m" class="css-viwop1 u-full-width u-full-height css-147n82m"  src="<%=user.product_img_url[1].replace(/\\/g, '/')%>"  alt="Nike Vomero 5 Men's Shoes" style="object-fit: contain;"></a>
                     </a>
                 </div>
                 <div class="w-1/2 p-2 sm:w-1/4">  
@@ -73,8 +73,8 @@
     <h2 class="max-w-xl mt-6 mb-6 text-xl font-extrabold leading-loose tracking-wide text-gray-700 md:text-2xl "><%= user.product_name %> </h2>
     <p class="text-lg font-semibold text-gray-900 dark:text-gray-500 cursor-auto my-3"> <%=user.product_category%></p>
     <p class="inline-block text-2xl font-semibold text-gray-700 dark:text-gray-400 ">
-    <p id="productPrice" >$ <%=user.product_price %></p>
-    <span class="ml-3 text-base font-normal text-gray-500 line-through dark:text-gray-400">$<%=user.product_price*1.2 %></span></p>
+    <p id="productPrice" ><%=user.product_price %></p>
+    <span class="ml-3 text-base font-normal text-gray-500 line-through dark:text-gray-400"><%=user.product_price*1.2 %></span></p>
    </div>
   
     <div class="mb-6">

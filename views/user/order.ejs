@@ -52,7 +52,7 @@
               </div>
              
               <div class="flex justify-between space-x-8 items-start w-full">
-                <p class="text-base  pl-11 xl:text-lg leading-6">$<%=proId.price  %> <span class="text-red-300 line-through"> $<%= fullProducts.product_price +1000 %></span></p>
+                <p class="text-base  pl-11 xl:text-lg leading-6"><%=proId.price  %> <span class="text-red-300 line-through"> <%= fullProducts.product_price +1000 %></span></p>
                 <p class="text-base   xl:text-lg leading-6 text-gray-800">0<%= size %></p>
               
               </div>
@@ -95,11 +95,11 @@
 
               <div class="flex justify-between w-full">
                 <p class="text-base  leading-4 text-gray-800">Subtotal</p>
-                <p class="text-base leading-4 text-gray-600">$ <%= subTotalPrice %></p>
+                <p class="text-base leading-4 text-gray-600"><%= subTotalPrice %></p>
               </div>
               <div class="flex justify-between items-center w-full">
                 <p class="text-base  leading-4 text-gray-800">Shipping charge</p>
-                <p class="text-base  leading-4 text-gray-600">$10.00</p>
+                <p class="text-base  leading-4 text-gray-600">10.00</p>
               </div>
               <div class="flex justify-between items-center w-full">
                 <p class="text-base  leading-4 text-gray-800">Discount</p>  
@@ -108,7 +108,7 @@
             </div>
             <div class="flex justify-between items-center w-full">
               <p class="text-base  font-semibold leading-4 text-gray-800">Total</p>
-              <p id="totalAmount"  class="text-base font-extrabold underline leading-4  text-gray-600">$<%= orderDetails.totalAmount %></p>
+              <p id="totalAmount"  class="text-base font-extrabold underline leading-4  text-gray-600"><%= orderDetails.totalAmount %></p>
             </div>
           </div>
           

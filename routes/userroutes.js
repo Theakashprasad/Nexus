@@ -11,6 +11,7 @@ const orderController = require("../controllers/user/orderController");
 const forgetController = require("../controllers/user/forgetController");
 const walletController = require("../controllers/user/walletController");
 const wishlistController = require("../controllers/user/wishlistController");
+const { get } = require("mongoose");
  
 
 //FOR CHECKING
@@ -35,10 +36,10 @@ router.post("/login", usercontroller.userLogin);
 //LOGOUT
 router.get("/logout", usercontroller.logout);
 
-router.get('/get-product-datas',usercontroller.getProducts)
 
 //SHOP
 router.all("/shop",blockingmiddleware, usercontroller.shop);   
+router.get('/get-product-datas',usercontroller.getProducts)
 
 //CONTACT
 router.get('/contact',usercontroller.contact)

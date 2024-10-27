@@ -11,7 +11,7 @@ const address = async (req, res) => {
   }
 };
 
-const addressPost = async (req, res) => {
+const addressPost = async (req, res) => { 
   try {
     const addressColection = new addressDB({
       //adding data to the address
@@ -63,17 +63,17 @@ const editAddress = async (req, res) => {
     const editAddressColection = await addressDB.findByIdAndUpdate(
       //updateing the address
       productId,
-      {
+      { 
         full_name: req.body.full_name1,
         address: req.body.address1,
         phone: req.body.Phone1,
         city: req.body.city1,
-        country: req.body.country1,
+        country: req.body.country1,    
         state: req.body.state1,
         zipcode: req.body.zipcode1,
       },
       { new: true }
-    );
+    ); 
     if (req.session.address) {
       res.redirect("/address");
     } else {

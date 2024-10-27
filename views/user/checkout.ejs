@@ -426,6 +426,29 @@ function pinValidation() {
       <% }) %>
 </div>
 
+
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-14 p-2 ">
+    <div class="bg-white overflow-hidden shadow rounded-lg border">
+        <% coupounData.forEach(coupounDataCollection=>{ %>
+
+          <div class=" py-5 sm:px-6 font-bold text-center">
+          <p class="" >     
+              COUPON
+          </div>
+      <div class=" border-t border-gray-200  py-3 sm:p-0 ">
+              <dl class="sm:divide-y sm:divide-gray-200 ">
+                  <p class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:px-6 text-center">
+                          <%=coupounDataCollection.couponName%>
+                      
+                  </p>
+              </dl>
+          </div>
+        <%})%>
+      </div>
+    
+</div>
+
+
 <script>
   let a='';
   let select = document.querySelectorAll(".selectad");
@@ -805,7 +828,7 @@ function pinValidation1() {
             </div>
             <div class="font-bold text-xl px-8 flex justify-between py-8 text-gray-600">
                 <span>Total :-</span>
-                <span id="subtotalValue" data-order-id="<%=checkUser[0]._id%>" dsts-price-subtotal="<%=subtotal+10%>">$ <%=subtotal + 10 %></span>
+                <span id="subtotalValue" data-order-id="<%=checkUser[0]._id%>" dsts-price-subtotal="<%=subtotal+10%>"> <%=subtotal + 10 %></span>
             </div>
             <div class="rounded-md mt-3">
               <section  class=" text-center">
@@ -1029,7 +1052,7 @@ function pay(){
                 // const addressdetails = document.getElementById('address')
                 // const addressdata = addressdetails.getAttribute('data-address')
                 var options = {
-                  "key": "rzp_test_llt7AmvYnR8R68", // Enter the Key ID generated from the Dashboard
+                  "key": "rzp_test_5rJ2OJElSbuZ87", // Enter the Key ID generated from the Dashboard
                   "amount":Number(subtotalAttributeValue)*100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
                   "currency": "INR",
                   "name": "Nexus", //your business name

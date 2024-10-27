@@ -38,7 +38,9 @@ const checkout = async (req, res) => {
     // console.log(JSON.stringify(cartData,null,2));
     // console.log(JSON.stringify(cartData,null,3));
     const productdetails = await productDB.find();
-    const coupounData = await couponDB.find();
+    const curentDate = new Date(); //to get the current date
+    const coupounData = await couponDB.find({ validTo: { $gte: curentDate } })
+ 
 
     res.render("user/checkout.ejs", {
       addressDetails,

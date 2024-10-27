@@ -16,7 +16,7 @@ app.use(express.static(path.join(__dirname,"./public")));  //makeing public stat
 // app.use(express.static(path.join(__dirname,"./views")));
 app.set("view engine","ejs")  //seting MVC as 'ejs'
 
-app.use(express.json());   //for the form data 
+  app.use(express.json());   //for the form data 
 app.use(express.urlencoded({ extended: false }));
       
 
@@ -33,7 +33,7 @@ app.use(paginate.middleware(10, 50));  //useing for the pagenation
 app.use("/",userroute);   //user
 app.use("/admin",adminrouter); //admin
 app.get("*",(req,res)=>{   // 4 the 404 error page
-  res.render("user/404")
+  res.render("user/404") 
 })
 app.listen(3001,()=>{  //server running local host
     console.log(`Server is running on port ${port}`);

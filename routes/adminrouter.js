@@ -46,11 +46,7 @@ router.put("/deleteCatagory/:userId", catagorycontroller.deleteCatagory);
 
 router.get("/product", adminSessionMiddleware, productController.product);
 router.get("/addProduct", adminSessionMiddleware, productController.addProduct);
-router.post(
-  "/addProductPost",
-  multer.upload.array("image", 4),
-  productController.addProductPost
-);
+router.post( "/addProductPost", multer.upload.array("image", 4),productController.addProductPost);
 router.get("/editProduct/:userId", productController.editProduct);
 router.post(
   "/editProductPost/:userId",
