@@ -159,8 +159,8 @@
 
               <% }else{ %>
                 <div id="checkoutButton" class="checkoutHide">
-                  <a href="/checkout">
-                    <button class="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
+                  <a>
+                    <button id="checkoutButtonClick" class="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
                   </a>
                 </div>        
              <% } %>
@@ -210,7 +210,9 @@
             //  console.log(quantity[i].value);
              quantity[i].value =  parseInt(quantity[i].value)+1
               productTotalPrice[i].innerHTML = this.dataset.itemPrice * parseInt(quantity[i].value)
-              total.innerHTML = "$"+( parseInt(total.innerHTML.substring(1)) + parseInt(this.dataset.itemPrice))
+              // total.innerHTML = "$"+( parseInt(total.innerHTML.substring(1)) + parseInt(this.dataset.itemPrice))
+              total.innerHTML = "$" + (parseFloat(total.innerHTML.replace("$", "")) + parseFloat(this.dataset.itemPrice));
+
               console.log(total.innerHTML);
               const productId = this.dataset.itemId    
               const productQnt = this.dataset.itemQnt
@@ -314,8 +316,20 @@
      path:'/json/cart.json',
    });
  </script>
-
       
+    </script>
+
+    <script>
+      document.getElementById("checkoutButtonClick").addEventListener("click", function (event) {
+  event.preventDefault(); // Prevent immediate navigation
+
+  setTimeout(() => {
+    window.location.href = "/checkout"; // Redirect after reload
+  }, 100); // Small delay to allow reload before navigation
+
+  location.reload(); // Reload the page
+});
+
     </script>
   </body>
 </html>
