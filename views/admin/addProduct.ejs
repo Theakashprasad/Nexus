@@ -220,7 +220,7 @@
              function nameValidation(){
                productName = document.getElementById("productName").value.trim();
                NameError = document.getElementById("NameError");
-               const onlyLettersRegex = /^[a-zA-Z]+$/;
+               const onlyLettersRegex = /^[a-zA-Z\s]+$/; 
                if(productName==""){
                  NameError.innerText = "Can not add spaces";
                 return false
@@ -238,7 +238,7 @@
                 console.log('dicriop');
                discription = document.getElementById("dicrp").value.trim();
                dicripError = document.getElementById("dicripError");
-               const onlyLettersRegex = /^[a-zA-Z]+$/;
+               const onlyLettersRegex = /^[a-zA-Z\s]+$/; 
 
                if(discription==""){
                 dicripError.innerText = "Can not add spaces";
@@ -286,7 +286,7 @@
            function brandValidation(){
                productName = document.getElementById("brand").value.trim();
                NameError = document.getElementById("brandError");
-               const onlyLettersRegex = /^[a-zA-Z]+$/;
+               const onlyLettersRegex = /^[a-zA-Z\s]+$/; 
                if(productName==""){
                  NameError.innerText = "Can not add spaces";
                 return false

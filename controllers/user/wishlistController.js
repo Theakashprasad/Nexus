@@ -56,8 +56,8 @@ const wishlistPost = async (req, res) => {
           { $push: { products: { product: proId } } },
           { upsert: true, new: true }
         );
-      }
-
+      } 
+ 
       // if (wishlistData) {
       //   wishlistData.products.push({
       //     product: proId,

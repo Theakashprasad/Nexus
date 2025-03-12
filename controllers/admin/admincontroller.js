@@ -9,7 +9,7 @@ const login =  (req, res) => {
     let errorMsg = req.session.errMsg   //mess =  ps/us 
     res.render("admin/login",{message: errorMsg}); 
   }else{
-    session.invalid  = false
+    session.invalid  = false 
     
     res.render("admin/login",{message: ''});  //login page rendering
   }

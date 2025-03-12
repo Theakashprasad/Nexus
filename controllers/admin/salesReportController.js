@@ -18,7 +18,6 @@ const salesReport = async (req, res) => {
    }
      dateFrom = new Date(dateFromn);
        dateTo = new Date(dateTon);
-       console.log(dateFrom,dateTo);
  orderProducts = await orderDB.aggregate([
   {
     $match: {
@@ -150,7 +149,7 @@ const salesReport = async (req, res) => {
 ]);
   }
   // console.log(JSON.stringify(orderProducts,null,2)); 
-
+console.log('order', orderProducts[0])
     res.render("admin/salesReport.ejs", { orderProducts , message : '' ,dataFrom : dateFromn,dataTo :dateTon});
   
 };

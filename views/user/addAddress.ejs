@@ -171,7 +171,7 @@
       const nameError = document.getElementById("nameError");
       
       // Regular expression to check if the name contains only letters
-      const onlyLettersRegex = /^[a-zA-Z]+$/;
+      const onlyLettersRegex = /^[a-zA-Z\s]+$/; 
   
       if (name === '') {
           nameError.innerText = "Name cannot be empty";

@@ -73,7 +73,7 @@ const editAddress = async (req, res) => {
         zipcode: req.body.zipcode1,
       },
       { new: true }
-    ); 
+    );  
     if (req.session.address) {
       res.redirect("/address");
     } else {

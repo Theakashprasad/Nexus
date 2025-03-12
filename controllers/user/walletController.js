@@ -9,9 +9,9 @@ const wallet = async (req, res) => {
     const page = parseInt(req.query.page) || 1; //pagenation caode
     const limit = 4;
     const startIndex = (page - 1) * limit;
-
+ 
     const totalProducts = 7;
-
+ 
     const maxPage = Math.ceil(totalProducts / limit);
     if (page > maxPage) {
       return res.redirect(`/product?page=${maxPage}`); //checkig the page size

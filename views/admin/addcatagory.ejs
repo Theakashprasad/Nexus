@@ -95,7 +95,7 @@
     function categoryValidation(){
       const productName = document.getElementById("productName").value.trim();
         const error = document.getElementById("error");
-        const onlyLettersRegex = /^[a-zA-Z]+$/;
+        const onlyLettersRegex = /^[a-zA-Z\s]+$/; 
         console.log(productName);
         if(productName === ""){
           error.innerText = "enter valid name";
@@ -113,10 +113,10 @@
     function description(){
       const productName = document.getElementById("categoryDescription").value.trim();
         const error = document.getElementById("desError");
-        const onlyLettersRegex = /^[a-zA-Z]+$/;
-        console.log(productName);
+        const onlyLettersRegex = /^[a-zA-Z\s]+$/; 
+        console.log(productName); 
         if(productName === ""){
-          error.innerText = "enter valid name";
+          error.innerText = "enter valid name"; 
           return false;
         }else if (!onlyLettersRegex.test(productName)) {
           error.innerText = "Name can only contain letters";

@@ -75,6 +75,7 @@
                         <input  id="country" placeholder="Country"
                           class="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent" value="" />
                           <select name="country" class="border-none bg-transparent flex-1 cursor-pointer appearance-none focus:outline-none">
+                            <option value="AU">India</option>
                             <option value="AU">Australia</option>
                             <option value="BE">Belgium</option> 
                             <option value="BR">Brazil</option>
@@ -185,7 +186,7 @@
     const nameError = document.getElementById("nameError");
     
     // Regular expression to check if the name contains only letters
-    const onlyLettersRegex = /^[a-zA-Z]+$/;
+    const onlyLettersRegex = /^[a-zA-Z\s]+$/; 
 
     if (name === '') {
         nameError.innerText = "Name cannot be empty";
