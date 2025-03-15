@@ -137,16 +137,16 @@ const updateCart = async (req, res) => {
     console.error(error);
     res.status(500).send("Internal Server Error");
   }
-};
+}; 
 
 const removeCart = async (req, res) => {
-  try {
+  try {  
     const userId = req.session.user._id; //remmoving
-    const proId = req.body.reoveId; //id of pro
-    const sizeIdx = req.body.size; //index
+    const proId = req.body.reoveId; //id of pro 
+    const sizeIdx = req.body.size; //index   
 
-    await cartDB.findOneAndUpdate(
-      { user: userId, "products.product": proId },
+    await cartDB.findOneAndUpdate( 
+      { user: userId, "products.product": proId },  
       { $set: { [`products.$.size.${sizeIdx}`]: 0 } },
       { new: true }
     );

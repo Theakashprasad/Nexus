@@ -76,7 +76,7 @@
          <td class="py-4 px-6 border-b border-gray-200"><%=data.shippingAddress.full_name%></td>
          <td class="py-4 px-6 border-b border-gray-200"><%=data.Allproducts[0]?.product_name%></td>
          <td class="py-4 px-6 border-b border-gray-200"><%=data.products.size%></td>
-         <td class="py-4 px-6 border-b border-gray-200"><%=data.products.price%></td>
+         <td class="py-4 px-6 border-b border-gray-200"><%=data.Allproducts[0].product_price * data.products.size%></td>
          <td class="py-4 px-6 border-b border-gray-200"><%=data.Status%></td>
          <td class="py-4 px-6 border-b border-gray-200"><%= new Date(data.createdAt ).toISOString().slice(0, 10) %></td>
          <td class="py-4 px-6 border-b border-gray-200"><%=data.shippingAddress.address%></td>

@@ -427,28 +427,6 @@ function pinValidation() {
 </div>
 
 
-<div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-14 p-2 ">
-    <div class="bg-white overflow-hidden shadow rounded-lg border">
-        <% coupounData.forEach(coupounDataCollection=>{ %>
-
-          <div class=" py-5 sm:px-6 font-bold text-center">
-          <p class="" >     
-              COUPON
-          </div>
-      <div class=" border-t border-gray-200  py-3 sm:p-0 ">
-              <dl class="sm:divide-y sm:divide-gray-200 ">
-                  <p class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:px-6 text-center">
-                          <%=coupounDataCollection.couponName%>
-                      
-                  </p>
-              </dl>
-          </div>
-        <%})%>
-      </div>
-    
-</div>
-
-
 <script>
   let a='';
   let select = document.querySelectorAll(".selectad");

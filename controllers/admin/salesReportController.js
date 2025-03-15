@@ -142,21 +142,21 @@ const salesReport = async (req, res) => {
   },
   {
     $sort: {
-      createdAt: -1, // Sort in descending order based on createdAt
+      createdAt: -1, // Sort in descending order based on createdAt 
     },
   },
  
 ]);
   }
   // console.log(JSON.stringify(orderProducts,null,2)); 
-console.log('order', orderProducts[0])
+// console.log('order', orderProducts[0].Allproducts[0].product_price)
     res.render("admin/salesReport.ejs", { orderProducts , message : '' ,dataFrom : dateFromn,dataTo :dateTon});
   
 };
  
 const salesReportPDF = async (req, res) => {
      let datafrom 
-     let datato 
+     let datato  
      let orderProducts
      
      dateFromn = req.query.datafrom
@@ -279,7 +279,7 @@ const salesReportPDF = async (req, res) => {
      
     
      }
-     console.log(orderProducts);
+     console.log('asfdasdf --- >',orderProducts);
   const doc = new PDFDocument(); //sesding data to the PDF
 
   const pdfDoc = invoiceGenerate(doc, orderProducts);

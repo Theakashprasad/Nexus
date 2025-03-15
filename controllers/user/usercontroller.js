@@ -227,7 +227,7 @@ const userOtp = async (req, res) => {
     if (check) {
       if (req.session.otp) {
         console.log(req.session.otp);
-        res.redirect("/forgetCheck");
+        res.redirect("/forgetCheck"); 
       } else {
         res.redirect("/");
       }
@@ -248,9 +248,10 @@ const resendOtp = async (req, res) => {
     return Math.floor(1000 + Math.random() * 900000); // Generate a 6-digit OTP
   };
   let otp = generateOTP();
-  console.log(otp);
   const name = req.session.otpName;
-  console.log(name);
+  email = "akashprasadyt123@gmail.com";
+  sendOtp(email, otp);
+  console.log(otp);
   await userDB.updateOne({ email: name }, { otp: otp });
   res.redirect("/otp");
 };
@@ -293,7 +294,7 @@ const shop = async (req, res) => {
   
       const options = { page, limit, sort: { 'createdAt': 1 } };
   
-        data = await productDB.paginate({}, { offset: skip, limit: limit })
+        data = await productDB.paginate({blocked: false}, { offset: skip, limit: limit })
       } 
 
     const cartData = await cartDb.find({ blocked: false }); //it is categoey DB

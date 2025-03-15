@@ -38,18 +38,15 @@ const checkout = async (req, res) => {
     // console.log(JSON.stringify(cartData,null,2));
     // console.log(JSON.stringify(cartData,null,3));
     const productdetails = await productDB.find();
-    const curentDate = new Date(); //to get the current date
-    const coupounData = await couponDB.find({ validTo: { $gte: curentDate } })
  
 
     res.render("user/checkout.ejs", {
       addressDetails,
       cartData,
-      productdetails,
+      productdetails, 
       addressColection,
-      coupounData,
-    });
-  } catch (error) {
+    });  
+  } catch (error) {  
     console.error(error);
     res.status(500).send("Internal Server Error");
   }
