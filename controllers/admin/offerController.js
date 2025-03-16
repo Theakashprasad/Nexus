@@ -38,8 +38,9 @@ const offerAdd = async (req, res) => {
   try {
     const categoryData = await categoryDB.find();
 
-    const { couponName, couponValue, category, product, validFrom, validTo } =
+    let { couponName, couponValue, category, product, validFrom, validTo } =
       req.body;
+    couponValue = Number(couponValue);
     const offerData = new offerDB({
       offerName: couponName,
       offerType: category == "" ? "product" : "category",
@@ -64,7 +65,7 @@ const offerAdd = async (req, res) => {
                   {
                     $max: [
                       0, // Ensures that the result is not negative
-                      {   
+                      {
                         $subtract: [
                           "$product_price",
                           { $multiply: ["$product_price", decVal] },
@@ -84,12 +85,15 @@ const offerAdd = async (req, res) => {
       const result = await productDB.updateMany(query, update);
     } else {
       const productData = await productDB.findOne({ product_name: product });
-      
+
       // const offerPrice = Math.abs( productData.product_real_price * (1 - couponValue / 100) - productData.product_real_price
       // );
-      const offerPrice = Math.abs((productData.product_real_price / couponValue) - productData.product_real_price)
+      const offerPrice = Math.abs(
+        productData.product_real_price / couponValue -
+          productData.product_real_price
+      );
       const discountPrise = productData.product_price;
-      // console.log(discountPrise ,offerPrice);
+      // console.log(discountPrise ,offerPrice); 
 
       if (discountPrise <= offerPrice) {
         console.log("not update");
@@ -108,7 +112,7 @@ const offerAdd = async (req, res) => {
 
 const offerDel = async (req, res) => {
   try {
-    const  offerId= req.body.offerId
+    const offerId = req.body.offerId;
     const offerData = await offerDB.findById(offerId);
     if (offerData.offerType == "category") {
       let proVal = offerData.offerTypeName;
@@ -123,10 +127,10 @@ const offerDel = async (req, res) => {
 
       offerData.block = true;
       offerData.save();
-      res.json({success:true})
+      res.json({ success: true });
     } else {
       let proVal = offerData.offerTypeName;
-      console.log(proVal,'- name of the product');
+      console.log(proVal, "- name of the product");
       await productDB.updateMany({ product_name: proVal }, [
         {
           $set: {
@@ -137,7 +141,7 @@ const offerDel = async (req, res) => {
       offerData.block = true;
       offerData.save();
 
-      res.json({success:true})
+      res.json({ success: true });
     }
 
     // console.log(offerData);

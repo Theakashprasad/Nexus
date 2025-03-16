@@ -64,7 +64,7 @@ const addProductPost = async (req, res) => {
       quantity3,
       quantity4,
       brand,
-    } = req.body; //requesting the data from the form data
+    } = req.body; //requesting the data from the form data 
     const ifProExist = await productDB.findOne({ product_name: productName });
     if (ifProExist) {
       req.session.invalid = true;
@@ -77,6 +77,7 @@ const addProductPost = async (req, res) => {
         product_description: description,
         product_category: category,
         product_price: price,
+        product_real_price: price,
         size: [quantity1, quantity2, quantity3, quantity4],
         product_brand: brand,
         product_img_url: imagePaths,
