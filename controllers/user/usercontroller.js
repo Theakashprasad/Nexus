@@ -7,9 +7,8 @@ const addressDb = require("../../models/user/addressModel");
 const cartDb = require("../../models/admin/catagoryModel");
 const walletDB = require("../../models/user/wallet");
 const { ObjectId } = require("mongodb");
-const mongoose = require('mongoose');
-const mongoosePaginate = require('mongoose-paginate-v2');
-
+const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate-v2");
 
 //test for checking purpose
 const a = async (req, res) => {
@@ -98,8 +97,6 @@ const usersignup = async (req, res) => {
       let otp = generateOTP();
       console.log(otp);
       let email = data.email;
-      // predetermin email
-      email = "akashprasadyt123@gmail.com";
       sendOtp(email, otp);
 
       const referal = Math.floor(1000 + Math.random() * 9000);
@@ -227,7 +224,7 @@ const userOtp = async (req, res) => {
     if (check) {
       if (req.session.otp) {
         console.log(req.session.otp);
-        res.redirect("/forgetCheck"); 
+        res.redirect("/forgetCheck");
       } else {
         res.redirect("/");
       }
@@ -249,8 +246,7 @@ const resendOtp = async (req, res) => {
   };
   let otp = generateOTP();
   const name = req.session.otpName;
-  email = "akashprasadyt123@gmail.com";
-  sendOtp(email, otp);
+  sendOtp(name, otp);
   console.log(otp);
   await userDB.updateOne({ email: name }, { otp: otp });
   res.redirect("/otp");
@@ -260,57 +256,69 @@ const resendOtp = async (req, res) => {
 
 const shop = async (req, res) => {
   try {
-    let data; 
+    let data;
     const limit = 6;
 
-    const ifSorted = req.query.sortedValue
+    const ifSorted = req.query.sortedValue;
     const page = parseInt(req.query.page) || 1;
     const skip = (page - 1) * limit;
 
     let sort = req.body.option ?? "";
 
-    if(!sort && ifSorted){
-      sort = ifSorted
+    if (!sort && ifSorted) {
+      sort = ifSorted;
     }
 
     const filter = req.body.selectOption ?? "";
-  
+
     let sortObj = {};
     sortObj.product_price = parseInt(sort);
 
     if (sort && filter) {
-   
-        data = await productDB.paginate({ product_category: filter , blocked: false }, { offset: skip, limit: limit ,sort: sortObj  })
-
+      data = await productDB.paginate(
+        { product_category: filter, blocked: false },
+        { offset: skip, limit: limit, sort: sortObj }
+      );
     } else if (sort) {
-    
-       data = await productDB.paginate({ blocked: false }, { offset: skip, limit, sort: sortObj });
-
+      data = await productDB.paginate(
+        { blocked: false },
+        { offset: skip, limit, sort: sortObj }
+      );
     } else if (filter) {
-
-        data = await productDB.paginate({ product_category: filter , blocked: false }, { offset: skip, limit: limit })
-
+      data = await productDB.paginate(
+        { product_category: filter, blocked: false },
+        { offset: skip, limit: limit }
+      );
     } else {
-  
-      const options = { page, limit, sort: { 'createdAt': 1 } };
-  
-        data = await productDB.paginate({blocked: false}, { offset: skip, limit: limit })
-      } 
+      const options = { page, limit, sort: { createdAt: 1 } };
+
+      data = await productDB.paginate(
+        { blocked: false },
+        { offset: skip, limit: limit }
+      );
+    }
 
     const cartData = await cartDb.find({ blocked: false }); //it is categoey DB
     // res.render("user/shop.ejs", { data, cartData, page, maxPage, filter });
-    res.render("user/shop.ejs", { data:data.docs , cartData, totalPages :data.totalPages , currentPage:data.page ,filter,limit ,sortVal : sort});
-
+    res.render("user/shop.ejs", {
+      data: data.docs,
+      cartData,
+      totalPages: data.totalPages,
+      currentPage: data.page,
+      filter,
+      limit,
+      sortVal: sort,
+    });
   } catch (error) {
     console.error("Error creating user:", error);
     return res.status(500).send("fetch error:check once more");
   }
 };
 
-const  getProducts = async(req,res)=>{
-  const products = await productDB.find()
-  res.json({products})
-}
+const getProducts = async (req, res) => {
+  const products = await productDB.find();
+  res.json({ products });
+};
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++   CONTACT   ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -454,5 +462,5 @@ module.exports = {
   editUser,
   changePassword,
   changePasswordPost,
-  getProducts
+  getProducts,
 };

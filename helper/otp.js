@@ -4,6 +4,7 @@ const nodemailer = require("nodemailer")
 
 
 const sendOTPByEmail = async (email, otp) => {
+  console.log('opt emal :', email)
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 465,
